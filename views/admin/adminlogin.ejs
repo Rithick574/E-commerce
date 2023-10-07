@@ -1,0 +1,66 @@
+<%- include('../layout/adminloginheader.ejs') -%>
+
+
+<section class="main">
+  <div class="container py-5 h-100 sub-cl">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-6">
+            <img src="/static/assets/logImg.png" alt="Placeholder Image" class="img-fluid">
+        </div>
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div
+          class="card bg-white bg-opacity-10 text-white card-sec"
+          style="border-radius: 1rem"
+        >
+          <div class="card-body p-5 text-center">
+            <div class="inside">
+              <h2 class=" loginn fw-bold mb-2  text-dark display-6">Here you can Login</h2>
+              <span class="text-danger"><h6>Log in for Admin</h6></span>
+              
+              <form action="/admin/login" method="POST" class="pt-3" autocomplete="on">
+                <div class="form-group form-primary mb-4" id="hidepas">
+                  <input
+                    name="email"
+                    type="email"
+                    id="typeEmailX"
+                    class="form-control form-control-lg"
+                    placeholder="Email"
+                    required>
+                </div>
+
+                <div class="form-group form-white mb-4" id="hidepass">
+                  <input
+                  name="password"
+                    type="password"
+                    id="typePasswordX"
+                    class="form-control form-control-lg"
+                    placeholder="Password"
+                    required >
+                    <i class="fa-solid fa-lock fa-xl" id="lockicon" style="color: #000000;"></i>
+                </div>
+                
+                <form >
+                  <br>
+                  <br>  
+                  <br>
+                  <button class="btn btn-primary btn-lg px-5" id="logbtn" type="submit">
+                    Login
+                  </button>
+                  
+               
+                </form>
+                <!-- <br> -->
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<%- include('../layout/adminloginfooter') -%>
