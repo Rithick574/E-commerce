@@ -1,23 +1,22 @@
 <%-include('../partials/adminheader.ejs') %>
 
 
-
 <div class="details">
     <div class="recentOrders">
        
-        <h2>Add Products</h2>
+        <h2>Edit Products</h2>
 
-        <form class="row g-3"  method="POST" action="/admin/upload" enctype="multipart/form-data">
+        <form class="row g-3"  method="POST" action="/admin/updateProduct/<%= product._id %>" enctype="multipart/form-data">
        
             <div class="col-md-6">
               <label for="inputEmail4" class="form-label">product name</label>
-              <input  class="form-control" name="productname" id="inputEmail4">
+              <input  class="form-control" name="productname" value="<%= product.name %>" id="inputEmail4">
             </div>
             <div class="col-md-6">
               <label for="brand" class="form-label">Brand</label>
               <select id="brand" name="brand" class="form-select">
-                  <% brands.forEach(brand => { %>
-                      <option><%= brand.name %></option>
+                <% brands.forEach(brand => { %>
+                    <option value="<%= brand.name %>" <%= product.brand === brand.name ? 'selected' : '' %>><%= brand.name %></option>
                   <% }); %>
               </select>
           </div>
@@ -26,23 +25,23 @@
            
             <div class="col-md-6">
               <label for="inputCity" class="form-label">Price</label>
-              <input type="number" class="form-control" name="price" id="inputCity">
+              <input type="number" class="form-control" value="<%= product.basePrice %>" name="price" id="inputCity">
             </div>
           
             <div class="col-md-6">
               <label for="inputZip" class="form-label">Discounted Price</label>
-              <input type="number" class="form-control" name="discountprice" id="inputZip">
+              <input type="number" class="form-control" value="<%= product.descountedPrice %>" name="discountprice" id="inputZip">
             </div>
             <div class="col-md-6">
               <label for="inputCity" class="form-label">Stock</label>
-              <input type="number" class="form-control" name="stock" id="stock">
+              <input type="number" class="form-control" ue="<%= product.stock %>" name="stock" id="stock">
             </div>
             <div class="col-md-12">
               <label for="inputState" class="form-label">Category</label>
               <select id="inputState" name="category" class="form-select">
                 <% categories.forEach(category => { %>
-                  <option><%= category.name %></option>
-              <% }); %>
+                    <option value="<%= category.name %>" <%= product.category === category.name ? 'selected' : '' %>><%= category.name %></option>
+                  <% }); %>
               </select>
             </div>
 

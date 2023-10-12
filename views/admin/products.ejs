@@ -30,9 +30,29 @@
                         <td><%= product.descountedPrice %></td>
                         <td><img src="/product-images/<%=product.images[0].mainimage%>" style="width: 33px;height:33" alt=""></td>
                         <td><%= product.stock %></td>
-                        <td><span class="status <%= product.stock > 0 ? 'delivered' : 'return' %>"><%= product.stock > 0 ? 'In stock' : 'Out of stock' %></span></td>
-                        <td><ion-icon name="create-outline"></ion-icon></td>
-                        <td><ion-icon name="trash-outline"></ion-icon></td>
+                        <td>
+                            <span class="status <%= product.stock > 0 ? 'delivered' : 'return' %> <%= product.isDeleted ? 'archived' : '' %>">
+                              <%= product.stock > 0 ? 'In stock' : 'Out of stock' %>
+                             
+                            </span>
+                          </td>
+
+                          <td class="icon-cell">
+                            <form action="/admin/editProduct/<%= product._id %>" method="POST">
+                              <button type="submit">
+                                <ion-icon name="create-outline"></ion-icon>
+                              </button>
+                            </form>
+                          </td>
+
+                          <td class="icon-cell">
+                            <form action="/admin/archiveProduct/<%= product._id %>" method="POST">
+                              <button type="submit" class="<%= product.isDeleted ? 'archived-button' : 'active-button' %>">
+                                <ion-icon name="trash-outline"></ion-icon>
+                              </button>
+                            </form>
+                          </td>
+                          
                     </tr>
                 <% }); %>
             </tbody>

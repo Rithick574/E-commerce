@@ -3,7 +3,7 @@
 
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
 
-        <div class="carousel-inner p-5">
+        <div class="carousel-inner p-1">
             <div class="carousel-item active">
                 <img src="../assets/iphonebanner.svg" class="d-block w-100" alt="Iphone15">
                 <div class="carousel-caption d-none d-md-block">
@@ -64,63 +64,33 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h4 class="mb-4">Our Products</h4>
+                <h3 class="mb-4">Our Products</h3>
             </div>
-            <div class="col-md-3">
-                <div class="product-card">
-                    <div class="product-card-img">
-                        <!-- <label class="stock bg-success">In Stock</label> -->
-                        <img src="../assets/iphone14pro.svg" alt="Laptop">
-                    </div>
-                    <div class="product-card-body">
-                        <p class="product-brand">HP</p>
-                        <h5 class="product-name">
-                           <a href="">
-                                HP Laptop 
-                           </a>
-                        </h5>
-                        <div>
-                            <span class="selling-price">$500</span>
-                            <span class="original-price">$799</span>
-                        </div>
-                        <div class="mt-2">
-                            <a href="" class="btn btn1">Add To Cart</a>
-                            <a href="" class="btn btn1"> <i class="fa fa-heart"></i> </a>
-                            <a href="" class="btn btn1"> View </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-         
-
-            <div class="py-3 py-md-5 bg-light">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4 class="mb-4">Our Products</h4>
-                        </div>
+          
                         <% product.forEach(product => { %>
                             <div class="col-md-3">
-                                <div class="product-card">
+                                <div class="product-card shadow-lg p-3 bg-body rounded-3">
+                                    <a href="/product/<%= product._id %>">
                                     <div class="product-card-img" style="padding: 30px;">
                                         <!-- <label class="stock bg-success">In Stock</label> -->
                                         <td><img src="/product-images/<%=product.images[0].mainimage%>"  alt=""></td>
                                     </div>
                                     <div class="product-card-body">
-                                        <p class="product-brand"><%= product.brand %></p>
+                                        <p class="product-brand "><%= product.brand %></p>
                                         <h5 class="product-name">
-                                            <a href="">
+                                            
                                                 <%= product.name %>
-                                            </a>
+                                           
                                         </h5>
                                         <div>
                                             <span class="selling-price">Rs.<%= product.descountedPrice %></span>
                                             <!-- You can include the original price here as well -->
                                         </div>
+                                    </a>
                                         <div class="mt-2">
-                                            <a href="#" class="btn btn1">Add To Cart</a>
-                                            <a href="#" class="btn btn1"> <i class="fa fa-heart"></i> </a>
-                                            <a href="#" class="btn btn1"> View </a>
+                                            <a href="#" class="btn btn1 rounded-3">Add To Cart</a>
+                                            <a href="#" class="btn btn1 rounded-3"> <i class="fa fa-heart"></i> </a>
+                                            <a href="/product/<%= product._id %>" class="btn btn1 rounded-3"> View </a>
                                         </div>
                                     </div>
                                 </div>
@@ -135,6 +105,11 @@
         </div>
     </div>
 </div>
+
+
+
+
+
 
 
 <%-include('../partials/userFooter') %>

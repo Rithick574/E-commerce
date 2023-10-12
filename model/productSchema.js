@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+// const { softDeletePlugin } = require('soft-delete-plugin-mongoose');
 
 const { Schema, ObjectId } = mongoose;
 
@@ -26,7 +27,10 @@ const ProductsSchema = new Schema({
   timeStamp: { type: Date },
   brandId: { type: Schema.Types.ObjectId },
   categoryId: { type: Schema.Types.ObjectId },
+  isDeleted: {type: Boolean, default: false,
+  },
 });
+
 
 const Products = mongoose.model("Products", ProductsSchema);
 

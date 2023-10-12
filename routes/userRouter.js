@@ -33,6 +33,14 @@ user.post('/resetpassword',userController.resetpassword)
 //otp signup
 user.post("/otp",userController.signup)
 
+//view product
+user.get('/product/:productId',userController.viewProduct)
+
+//shop,cart,wishlist
+user.get('/shop',userController.ShopProduct)
+user.get('/wishlist',userController.wishList)
+
+
 //logout
 user.get("/logout",userController.logOut)
 

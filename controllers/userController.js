@@ -6,12 +6,12 @@ const register=require('../model/userSchema')
 const {sentOTP} = require("../auth/OTPauth");
 const product = require('../model/productSchema');
 
+
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const verifySid = process.env.VERIFY_SID;
 
 const client = require('twilio')(accountSid, authToken);
-
 
 
 
@@ -242,6 +242,36 @@ res.redirect('/login')
 }
 
 
+//view product
+const viewProduct=async(req,res)=>{
+ try{
+  const productId = req.params.productId;
+  const productData= await product.findById(productId);
+  console.log("view productsa");
+  res.render('user/viewproduct', { product: productData });
+ }catch(error){
+  res.status(500).send('internal server error')
+ }
+
+}
+
+//shop
+const ShopProduct=async(req,res)=>{
+  try{
+    const viewallProducts = await product.find();
+    res.render('user/shop', { viewallProducts});
+
+  }catch(error){
+    console.error(error);
+        res.status(500).send('Internal Server Error');
+  }
+}
+
+//wishlist
+const wishList=(req,res)=>{
+  res.render('user/wishlist')
+}
+
 //logout
 const logOut=(req,res)=>{
   req.session.destroy();
@@ -264,5 +294,8 @@ const logOut=(req,res)=>{
     verifygorgotOTP,
     resetpassword,
     passport,
+    viewProduct,
+    ShopProduct,
+    wishList,
     logOut
   };

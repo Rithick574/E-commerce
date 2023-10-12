@@ -45,7 +45,6 @@ admin.get('/customers',adminController.Customers)
 
 admin.get('/products',adminController.Products)
 admin.get('/addProduct',adminController.addProduct)
-admin.get('/logout',adminController.logOut)
 admin.get('/status',adminController.status)
 // admin.post('/addproduct',adminController.addProductPost)
 admin.get('/block/:id',adminController.user_Blocking)
@@ -63,6 +62,10 @@ admin.post('/add-category',adminController.AddCategoryy)
 //multiple image upload using multer
 admin.post("/upload", upload.fields(uploadFields),addProductPost);
 
+//edit product,update and soft delete
+admin.post('/editProduct/:productId', adminController.editProduct);
+admin.post('/updateProduct/:productId', adminController.updateProduct);
+admin.post('/archiveProduct/:productId', adminController.archiveProduct);
 
 
 // // Admin logout route

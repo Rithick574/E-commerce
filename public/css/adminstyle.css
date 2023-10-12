@@ -25,6 +25,20 @@
     width: 100%;
   }
 
+  .icon-cell {
+    text-align: center; 
+    padding: 5px; 
+  }
+  .archived-button {
+    background-color: red; 
+    color: white; 
+  }
+  
+  .active-button {
+    background-color: green; 
+    color: white; 
+  }
+  
 
   .navigation {
     position: fixed;

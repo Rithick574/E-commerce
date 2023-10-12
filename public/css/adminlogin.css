@@ -86,7 +86,7 @@ body{
       font-size: 20px;
       font-weight: 500;
       cursor: pointer;
-      background-color: #16de30;
+      background-color: #2874f0;
     }
     form .field input[type="submit"]:active{
       transform: scale(0.95);

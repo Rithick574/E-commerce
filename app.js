@@ -39,7 +39,9 @@ app.use('/addproducts',express.static(path.join(__dirname,'products')));
 //morgan
 app.use(morgan('tiny'))
 
+//cookie
 
+// app.use(cookieParser());
 
 //nocache
 app.use("/",nocache());
