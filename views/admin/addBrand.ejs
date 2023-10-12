@@ -1,0 +1,67 @@
+<%-include('../partials/adminheader.ejs') %>
+
+
+
+
+
+
+<div class="details">
+    <div class="recentOrders">
+      
+        <h2>Add Brands</h2>
+        <form class="row g-3"  method="POST" action="/admin/add-brand" >
+       
+            <div class="col-md-12">
+              <label for="inputEmail4" class="form-label">Brand Name</label>
+              <input  class="form-control" name="Brand_name" id="Brand_name" type="text" required >
+            </div>
+        
+
+            <!-- <div class="images d-flex justify-content-start">
+                <input type="file" name="main" accept="image/*" id="main" required
+                onchange="previewImage('main', 'mn')">
+                <label for="main">
+          
+                  <div class="img-main">
+                    <img class="priview" src="/static/images/img-bg.jpg"  id="mn">
+                  </div>
+                </label>
+              </div> -->
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+          
+
+          <div class="d-flex justify-content-around">
+            <div class="cardHeader d-flex">
+              <button type="submit" class="btn">Add Brand</button>
+          </div>
+          
+            <div class="cardHeader d-flex">
+                <a href="/admin/brands" class="btn">Cancel</a>
+               
+            </div>
+        </div>
+
+          </form>
+          <br>
+          <br>
+          <br>
+
+  </div>
+</div>
+
+
+
+<%-include('../partials/adminfooter.ejs') %>

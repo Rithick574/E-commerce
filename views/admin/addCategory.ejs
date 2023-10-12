@@ -1,0 +1,58 @@
+<%-include('../partials/adminheader.ejs') %>
+
+
+
+
+
+
+<div class="details">
+    <div class="recentOrders">
+      
+        <h2>Add Category</h2>
+        <form class="row g-3"  method="POST" action="/admin/add-category">
+       
+            <div class="col-md-12">
+              <label for="inputEmail4" class="form-label">Category Name</label>
+              <input  class="form-control" id="categoryName" type="text" name="categoryName" required >
+              
+
+            </div>
+        
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+          
+
+          <div class="d-flex justify-content-around">
+            <div class="cardHeader d-flex">
+              <button type="submit" class="btn">Add Category</button>
+          </div>
+          
+            <div class="cardHeader d-flex">
+                <a href="/admin/category" class="btn">Cancel</a>
+               
+            </div>
+        </div>
+
+          </form>
+          <br>
+          <br>
+          <br>
+
+  </div>
+</div>
+
+
+
+<%-include('../partials/adminfooter.ejs') %>

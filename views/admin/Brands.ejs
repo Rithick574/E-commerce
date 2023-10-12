@@ -1,0 +1,50 @@
+<%-include('../partials/adminheader.ejs') %>
+
+   
+   <div class="details">
+    <div class="recentOrders">
+        <div class="cardHeader">
+            <h1>Brands</h1>
+            <a href="/admin/addbrand" class="btn">Add Brand</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>Brands</td>
+                    <td>Updated Date</td>
+                    <td>edit</td>
+                    <td>delete</td>
+                </tr>
+            </thead>
+            <% brands.forEach(brand => { %>
+                <tr>
+                  <td><%= brand.name %></td>
+                  <td> <% let dt=new Date(brand.timeStamp)%>
+                    <%let day=["monday",'tuesday','wednesday','friday','satuarday','sunday']%>
+                    <%=dt.getDate()%>/<%=dt.getMonth()+1%>/<%=dt.getFullYear()%>  %></td>
+                  <td><a href="/admin/editbrand/<%= brand._id %>">Edit</a></td>
+                  <td><a href="/admin/deletebrand/<%= brand._id %>">Delete</a></td>
+                </tr>
+              <% }); %>
+
+            <tbody>
+              
+                   
+            </tbody>
+        </table>
+    </div>
+
+   
+    
+    
+</div>
+
+</div>
+
+</div>
+
+
+
+
+<%-include('../partials/adminfooter.ejs') %>

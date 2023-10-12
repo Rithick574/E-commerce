@@ -1,0 +1,183 @@
+  
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+ 
+}
+
+    body{
+height: 100vh;
+}
+
+.wrapper{
+width: 380px;
+background: #ffffff;
+border-radius: 15px;
+}
+.wrapper .title{
+font-size: 35px;
+font-weight: 600;
+text-align: center;
+line-height: 100px;
+color: #100101;
+border-radius: 15px 15px 0 0;
+}
+.wrapper .title-one{
+font-size: 35px;
+font-weight: 600;
+text-align: center;
+line-height: 100px;
+color: #000000;
+user-select: none;
+border-radius: 15px 15px 0 0;
+}
+.wrapper .title-Two{
+font-size: 35px;
+font-weight: 600;
+text-align: center;
+line-height: 100px;
+color: #000000;
+user-select: none;
+border-radius: 15px 15px 0 0;
+}
+.wrapper form{
+padding: 10px 30px 50px 30px;
+}
+.wrapper form .field{
+height: 50px;
+width: 100%;
+margin-top: 20px;
+position: relative;
+}
+.wrapper form .field input{
+height: 100%;
+width: 100%;
+outline: none;
+font-size: 17px;
+padding-left: 20px;
+border: 1px solid lightgrey;
+border-radius: 5px;
+transition: all 0.3s ease;
+}
+.wrapper form .field label{
+position: absolute;
+top: 50%;
+left: 20px;
+color: #999999;
+font-weight: 400;
+font-size: 17px;
+pointer-events: none;
+transform: translateY(-50%);
+transition: all 0.3s ease;
+}
+form .field input:focus ~ label,
+form .field input:valid ~ label{
+top: 0%;
+font-size: 16px;
+color: #4158d0;
+background: #fff;
+transform: translateY(-50%);
+}
+form .content{
+display: flex;
+width: 100%;
+height: 50px;
+font-size: 16px;
+align-items: center;
+justify-content: space-around;
+}
+form .field input[type="submit"]{
+color: #fff;
+border: none;
+padding-left: 0;
+margin-top: -10px;
+font-size: 20px;
+font-weight: 500;
+cursor: pointer;
+background-color: #4070f4;
+}
+form .field input[type="submit"]:active{
+transform: scale(0.95);
+}
+form .signup-link{
+color: #262626;
+margin-top: 20px;
+text-align: center;
+}
+form .pass-link a,
+form .signup-link a{
+color: #4158d0;
+text-decoration: none;
+}
+
+
+
+/* side bar */
+body {
+background-color: #fbfbfb;
+}
+@media (min-width: 991.98px) {
+main {
+padding-left: 240px;
+}
+}
+
+/* Sidebar */
+
+
+.sidebar {
+position: fixed;
+top: 0;
+bottom: 0;
+left: 0;
+box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+width: 240px;
+z-index: 600;
+}
+
+@media (max-width: 991.98px) {
+.sidebar {
+width: 100%;
+}
+}
+.sidebar .active {
+border-radius: 5px;
+box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+.sidebar-sticky {
+position: relative;
+top: 0;
+height: calc(100vh - 48px);
+padding-top: 0.5rem;
+overflow-x: hidden;
+overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+}
+
+
+/* Button styles */
+button {
+  margin-top: 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

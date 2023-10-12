@@ -1,4 +1,14 @@
 <%-include('../partials/adminheader.ejs') %>
+<style>
+    .active {
+  color: green; 
+}
+
+.inactive {
+  color: red; 
+}
+
+</style>
 
 <!-- //oder details list -->
             
@@ -12,54 +22,75 @@
                     <table>
                         <thead>
                             <tr>
-                                <td>Name</td>
                                 <td>Email</td>
+                                <td>Name</td>
                                 <td>Join Date</td>
                                 <td>Status</td>
                             </tr>
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>Clint</td>
-                                <td>Andfui@gmail.com</td>
-                                <td>03/10/2023</td>
-                                <td><span class="status delivered">Active</span></td>
-                            </tr>
 
-                           
-                            <tr>
-                                <td>Yadhu</td>
-                                <td>yadhu@gmail.com</td>
-                                <td>02.08.2023</td>
-                                <td><span class="status return">Block</span></td>
-                            </tr>
 
-                            <tr>
-                                <td>Clint</td>
-                                <td>Andfui@gmail.com</td>
-                                <td>03/10/2023</td>
-                                <td><span class="status delivered">Active</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Yadhu</td>
-                                <td>yadhu@gmail.com</td>
-                                <td>02.08.2023</td>
-                                <td><span class="status return">Block</span></td>
-                            </tr>
+                            <%users.forEach((user) => { %>
+                                <tr>
+                                    <td><%= user.email %></td>
+                                  <td><%= user.name %></td>
+                                  
+                                  <td>
+                                    <% let dt=new Date(user.timeStamp)%>
+                                    <%let day=["monday",'tuesday','wednesday','friday','satuarday','sunday']%>
+                                    <%=dt.getDate()%>/<%=dt.getMonth()+1%>/<%=dt.getFullYear()%>  %>
+                                    <td>
+                                        <a href="/admin/block/<%= user._id %>" style="text-decoration: none;" class="status <%= user.Status === 'Active' ? 'active' : 'inactive' %>" data-userid="<%= user._id %>" data-isactive="<%= user.Status %>">
+                                          <%= user.Status %>
+                                        </a>
+                                      </td>                                      
+                              <% }); %>
+                              
                         </tbody>
                     </table>
                 </div>
 
                
                 
+                
             </div>
 
-
         </div>
+        
     </div>
+   
 
+  <!-- Include necessary JavaScript libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+  // Add a click event handler to the status elements with the "status" class
+  $('.status').click(function () {
+    const userId = $(this).data('userid'); // Get the user ID from the data attribute
+    const isActive = $(this).data('isactive'); // Get the current status from the data attribute
+
+    // Toggle the user's status
+    const newStatus = isActive === 'Active' ? 'Inactive' : 'Active';
+
+    // Send an AJAX request to update the user's status
+    $.ajax({
+      type: 'POST', // You can choose the appropriate HTTP method
+      url: '/admin/updateStatus/' + userId, // Update the URL to match your route
+      data: { status: newStatus }, // Send the new status
+      success: function () {
+        // Update the displayed status
+        $(this).text(newStatus);
+        $(this).data('isactive', newStatus);
+      },
+    });
+  });
+});
+</script>
+
+
+    
 
 
     <%-include('../partials/adminfooter.ejs') %>

@@ -1,66 +1,47 @@
-<%- include('../layout/adminloginheader.ejs') -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/adminlogin.css">
+</head>
+<body>
+    
 
 
-<section class="main">
-  <div class="container py-5 h-100 sub-cl">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-md-6">
-            <img src="/static/assets/logImg.png" alt="Placeholder Image" class="img-fluid">
+    <div class="text-center center-div d-flex align-items-center justify-content-center" style="height: 100vh;">
+        <div class="wrapper text-center center-div align-items-center justify-content-center">
+           <div class="title-Two">
+            Log in for Admin
+              <h6>Enter your details below</h6>
+           </div>
+           <form action="/admin/login" method="POST" autocomplete="on">
+              <div class="field">
+    
+    
+                 <input type="text" name="email" required>
+                 <label>Email Address</label>
+              </div>
+              <div class="field">
+                 <input type="password" name="password" required>
+                 <label>Password</label>
+              </div>
+              <br>
+              <div class="field">
+                 <input type="submit" value="Login">
+              </div>
+           </form>
         </div>
-      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-        <div
-          class="card bg-white bg-opacity-10 text-white card-sec"
-          style="border-radius: 1rem"
-        >
-          <div class="card-body p-5 text-center">
-            <div class="inside">
-              <h2 class=" loginn fw-bold mb-2  text-dark display-6">Here you can Login</h2>
-              <span class="text-danger"><h6>Log in for Admin</h6></span>
-              
-              <form action="/admin/login" method="POST" class="pt-3" autocomplete="on">
-                <div class="form-group form-primary mb-4" id="hidepas">
-                  <input
-                    name="email"
-                    type="email"
-                    id="typeEmailX"
-                    class="form-control form-control-lg"
-                    placeholder="Email"
-                    required>
-                </div>
+     </div>
 
-                <div class="form-group form-white mb-4" id="hidepass">
-                  <input
-                  name="password"
-                    type="password"
-                    id="typePasswordX"
-                    class="form-control form-control-lg"
-                    placeholder="Password"
-                    required >
-                    <i class="fa-solid fa-lock fa-xl" id="lockicon" style="color: #000000;"></i>
-                </div>
-                
-                <form >
-                  <br>
-                  <br>  
-                  <br>
-                  <button class="btn btn-primary btn-lg px-5" id="logbtn" type="submit">
-                    Login
-                  </button>
-                  
-               
-                </form>
-                <!-- <br> -->
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
 
-
-
-
-<%- include('../layout/adminloginfooter') -%>
+</body>
+</html>

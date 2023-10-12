@@ -1,9 +1,4 @@
 <%- include('../partials/adminheader.ejs') -%>
-
-
-
-
-
             
 <div class="details">
     <div class="recentOrders">
@@ -15,64 +10,31 @@
         <table>
             <thead>
                 <tr>
+                    <td>No.</td>
                     <td>Product Name</td>
                     <td>Price</td>
                     <td>Image</td>
-                    <td>Category</td>
+                    <td>Stock</td>
                     <td>Status</td>
                     <td>Edit</td>
-                    <td>Delete</td>
+                    <td>archive</td>
                 </tr>
             </thead>
 
             <tbody>
-                <tr>
-                    <td>poco M2 pro</td>
-                    <td>12000</td>
-                    <td>...</td>
-                    <td>xioami</td>
-                    <td><span class="status delivered">In stock</span></td>
-                    <td><ion-icon name="create-outline"></ion-icon></td>
-                    <td><ion-icon name="trash-outline"></ion-icon></td>
-
-                </tr>
-
-               
-                <tr>
+                
+                <% products.forEach((product, index) => { %>
                     <tr>
-                        <td>poco M2 pro</td>
-                        <td>12000</td>
-                        <td>...</td>
-                        <td>xioami</td>
-                        <td><span class="status delivered">In stock</span></td>
+                        <td><%= index + 1 %></td>
+                        <td><%= product.name %></td>
+                        <td><%= product.descountedPrice %></td>
+                        <td><img src="/product-images/<%=product.images[0].mainimage%>" style="width: 33px;height:33" alt=""></td>
+                        <td><%= product.stock %></td>
+                        <td><span class="status <%= product.stock > 0 ? 'delivered' : 'return' %>"><%= product.stock > 0 ? 'In stock' : 'Out of stock' %></span></td>
                         <td><ion-icon name="create-outline"></ion-icon></td>
                         <td><ion-icon name="trash-outline"></ion-icon></td>
                     </tr>
-                </tr>
-
-                <tr>
-                    <tr>
-                        <td>poco M2 pro</td>
-                        <td>12000</td>
-                        <td>...</td>
-                        <td>xioami</td>
-                        <td><span class="status delivered">In stock</span></td>
-                        <td><ion-icon name="create-outline"></ion-icon></td>
-                        <td><ion-icon name="trash-outline"></ion-icon></td>
-                    </tr>
-                </tr>
-
-                <tr>
-                    <tr>
-                        <td>poco M2 pro</td>
-                        <td>12000</td>
-                        <td>...</td>
-                        <td>xioami</td>
-                        <td><span class="status delivered">In stock</span></td>
-                        <td><ion-icon name="create-outline"></ion-icon></td>
-                        <td><ion-icon name="trash-outline"></ion-icon></td>
-                    </tr>
-                </tr>
+                <% }); %>
             </tbody>
         </table>
     </div>

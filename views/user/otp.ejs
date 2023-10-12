@@ -5,11 +5,14 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../assets/favicon.png" type="favicon/png">
     <title>OTP Verification Form</title>
-    <link rel="stylesheet" href="../static/css/otpstyle.css" />
+    <link rel="stylesheet" href="../css/otpstyle.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- Boxicons CSS -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-    <script src="../static/script/otp.js" defer></script>
+    <script src="/script/otpuser.js" defer></script>
   </head>
   <body>
     <div class="container">
@@ -17,15 +20,53 @@
         <i class="bx bxs-check-shield"></i>
       </header>
       <h4>Enter OTP Code</h4>
-      <form action="/home" method="post">
+      <form action="/verifyOTP" method="post">
         <div class="input-field">
-          <input type="number" />
-          <input type="number" disabled />
-          <input type="number" disabled />
-          <input type="number" disabled />
+          <input type="number" name = "num1" />
+          <input type="number" name = "num2" disabled />
+          <input type="number" name = "num3" disabled />
+          <input type="number" name = "num4" disabled />
+          <input type="number" name = "num5" disabled />
+          <input type="number" name = "num6" disabled />
         </div>
+       
+        <input type="hidden" name="phone" value="<%=data.phone %>">
+        <div id="otp-timer">00:00</div>
+
         <button>Verify OTP</button>
       </form>
     </div>
+
+    <script>
+      $(document).ready(function() {
+       
+        var timeInSeconds = 300;
+      
+        // Function to update the timer
+        function updateTimer() {
+          var minutes = Math.floor(timeInSeconds / 60);
+          var seconds = timeInSeconds % 60;
+          var displayTime = (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+          $('#otp-timer').text(displayTime);
+      
+          
+          timeInSeconds--;
+      
+          
+          if (timeInSeconds < 0) {
+           
+            $('#otp-timer').text('Time expired');
+            $('input[name^="num"]').prop('disabled', true); 
+          } else {
+           
+            setTimeout(updateTimer, 1000);
+          }
+        }
+      
+        updateTimer();
+      });
+      </script>
+      
+
   </body>
 </html>
