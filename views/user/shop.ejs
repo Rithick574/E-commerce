@@ -9,29 +9,17 @@
 <body>
     <div class="container mt-5">
         <h1>Product List</h1>
-        <div class="table-responsive">
-            <table class="table align-middle">
-                <!-- <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Price</th>
-                        <th>Image</th>
-                        <th>Description</th>
-                        
-                    </tr>
-                </thead> -->
-                <tbody>
-                    <% viewallProducts.forEach(product => { %>
-                        <tr>
-                            <td><a href="/product/<%= product._id %>" style="text-decoration: none; color: black;"><%= product.name %></a></td>
-                            <td>Rs. <%= product.descountedPrice %></td>
-                            <td><img src="/product-images/<%=product.images[0].mainimage%>" style="width: 85px;height:85" alt=""></td>
-                            <td><%= product.description %></td>
-                           
-                        </tr>
-                    <% }); %>
-                </tbody>
-            </table>
+        <div class="row">
+            <% viewallProducts.forEach(product => { %>
+                <div class="card" style="width: 14rem;">
+                    <img src="/product-images/<%= product.images[0].mainimage %>" class="card-img-top" alt="<%= product.name %>">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="/product/<%= product._id %>"><%= product.name %></a></h5>
+                        <p class="card-text">Price: Rs. <%= product.descountedPrice %></p>
+                      
+                    </div>
+                </div>
+            <% }); %>
         </div>
     </div>
 

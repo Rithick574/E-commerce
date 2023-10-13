@@ -1,151 +1,153 @@
 <%-include('../partials/adminheader.ejs') %>
 
+<link rel="stylesheet" href="/css/adminstyle.css">
+
 
 <div class="details">
-    <div class="recentOrders">
-       
-        <h2>Edit Products</h2>
+  <div class="recentOrders">
+     
+      <h2>Edit Products</h2>
 
-        <form class="row g-3"  method="POST" action="/admin/updateProduct/<%= product._id %>" enctype="multipart/form-data">
-       
-            <div class="col-md-6">
-              <label for="inputEmail4" class="form-label">product name</label>
-              <input  class="form-control" name="productname" value="<%= product.name %>" id="inputEmail4">
-            </div>
-            <div class="col-md-6">
-              <label for="brand" class="form-label">Brand</label>
-              <select id="brand" name="brand" class="form-select">
+      <form class="row g-3"  method="POST" action="/admin/updateProduct/<%= product._id %>" enctype="multipart/form-data">
+     
+          <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">product name</label>
+            <input  class="form-control" name="productname" value="<%= product.name %>" id="inputEmail4">
+          </div>
+          <div class="col-md-6">
+            <label for="brand" class="form-label">Brand</label>
+            <select id="brand" name="brand" class="form-select">
                 <% brands.forEach(brand => { %>
-                    <option value="<%= brand.name %>" <%= product.brand === brand.name ? 'selected' : '' %>><%= brand.name %></option>
-                  <% }); %>
-              </select>
-          </div>
-          
-           
-           
-            <div class="col-md-6">
-              <label for="inputCity" class="form-label">Price</label>
-              <input type="number" class="form-control" value="<%= product.basePrice %>" name="price" id="inputCity">
-            </div>
-          
-            <div class="col-md-6">
-              <label for="inputZip" class="form-label">Discounted Price</label>
-              <input type="number" class="form-control" value="<%= product.descountedPrice %>" name="discountprice" id="inputZip">
-            </div>
-            <div class="col-md-6">
-              <label for="inputCity" class="form-label">Stock</label>
-              <input type="number" class="form-control" ue="<%= product.stock %>" name="stock" id="stock">
-            </div>
-            <div class="col-md-12">
-              <label for="inputState" class="form-label">Category</label>
-              <select id="inputState" name="category" class="form-select">
-                <% categories.forEach(category => { %>
-                    <option value="<%= category.name %>" <%= product.category === category.name ? 'selected' : '' %>><%= category.name %></option>
-                  <% }); %>
-              </select>
-            </div>
-
-            <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"></textarea>
-            </div>
-          <br>
-
-           
-            <div class="col-md-6">
-              <label for="productImage1" class="form-label">Image 1</label>
-              <input type="file" class="form-control" name="main" accept="image/*" id="productImage1">
-          </div>
-          <div class="col-md-6">
-              <label for="productImage2" class="form-label">Image 2</label>
-              <input type="file" class="form-control" name="image1" accept="image/*" id="productImage2">
-          </div>
-          <div class="col-md-6">
-              <label for="productImage3" class="form-label">Image 3</label>
-              <input type="file" class="form-control" name="image2" accept="image/*" id="productImage3">
-          </div>
-          <div class="col-md-6">
-              <label for="productImage4" class="form-label">Image 4</label>
-              <input type="file" class="form-control" name="image3" accept="image/*" id="productImage4">
-          </div>
-          <br>
-          
-
-          <div class="d-flex justify-content-around">
-            <div class="cardHeader d-flex">
-              <button type="submit" class="btn">Add product</button>
-          </div>
-          
-            <div class="cardHeader d-flex">
-                <a href="/admin/products" class="btn">Cancel</a>
-               
-            </div>
+                    <option><%= brand.name %></option>
+                <% }); %>
+            </select>
         </div>
+        
+         
+         
+          <div class="col-md-6">
+            <label for="inputCity" class="form-label">Price</label>
+            <input type="number" class="form-control" value="<%= product.basePrice %>" name="price" id="inputCity">
+          </div>
+        
+          <div class="col-md-6">
+            <label for="inputZip" class="form-label">Discounted Price</label>
+            <input type="number" class="form-control" value="<%= product.descountedPrice %>" name="discountprice" id="inputZip">
+          </div>
+          <div class="col-md-6">
+            <label for="inputCity" class="form-label">Stock</label>
+            <input type="number" class="form-control" value="<%= product.stock %>" name="stock" id="stock">
+          </div>
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Category</label>
+            <select id="inputState" name="category" class="form-select">
+              <% categories.forEach(category => { %>
+                <option><%= category.name %></option>
+            <% }); %>
+            </select>
+          </div>
 
-          </form>
-          <br>
-          <br>
-          <br>
-
-
-          <div class="fixed-image-preview">
-            <div id="imagePreview1"></div>
-            <br>
-            <br>
-            <div id="imagePreview2"></div>
-            <br>
-            <br>
-            <div id="imagePreview3"></div>
-            <br>
-            <br>
-            <div id="imagePreview4"></div>
-            <br>
-            <br>
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"><%= product.description %></textarea>
         </div>
-  </div>
+        
+        <br>
+
+         
+          <div class="col-md-6">
+            <label for="productImage1" class="form-label">Image 1</label>
+            <input type="file" class="form-control" name="main" accept="image/*" id="productImage1">
+        </div>
+        <div class="col-md-6">
+            <label for="productImage2" class="form-label">Image 2</label>
+            <input type="file" class="form-control" name="image1" accept="image/*" id="productImage2">
+        </div>
+        <div class="col-md-6">
+            <label for="productImage3" class="form-label">Image 3</label>
+            <input type="file" class="form-control" name="image2" accept="image/*" id="productImage3">
+        </div>
+        <div class="col-md-6">
+            <label for="productImage4" class="form-label">Image 4</label>
+            <input type="file" class="form-control" name="image3" accept="image/*" id="productImage4">
+        </div>
+        <br>
+        
+
+        <div class="d-flex justify-content-around">
+          <div class="cardHeader d-flex">
+            <button type="submit" class="btn">Add product</button>
+        </div>
+        
+          <div class="cardHeader d-flex">
+              <a href="/admin/products" class="btn">Cancel</a>
+             
+          </div>
+      </div>
+
+        </form>
+        <br>
+        <br>
+        <br>
+
+
+        <div class="fixed-image-preview">
+          <div id="imagePreview1"></div>
+          <br>
+          <br>
+          <div id="imagePreview2"></div>
+          <br>
+          <br>
+          <div id="imagePreview3"></div>
+          <br>
+          <br>
+          <div id="imagePreview4"></div>
+          <br>
+          <br>
+      </div>
+</div>
 </div>
 
 
 
 <script>
-  function updateImagePreview(inputId, previewId) {
-        const imagePreview = document.getElementById(previewId);
-        const input = document.getElementById(inputId);
+function updateImagePreview(inputId, previewId) {
+      const imagePreview = document.getElementById(previewId);
+      const input = document.getElementById(inputId);
 
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
+      if (input.files && input.files[0]) {
+          const reader = new FileReader();
 
-            reader.onload = function (e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.classList.add('preview-image');
-                img.style.width = '368px'; // Set fixed width
-                img.style.height = '416px'; // Set fixed height
-                imagePreview.innerHTML = '';
-                imagePreview.appendChild(img);
-            };
+          reader.onload = function (e) {
+              const img = document.createElement('img');
+              img.src = e.target.result;
+              img.classList.add('preview-image');
+              img.style.width = '368px'; // Set fixed width
+              img.style.height = '416px'; // Set fixed height
+              imagePreview.innerHTML = '';
+              imagePreview.appendChild(img);
+          };
 
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            imagePreview.innerHTML = '';
-        }
-    }
+          reader.readAsDataURL(input.files[0]);
+      } else {
+          imagePreview.innerHTML = '';
+      }
+  }
 
-    // Add event listeners for file inputs
-    document.getElementById('productImage1').addEventListener('change', function () {
-        updateImagePreview('productImage1', 'imagePreview1');
-    });
-    document.getElementById('productImage2').addEventListener('change', function () {
-        updateImagePreview('productImage2', 'imagePreview2');
-    });
-    document.getElementById('productImage3').addEventListener('change', function () {
-        updateImagePreview('productImage3', 'imagePreview3');
-    });
-    document.getElementById('productImage4').addEventListener('change', function () {
-        updateImagePreview('productImage4', 'imagePreview4');
-    });
+  // Add event listeners for file inputs
+  document.getElementById('productImage1').addEventListener('change', function () {
+      updateImagePreview('productImage1', 'imagePreview1');
+  });
+  document.getElementById('productImage2').addEventListener('change', function () {
+      updateImagePreview('productImage2', 'imagePreview2');
+  });
+  document.getElementById('productImage3').addEventListener('change', function () {
+      updateImagePreview('productImage3', 'imagePreview3');
+  });
+  document.getElementById('productImage4').addEventListener('change', function () {
+      updateImagePreview('productImage4', 'imagePreview4');
+  });
 </script>
-
 
 
 

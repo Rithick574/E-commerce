@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ecommerce Navbar Design</title>
+    <title>Ecommerce Navbar</title>
     <link rel="stylesheet" href="../css/indexstyle.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -40,7 +40,7 @@
                         <ul class="nav justify-content-end">
 
                             <li class="nav-item">
-                                <a class="nav-link" href="/shop">
+                                <a class="nav-link" href="/guest/shop">
                                     <i class="fa fa-shopping-bag" aria-hidden="true"></i> Shop
                                 </a>
                             </li>
@@ -61,16 +61,12 @@
                             <li>
                               <div class="dropdown">
                                 <button class="btn border border-success btn-secondary bg-black dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                               <%=username?username:"Guest"%>
+                              Guest
                                 </button>
                                 <ul class="dropdown-menu  " style="width: 50%; background: #6d6a6a; color: #fcfcfc;">
-                                  <%if(username){%>
-                                    <li class="mr-5"><a class="dropdown-item "  style="width: 50%; background: #6d6a6a; color: #fcfcfc;" href="/logout">LogOut</a></li>
-                                    <li class="mr-5"><a class="dropdown-item "  style="width: 50%; background: #6d6a6a; color: #fcfcfc;" href="#">Profile</a></li>
-                                      <li class="mr-5"><a class="dropdown-item "  style="width: 50%; background: #6d6a6a; color: #fcfcfc;" href="#">Wallet</a></li>
-                                  <%}else{%>
+                                 
                                   <li class="mr-5"><a class="dropdown-item "  style="width: 50%; background: #6d6a6a; color: #fcfcfc;" href="/login">LogIn</a></li>
-                                  <%}%>
+                        
                                 </ul>
                               </div>
                             </li> 
@@ -89,7 +85,37 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-               
+                <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">All Categories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">New Arrivals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Featured Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Electronics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Fashions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Accessories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Appliances</a>
+                        </li>
+                    </ul>
+                </div> -->
             </div>
         </nav>
     </div>

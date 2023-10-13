@@ -1,0 +1,115 @@
+<%-include('../partials/guestHeader') %>
+
+
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
+
+        <div class="carousel-inner p-1">
+            <div class="carousel-item active">
+                <img src="../assets/iphonebanner.svg" class="d-block w-100" alt="Iphone15">
+                <div class="carousel-caption d-none d-md-block">
+                    <div class="custom-carousel-content">
+                        
+                        <div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="../assets/pixel.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <div class="custom-carousel-content">
+                       
+                        <div>
+                            <a href="#" class="btn btn-slider">
+                              
+                            </a>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+            
+                <img src="../assets/iphone2nd.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <div class="custom-carousel-content">
+                       
+                       
+                        <!-- <div>
+                            <a href="#" class="btn btn-slider">
+                            
+                            </a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
+
+
+
+<div class="py-3 py-md-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="mb-4">Our Products</h3>
+            </div>
+          
+                        <% product.forEach(product => { %>
+                            <div class="col-md-3">
+                                <div class="product-card shadow-lg p-3 bg-body rounded-3">
+                                    <a href="/product/guest/<%= product._id %>">
+                                    <div class="product-card-img" style="padding: 30px;">
+                                        <!-- <label class="stock bg-success">In Stock</label> -->
+                                        <td><img src="/product-images/<%=product.images[0].mainimage%>"  alt=""></td>
+                                    </div>
+                                    <div class="product-card-body">
+                                        <p class="product-brand "><%= product.brand %></p>
+                                        <h5 class="product-name">
+                                            
+                                                <%= product.name %>
+                                           
+                                        </h5>
+                                        <div>
+                                            <span class="selling-price">Rs.<%= product.descountedPrice %></span>
+                                            <!-- You can include the original price here as well -->
+                                        </div>
+                                    </a>
+                                        <div class="mt-2">
+                                            <a href="#" class="btn btn1 rounded-3">Add To Cart</a>
+                                            <a href="#" class="btn btn1 rounded-3"> <i class="fa fa-heart"></i> </a>
+                                            <a href="/product/<%= product._id %>" class="btn btn1 rounded-3"> View </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<%-include('../partials/guestFooter') %>

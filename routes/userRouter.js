@@ -10,6 +10,9 @@ require('../auth/passport');
 //home page
 user.get('/', userController.homePage);
 
+//guest user
+user.get('/guestuser',userController.guestPage)
+
 //login
 user.get('/login',userController.login)
 user.post('/login',userController.logged)
@@ -36,9 +39,13 @@ user.post("/otp",userController.signup)
 //view product
 user.get('/product/:productId',userController.viewProduct)
 
+//view guest 
+user.get('/product/guest/:productId',userController.viewProductGuest)
+
 //shop,cart,wishlist
 user.get('/shop',userController.ShopProduct)
 user.get('/wishlist',userController.wishList)
+user.get('/guest/shop',userController.ShopProductGuest)
 
 
 //logout

@@ -19,6 +19,7 @@ const adminRouter=require("./routes/adminRouter");
 
 const app=express()
 
+app.use(nocache());
 
 //view engine setting
 app.set('view engine','ejs')
@@ -44,14 +45,13 @@ app.use(morgan('tiny'))
 // app.use(cookieParser());
 
 //nocache
-app.use("/",nocache());
 
 
 //session
 app.use(
     session({
       secret: uuidv4(),
-      // cookie:{maxAge:60000},
+      cookie:{maxAge:60000},
       resave: false,
       saveUninitialized: false,
     })

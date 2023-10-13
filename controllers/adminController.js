@@ -16,6 +16,9 @@ const adminlogin=(req,res)=>{
 };
 
 const adminLogged = async (req, res) => {
+if(req.session.logged){
+  res.redirect('/admin/dashboard');
+}else{
   try {
     const { email, password } = req.body;
   
@@ -38,6 +41,7 @@ const adminLogged = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
+}
 };
 
 
@@ -332,9 +336,43 @@ const editProduct=async(req,res)=>{
 const updateProduct=async(req,res)=>{
  if(req.session.logged){
   try {
-    const productId = req.params.productId;
-    console.log("updated");
+    console.log('reached ++++')
+        const main = req.files["main"][0];
+        const img1 = req.files["image1"][0];
+        const img3 = req.files["image3"][0];
+        const img2 = req.files["image2"][0];
+  
+  
     
+        console.log("Uploaded files:");
+        console.log(main);
+        console.log(img1);
+        console.log(img2);
+        console.log(img3);
+   
+    const productId = req.params.productId;
+    const updatedProductData = {
+        name: req.body.productname,
+        basePrice: req.body.price,
+        description: req.body.description,
+        brandId: req.body.brand,
+        categoryId: req.body.category,
+        stock: req.body.stock,
+        descountedPrice: req.body.discountprice,
+        images: {
+          mainimage: main.filename,
+          image1: img1.filename,
+          image2: img2.filename,
+          image3: img3.filename,
+        },
+        timeStamp: Date.now(),
+    };
+    const updatedProduct = await Product.findByIdAndUpdate(productId, updatedProductData);
+    if (!updatedProduct) {
+      return res.status(404).send('Product not found');
+    }
+    console.log("updated");
+    res.redirect('/admin/products');
   } catch (err) {
     res.status(500).send('Internal Server Error');
   }
