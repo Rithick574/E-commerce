@@ -1,7 +1,6 @@
 const passport=require("passport")
 const Users = require("../model/userSchema");
 require("dotenv").config();
-// google=require('./google')
 
 // Ensure the path to the 'google' module is correct
 const GoogleStrategy = require('passport-google-oauth20').Strategy;

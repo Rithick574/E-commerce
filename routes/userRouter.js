@@ -5,47 +5,55 @@ const passport=require("passport")
 const bcrypt=require("bcrypt")
 const userController = require('../controllers/userController')
 require('../auth/passport');
+const userAuth=require('../middleware/userAuth')
+const productController=require('../controllers/product')
 
 
 //home page
-user.get('/', userController.homePage);
+user.get('/',userAuth.verifyUser,userController.homePage);
 
 //guest user
-user.get('/guestuser',userController.guestPage)
+user.get('/guestuser',userAuth.userExist,userController.guestPage)
 
 //login
-user.get('/login',userController.login)
-user.post('/login',userController.logged)
+user.get('/login',userAuth.userExist,userController.login)
+user.post('/login',userAuth.userExist,userController.logged)
 
 //passport
 user.get("/auth/google",passport.authenticate('google',{scope:["profile","email"]}));
 user.get("/auth/google/done", passport.authenticate('google',{ failureRedirect: '/login'}),userController.passport)
 
 
+
 //signup with OTP
-user.get('/signup',userController.signup)
-user.post('/sentotp',userController.sentOtp)
-user.post('/verifyOTP',userController.verifyOTP)
+user.get('/signup',userAuth.userExist,userController.signup)
+user.post('/sentotp',userAuth.userExist,userController.sentOtp)
+user.post('/verifyOTP',userAuth.userExist,userController.verifyOTP)
+
 
 //forgot password
-user.get('/forgotpassword',userController.forgotPassword)
-user.post('/forgotpassword',userController.sentforgotOTP)
-user.post('/verifyforgotOTP',userController.verifygorgotOTP)
-user.post('/resetpassword',userController.resetpassword)
+user.get('/forgotpassword',userAuth.userExist,userController.forgotPassword)
+user.post('/forgotpassword',userAuth.userExist,userController.sentforgotOTP)
+user.post('/verifyforgotOTP',userAuth.userExist,userController.verifygorgotOTP)
+user.post('/resetpassword',userAuth.userExist,userController.resetpassword)
 
-//otp signup
-user.post("/otp",userController.signup)
 
 //view product
-user.get('/product/:productId',userController.viewProduct)
+user.get('/product/:productId',userAuth.verifyUser,productController.viewProduct)
 
 //view guest 
-user.get('/product/guest/:productId',userController.viewProductGuest)
+user.get('/product/guest/:productId',userAuth.userExist,productController.viewProductGuest)
 
 //shop,cart,wishlist
-user.get('/shop',userController.ShopProduct)
-user.get('/wishlist',userController.wishList)
-user.get('/guest/shop',userController.ShopProductGuest)
+user.get('/shop',userAuth.verifyUser,productController.ShopProduct)
+user.get('/wishlist',userAuth.verifyUser,productController.wishList)
+
+//guest shop
+user.get('/guest/shop',userAuth.userExist,productController.ShopProductGuest)
+
+
+//cart
+user.get("/addtocart",userAuth.verifyUser,productController.addToCart)
 
 
 //logout

@@ -10,7 +10,7 @@ const imageSchema = new mongoose.Schema({
   },
 });
 const CategoriesSchema = new Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true ,unique:true},
   images: [imageSchema],
   timeStamp: { type: Date },
 });

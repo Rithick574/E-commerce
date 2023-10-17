@@ -2,26 +2,17 @@ const express=require('express')
 const session = require("express-session");
 const admin = express.Router();
 const adminController=require("../controllers/adminController")
-const multer = require("multer");
-
 const { addProductPost } = require("../controllers/adminController");
-// const multer = require('multer');
 const path = require('path');
 const crypto=require("crypto");
-// handling file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './public/product-images/'); 
-  },
-  filename: (req, file, cb) => {
-    const randomeString = crypto.randomBytes(3).toString("hex");
-    const timestamp = Date.now();
-    const uniqueFile = `${timestamp}-${randomeString}`;
-    cb(null, uniqueFile + ".png");
-  },
-});
+const adminAuth=require('../middleware/adminAuth')
+const productController=require('../controllers/product')
+const brandController=require('../controllers/brandController')
+const categoryController=require('../controllers/categoryController')
+const upload = require('../middleware/multer');
 
-const upload = multer({ storage,});  
+
+
 
 const uploadFields = [
   { name: 'main', maxCount: 1 },
@@ -34,38 +25,39 @@ const uploadFields = [
 
 
 // Admin login page
-admin.get('/login', adminController.adminlogin);
+admin.get('/login',adminAuth.adminExist, adminController.adminlogin);
 
 //Admin login Route
-admin.post('/login', adminController.adminLogged);
+admin.post('/login',adminAuth.adminExist, adminController.adminLogged);
 
 // // Protected admin dashboard route
-admin.get('/dashboard', adminController.isAdmin)
-admin.get('/customers',adminController.Customers)
 
-admin.get('/products',adminController.Products)
-admin.get('/addProduct',adminController.addProduct)
-admin.get('/status',adminController.status)
-// admin.post('/addproduct',adminController.addProductPost)
-admin.get('/block/:id',adminController.user_Blocking)
+admin.get('/dashboard',adminAuth.verifyAdmin, adminController.isAdmin)
+admin.get('/customers',adminAuth.verifyAdmin,adminController.Customers)
+
+
+admin.get('/products',adminAuth.verifyAdmin,productController.Products)
+admin.get('/addProduct',adminAuth.verifyAdmin,productController.addProduct)
+admin.get('/status',adminAuth.verifyAdmin,adminController.status)
+admin.get('/block/:id',adminAuth.verifyAdmin,adminController.user_Blocking)
 
 //add brand
-admin.get('/brands',adminController.BrandsList)
-admin.get('/addbrand',adminController.addBrands)
-admin.post('/add-brand',adminController.AddBrandss)
+admin.get('/brands',adminAuth.verifyAdmin,brandController.BrandsList)
+admin.get('/addbrand',adminAuth.verifyAdmin,brandController.addBrands)
+admin.post('/add-brand',adminAuth.verifyAdmin,brandController.AddBrandss)
 
 //add category
-admin.get('/category',adminController.CategoryList)
-admin.get('/add-category',adminController.AddCategory)
-admin.post('/add-category',adminController.AddCategoryy)
+admin.get('/category',adminAuth.verifyAdmin,categoryController.CategoryList)
+admin.get('/add-category',adminAuth.verifyAdmin,categoryController.AddCategory)
+admin.post('/add-category',adminAuth.verifyAdmin,categoryController.AddCategoryy)
 
 //multiple image upload using multer
-admin.post("/upload", upload.fields(uploadFields),addProductPost);
+admin.post("/upload",adminAuth.verifyAdmin, upload.fields(uploadFields),productController.addProductPost);
 
 //edit product,update and soft delete
-admin.post('/editProduct/:productId', adminController.editProduct);
-admin.post('/updateProduct/:productId', adminController.updateProduct);
-admin.post('/archiveProduct/:productId', adminController.archiveProduct);
+admin.post('/editProduct/:productId',adminAuth.verifyAdmin, productController.editProduct);
+admin.post('/updateProduct/:productId',adminAuth.verifyAdmin,upload.fields(uploadFields), productController.updateProduct);
+admin.post('/archiveProduct/:productId',adminAuth.verifyAdmin, productController.archiveProduct);
 
 
 // // Admin logout route
@@ -73,4 +65,4 @@ admin.get('/logout', adminController.adminLogout);
 
 
 
-module.exports={admin};
+module.exports={admin}; 

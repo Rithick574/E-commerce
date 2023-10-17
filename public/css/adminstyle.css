@@ -30,16 +30,15 @@
     padding: 5px; 
   }
   .archived-button {
-    background-color: red; 
-    color: white; 
+    /* background-color: red;  */
+    color: red; 
   }
   
   .active-button {
-    background-color: green; 
-    color: white; 
+    /* background-color: green;  */
+    color: green; 
   }
   
-
   .navigation {
     position: fixed;
     left: 0;

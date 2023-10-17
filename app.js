@@ -51,7 +51,7 @@ app.use(morgan('tiny'))
 app.use(
     session({
       secret: uuidv4(),
-      cookie:{maxAge:60000},
+      cookie:{maxAge:480000},
       resave: false,
       saveUninitialized: false,
     })
