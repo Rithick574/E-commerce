@@ -124,8 +124,8 @@ const sentOtp = async (req, res) => {
 
       return res.render("user/otp", { data, phone });
     } catch (error) {
-      console.error(error);
-      return res.status(500).send("Internal server error");
+      console.log(error);
+      res.render('error/404')
     }
   
 };
@@ -174,15 +174,37 @@ const verifyOTP = async (req, res) => {
 
         const insert = await register.insertMany([userdata]);
         req.session.loggedin = true;
+        req.session.user = email;
+       
         return res.redirect("/");
       } else {
         console.log("Invalid OTP");
-        res.status(500).send("Invalid otp");
+        res.render('error/404')
       }
     } catch (err) {
       throw err;
     }
 };
+
+
+//resend otp
+const resendOTP= async(req,res)=>{
+  try{
+    const phone = req.session.data.phone;
+  console.log(phone+"resending");
+
+  const data = await sentOTP(phone);
+
+  console.log(data.phone+"resended successfully");
+  res.json({ success: true });
+  }catch (error) {
+    res.status(500).json({ success: false, error: "Failed to resend OTP" });
+  }
+}
+
+
+
+
 
 const forgotPassword = (req, res) => {
     res.render("user/forgotpassword", { data: "" });
@@ -256,6 +278,25 @@ const resetpassword = async (req, res) => {
     } 
 };
 
+
+//user Profile
+const userProfile = async (req, res) => {
+  const username = req.session.user; 
+  console.log(username);
+  try {
+      const data = await register.find({ email: username });
+      console.log(data);
+
+      res.render('user/userProfile', { profile: data[0], username });
+  } catch (error) {
+    console.log('profile error');
+     res.render('error/404')
+  }
+};
+
+
+
+
 //logout
 const logOut = (req, res) => {
   req.session.destroy();
@@ -270,10 +311,12 @@ module.exports = {
   signup,
   sentOtp,
   verifyOTP,
+  resendOTP,
   forgotPassword,
   sentforgotOTP,
   verifygorgotOTP,
   resetpassword,
   passport,
+  userProfile,
   logOut,
 };

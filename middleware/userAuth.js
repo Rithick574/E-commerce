@@ -4,7 +4,7 @@ const verifyUser = (req, res, next) => {
   } else {
     res.redirect("/guestuser");
     // res.redirect('/logout')
-  }
+  }  
 };
 
 

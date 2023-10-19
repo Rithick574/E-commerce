@@ -20,6 +20,7 @@
         <i class="bx bxs-check-shield"></i>
       </header>
       <h4>Enter OTP Code</h4>
+      <div id="otp-message" class="error-message"></div>
       <form action="/verifyOTP" method="post">
         <div class="input-field">
           <input type="number" name = "num1" />
@@ -34,37 +35,67 @@
         <div id="otp-timer">00:00</div>
 
         <button>Verify OTP</button>
+        <br>
+     
+        <div class="btn btn-secondary" id="resend-otp">Resend OTP</div>
+        
+        
       </form>
     </div>
 
     <script>
-      $(document).ready(function() {
-       
-        var timeInSeconds = 300;
-      
-        // Function to update the timer
-        function updateTimer() {
-          var minutes = Math.floor(timeInSeconds / 60);
-          var seconds = timeInSeconds % 60;
-          var displayTime = (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-          $('#otp-timer').text(displayTime);
-      
-          
-          timeInSeconds--;
-      
-          
-          if (timeInSeconds < 0) {
-           
-            $('#otp-timer').text('Time expired');
-            $('input[name^="num"]').prop('disabled', true); 
-          } else {
-           
-            setTimeout(updateTimer, 1000);
-          }
+    $(document).ready(function() {
+  var timeInSeconds = 300;
+
+  // Function to update the timer
+  function updateTimer() {
+    var minutes = Math.floor(timeInSeconds / 60);
+    var seconds = timeInSeconds % 60;
+    var displayTime =
+      (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+    $('#otp-timer').text(displayTime);
+
+    timeInSeconds--;
+
+    if (timeInSeconds < 0) {
+      $('#otp-timer').text('Time expired');
+      $('input[name^="num"]').prop('disabled', true);
+    } else {
+      setTimeout(updateTimer, 1000);
+    }
+  }
+
+  updateTimer();
+
+  $("#resend-otp").click(function() {
+    $.ajax({
+      url: "/resendotp",
+      method: "GET",
+      success: function(response) {
+        console.log("Resend OTP success response:", response);
+        if (response.success) {
+          $("#otp-message").html("OTP Resent Successfully ");
+        } else {
+          $("#otp-message").html("Failed to resend OTP. Please try again.");
         }
-      
-        updateTimer();
-      });
+      },
+      error: function(response) {
+        console.log("Resend OTP request error");
+        // You can check the status code to determine the error type
+        console.log("Resend OTP request error");
+        if (response.responseJSON && response.responseJSON.success === false) {
+          
+          $("#error-message").html("Invalid OTP");
+        } else {
+          $("#otp-message").html("An error occurred. Please try again later.");
+        }
+      }
+    });
+  });
+});
+
+
+
       </script>
       
 

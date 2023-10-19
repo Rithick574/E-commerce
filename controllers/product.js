@@ -74,10 +74,6 @@ const wishList=(req,res)=>{
       res.render('user/wishlist',{username})
   }
   
-  //cart
-  const addToCart=(req,res)=>{
-    res.render('user/cart');
-  }
 
 
 
@@ -301,7 +297,6 @@ const editProduct=async(req,res)=>{
     wishList,
     viewProductGuest,
     ShopProductGuest,
-    addToCart,
     Products,
     addProduct,
     addProductPost,

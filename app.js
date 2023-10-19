@@ -9,6 +9,7 @@ const { v4: uuidv4 } = require('uuid');
 const connectDB=require('./config/DBconnection')
 const multer=require("multer")
 const passport=require("passport")
+const flash = require('express-flash');
 
 
 
@@ -51,11 +52,14 @@ app.use(morgan('tiny'))
 app.use(
     session({
       secret: uuidv4(),
-      cookie:{maxAge:480000},
+      // cookie:{maxAge:480000}, 
       resave: false,
       saveUninitialized: false,
     })
   );
+
+  //flash
+  app.use(flash());
 
 
 //cors

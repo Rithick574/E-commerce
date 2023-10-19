@@ -7,6 +7,7 @@ const userController = require('../controllers/userController')
 require('../auth/passport');
 const userAuth=require('../middleware/userAuth')
 const productController=require('../controllers/product')
+const cartController=require('../controllers/cartController')
 
 
 //home page
@@ -29,6 +30,7 @@ user.get("/auth/google/done", passport.authenticate('google',{ failureRedirect: 
 user.get('/signup',userAuth.userExist,userController.signup)
 user.post('/sentotp',userAuth.userExist,userController.sentOtp)
 user.post('/verifyOTP',userAuth.userExist,userController.verifyOTP)
+user.get('/resendotp',userAuth.userExist,userController.resendOTP)
 
 
 //forgot password
@@ -53,11 +55,19 @@ user.get('/guest/shop',userAuth.userExist,productController.ShopProductGuest)
 
 
 //cart
-user.get("/addtocart",userAuth.verifyUser,productController.addToCart)
+user.get("/addtocart/:productId",userAuth.verifyUser,cartController.addToCart)
+user.get('/cart',userAuth.verifyUser,cartController.viewCart)
 
+
+//profile
+user.get('/profile',userAuth.verifyUser,userController.userProfile)
 
 //logout
 user.get("/logout",userController.logOut)
+
+user.get('/checkout',(req,res)=>{
+    res.render('user/checkout')
+})
 
 
 

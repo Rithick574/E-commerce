@@ -84,11 +84,11 @@
                                         </h5>
                                         <div>
                                             <span class="selling-price">Rs.<%= product.descountedPrice %></span>
-                                            <!-- You can include the original price here as well -->
+                                           
                                         </div>
                                     </a>
                                         <div class="mt-2">
-                                            <a href="/addtocart" class="btn btn1 rounded-3">Add To Cart</a>
+                                            <a href="/addtocart/<%= product._id %>" class="btn btn1 rounded-3">Add To Cart</a>
                                             <a href="#" class="btn btn1 rounded-3"> <i class="fa fa-heart"></i> </a>
                                             <a href="/product/<%= product._id %>" class="btn btn1 rounded-3"> View </a>
                                         </div>

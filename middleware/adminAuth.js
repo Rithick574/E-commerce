@@ -1,5 +1,3 @@
-
-
 const verifyAdmin=(req,res,next)=>{
     if((req.session.logged)){
         next()
