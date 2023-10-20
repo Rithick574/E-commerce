@@ -1,180 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-   <style>
-    .row{
-        display: flex;
-        justify-content: space-between;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    .row {
+      display: flex;
+      justify-content: space-between;
     }
-    body{
-        background-color: #ffffff
+
+    body {
+      background-color: #ffffff
     }
-   
-   </style>
+  </style>
 </head>
+
 <body>
-   <div class="container">
+  <div class="container">
     <div class="row">
-        
 
-        <div class="col-md-8">
-        <div class="card border shadow mt-5" >
-           
-                <div class="m-4">
-                  <h4 class="card-title mb-4">Your shopping cart</h4>
-                  <%if(Array.isArray(product)){%>
-                  <% product.forEach((data) => { %>
 
-                  <div class="row d-flex gy-3 mb-4">
-                    <div class="col-lg-5">
-                      <div class="me-lg-5" >
-                        <div class="d-flex">
-                          
-                            <img src="/product-images/<%= data.productId.images[0].mainimage %>" alt="<%= product[0].name %>" class="border rounded me-3" style="width: 80px; height: 96px" />
-                        
-                        
-                          <div class="">
-                            <a href="#" class="nav-link" style="text-decoration: none; color: #000000; font-weight: 500;"> <%= data.productId.name %> </a
-                            >
-                          </div>
+      <div class="col-md-8">
+        <div class="card border shadow mt-5">
+
+          <div class="m-4">
+            <h4 class="card-title mb-4">Your shopping cart</h4>
+            <%if(Array.isArray(product)){%>
+              <% let subtotal = 0; %>
+              <% product.forEach((data)=> { %>
+
+                <div class="row d-flex gy-3 mb-4">
+                  <div class="col-lg-5">
+                    <div class="me-lg-5">
+                      <div class="d-flex">
+
+                        <img src="/product-images/<%= data.productId.images[0].mainimage %>"
+                          alt="<%= product[0].name %>" class="border rounded me-3" style="width: 80px; height: 96px" />
+
+
+                        <div class="">
+                          <a href="#" class="nav-link" style="text-decoration: none; color: #000000; font-weight: 500;">
+                            <%= data.productId.name %>
+                            <br>
+                            
+                           <div class="text-primary"><b> Rs. <%= data.productId.descountedPrice %></b></div>
+                          </a>
                         </div>
-                        
                       </div>
-                      
-                     
-                    </div>
-                    <div class="col-lg col-sm-3" >
-                      <button class="btn btn-light border px-2 icon-hover-primary" onclick="decreaseQuantity('<%= data.productId._id %>')" ><i class="fa-solid fa-minus" style="color: #000000;"></i></button>
-                      <span id="quantity_<%= data.productId._id %>"><%= data.quantity %></span>
-                      <button class="btn btn-light border px-2 icon-hover-primary" onclick="increaseQuantity('<%= data.productId._id %>')" ><i class="fa-solid fa-plus" style="color: #000000;"></i></button>
-
 
                     </div>
-                    <div class="col-lg col-sm-3 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+
+
+                  </div>
+                  <div class="col-lg col-sm-3">
+                    <button class="btn btn-light border px-2 icon-hover-primary"
+                      onclick="quantityChanger('<%= data.productId._id %>',-1,'<%= cart._id %>')"><i class="fa-solid fa-minus"
+                        style="color: #000000;"></i></button>
+                    <span id="quantity_<%= data.productId._id %>">
+                      <%= data.quantity %>
+                    </span>
+                    <button class="btn btn-light border px-2 icon-hover-primary"
+                      onclick="quantityChanger('<%= data.productId._id %>',1,'<%= cart._id %>')"><i class="fa-solid fa-plus"
+                        style="color: #000000;"></i></button>
+
+
+                  </div>
+                  <div
+                    class="col-lg col-sm-3 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
                     <div class="float-md-end">
-                      <strong class="card-text text-center text-danger out-of-stock-message" id="" style="display: none;" > </strong>
-                        <a
-                          href="#!"
-                          class="btn btn-light border px-2 icon-hover-primary" ><i class="fa-solid fa-heart" style="color: #000000;"></i></a>
-                        <a
-                          href="#"
-                          class="btn btn-light border text-danger icon-hover-danger">Remove</a
-                        >
-                      </div>
+                      <strong class="card-text text-center text-danger out-of-stock-message" id=""
+                        style="display: none;"> </strong>
+                      <a href="#!" class="btn btn-light border px-2 icon-hover-primary"><i class="fa-solid fa-heart"
+                          style="color: #000000;"></i></a>
+                          <a href="#" class="btn btn-light border text-danger icon-hover-danger"
+                          onclick="removeFromCart('<%= data.productId._id %>','<%= cart._id %>')">Remove</a>
                     </div>
                   </div>
-                  <% }); %>
+                </div>
+                <% subtotal += data.quantity * data.productId.descountedPrice; %>
+                <% }); %>
                   <% } else { %>
                     <h2>cart is empty</h2>
-                 <% } %>
-                
+                    <% } %>
+
+          </div>
+
+          <div class="border-top pt-4 mx-4 mb-4">
+            <p>
+              <i class="fas fa-truck text-muted fa-lg"></i> Free Delivery
+              with in 1 week
+            </p>
+            <p class="text-muted"></p>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card border shadow mt-5">
+          <div class="card-body">
+            <h5 class="card-title">Have You coupon ?</h5>
+            <div class="input-group mb-3">
+              <input type="email" class="form-control border" placeholder="Coupon Code" aria-label="Email"
+                aria-describedby="button-addon2" />
+              <button class="btn btn-light border shadow-0" type="button" id="button-addon2"
+                data-mdb-ripple-color="dark">
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="card shadow border mt-3">
+          <div class="card-body">
+            <div id="subtotal" class="d-flex justify-content-between">
+              <p class="mb-2">Sub Total :</p>
+              <b><p>Rs. <span id="subtotalAmount"><%= subtotal.toFixed(2) %></span></p></b>
+            </div>
+            
+                <div class="d-flex justify-content-between">
+                  <p class="mb-2">Coupon :</p>
+                 
+                    <% if (coupon) { %>
+                     
+                      <%= coupon %>
+                    <% } else { %>
+                     <b> <p class="mb-2">No Coupon</p> </b>
+                     
+                    <% } %>
+                 
                 </div>
-    
-                <div class="border-top pt-4 mx-4 mb-4">
-                  <p>
-                    <i class="fas fa-truck text-muted fa-lg"></i> Free Delivery
-                    with in 1 week
-                  </p>
-                  <p class="text-muted"></p>
-              
-              </div>
-          </div>
-        </div>
+                
 
-        <div class="col-md-4">
-          <div class="card border shadow mt-5" >
-            <div class="card-body">
-              <h5 class="card-title">Have You coupon ?</h5>
-              <div class="input-group mb-3" >
-                <input type="email" class="form-control border"  placeholder="Coupon Code" aria-label="Email" aria-describedby="button-addon2" />
-                <button class="btn btn-light border shadow-0" type="button" id="button-addon2" data-mdb-ripple-color="dark">
-                  Apply
-                </button>
-              </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">GST(12%) :</p>
+             <b><p><span id="gstAmount">Rs.<%= gstAmount %></span></p></b>
+            </div>
+
+            <div id="totalQuantity" class="d-flex justify-content-between">
+              <p class="mb-2">Total Quantity :</p>
+              <b><p><span id="totalQuantityValue"><%= totalQuantity %></span></p></b>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Total price :</p>
+              <b><h5 class="mb-2" style="color: rgb(47, 129, 207);"><span id="totalPrice"><%= total %></span></h5></b>
+            </div>
+
+            <div class="mt-3">
+              <button type="submit" class="btn btn-dark w-100 shadow-0 mb-2">
+
+                Place Order
+              </button>
+              <a href="/homepage" class="btn btn-light w-100 border mt-2">
+                Back to shop
+              </a>
             </div>
           </div>
-
-
-          <div class="card shadow border mt-3">
-            <div class="card-body">
-              <div class="d-flex justify-content-between">
-                <p class="mb-2">Sub Total :</p>
-                <div id="sub-total"></div>
-              </div>
-              <div class="d-flex justify-content-between">
-                <p class="mb-2">Coupon :</p>
-                <p class="mb-2 text-success">--</p>
-              </div>
-              <div class="d-flex justify-content-between">
-                <p class="mb-2">GST(18%) :</p>
-                <p class="mb-2">--</p>
-              </div>
-             
-              <div class="d-flex justify-content-between">
-                <p class="mb-2">Total Quantity :</p>
-                <p class="mb-2">--</p>
-              </div>
-              <hr />
-              <div class="d-flex justify-content-between">
-                <p class="mb-2">Total price :</p>
-                    <input type="text" id="totalAmountCell" class="transparent-input" name="totalPrice" readonly>
-                </p>
-              </div>
-
-              <div class="mt-3">
-                <button type="submit" class="btn btn-dark w-100 shadow-0 mb-2">
-
-                  Place Order
-                </button>
-                <a href="/homepage" class="btn btn-light w-100 border mt-2">
-                  Back to shop
-                </a>
-              </div>
-            </div>
           </div>
         </div>
+      </div>
 
 
     </div>
 
-   </div>
+  </div>
 
-   <script>
-    function decreaseQuantity(productId) {
-      
+  <script>
+
+
+    function quantityChanger(productId, count,cartId) {
       var quantityElement = document.getElementById("quantity_" + productId);
-      var currentQuantity = parseInt(quantityElement.innerText, 10);
-    
-      
-      if (currentQuantity > 1) {
+      var currentQuantity = parseInt(quantityElement.innerText, 10)
+
+      if (count === 1) {
+
+        currentQuantity += 1;
+        quantityElement.innerText = currentQuantity;
+        console.log("count increased...")
+      } else if (count === -1 && currentQuantity > 1) {
         currentQuantity -= 1;
         quantityElement.innerText = currentQuantity;
-       
+        console.log("count decreased...")
       }
+
+
+  $.ajax({
+    url: '/updatequantity', 
+    method: 'POST', 
+    data: {
+      productId: productId,
+      quantity: currentQuantity,
+      cartId: cartId,
+    },
+    success: function (response) {
+      console.log("Response from the server:", response);
+
+      $('#subtotalAmount').text( + response.subtotal.toFixed(2));
+      $('#gstAmount').text('Rs. ' + response.gstAmount.toFixed(2));
+      $('#totalQuantityValue').text(response.totalQuantity);
+      $('#totalPrice').text('Rs. ' + response.total.toFixed(2));
+
     }
-    
-    function increaseQuantity(productId) {
-      var quantityElement = document.getElementById("quantity_" + productId);
-      var currentQuantity = parseInt(quantityElement.innerText, 10);
-    
-      currentQuantity += 1;
-      quantityElement.innerText = currentQuantity;
+  });
+
+      console.log("updated quantity successfully");
+
+    }
+
+
+    function removeFromCart(productId, cartId) {
+  if (confirm("Are you sure you want to remove this item from your cart?")) {
+   
+    $.ajax({
+      url: '/removefromcart', 
+      method: 'POST',
+      data: {
+        productId: productId,
+        cartId: cartId,
+      },
+      success: function (response) {
       
-    }
-    
-    </script>
-    
+        window.location.reload();
+      },
+      error: function (error) {
+        console.error('Error removing product from the cart:', error);
+      }
+    });
+  }
+}
+
+
+  </script>
 
 
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
 
 </body>
+
 </html>

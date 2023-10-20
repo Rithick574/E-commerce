@@ -88,7 +88,7 @@
                                         </div>
                                     </a>
                                         <div class="mt-2">
-                                            <a href="/addtocart/<%= product._id %>" class="btn btn1 rounded-3">Add To Cart</a>
+                                            <button class="btn btn1 rounded-3 add-to-cart-button" data-product-id="<%= product._id %>">Add To Cart</button>
                                             <a href="#" class="btn btn1 rounded-3"> <i class="fa fa-heart"></i> </a>
                                             <a href="/product/<%= product._id %>" class="btn btn1 rounded-3"> View </a>
                                         </div>
@@ -107,6 +107,53 @@
 </div>
 
 
+
+<script>
+
+
+
+
+function updateCartQuantity() {
+       
+        $.ajax({
+            url: '/getcartquantity', 
+            method: 'GET',
+            success: function (response) {
+                const cartQuantityElement = document.getElementById('cart-quantity');
+                cartQuantityElement.textContent = response.quantity;
+            },
+            error: function (error) {
+                console.error('Error fetching cart quantity:', error);
+            }
+        });
+    }
+
+
+
+   
+    document.querySelectorAll('.add-to-cart-button').forEach(button => {
+      button.addEventListener('click', function (event) {
+        event.preventDefault(); 
+  
+        const productId = this.getAttribute('data-product-id');
+  
+       
+        $.ajax({
+          url: '/addtocart/' + productId,
+          method: 'POST', 
+          success: function (response) {
+            
+            alert('Product added to cart');
+            updateCartQuantity();
+          },
+          error: function (error) {
+            console.error('Error adding product to cart:', error);
+          }
+        });
+      });
+    });
+  </script>
+  
 
 
 

@@ -132,6 +132,7 @@ const sentOtp = async (req, res) => {
 
 //verify OTP
 const verifyOTP = async (req, res) => {
+  
     try {
       const otpDigits = [
         req.body.num1,

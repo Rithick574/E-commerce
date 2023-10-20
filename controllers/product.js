@@ -123,12 +123,7 @@ const Products = async (req, res) => {
   
   
     
-        // console.log("Uploaded files:");
-        // console.log(main);
-        // console.log(img1);
-        // console.log(img2);
-        // console.log(img3);
-  
+      
     
         const {
           productname,
@@ -287,6 +282,7 @@ const editProduct=async(req,res)=>{
   };
   
   
+ 
 
 
 

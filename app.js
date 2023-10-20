@@ -54,7 +54,7 @@ app.use(
       secret: uuidv4(),
       // cookie:{maxAge:480000}, 
       resave: false,
-      saveUninitialized: false,
+      saveUninitialized: true,
     })
   );
 

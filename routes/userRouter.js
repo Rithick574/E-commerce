@@ -55,8 +55,11 @@ user.get('/guest/shop',userAuth.userExist,productController.ShopProductGuest)
 
 
 //cart
-user.get("/addtocart/:productId",userAuth.verifyUser,cartController.addToCart)
+user.post("/addtocart/:productId",userAuth.verifyUser,cartController.addToCart)
 user.get('/cart',userAuth.verifyUser,cartController.viewCart)
+user.post('/updatequantity',userAuth.verifyUser,cartController.updateQuantity)
+user.post('/removefromcart',userAuth.verifyUser,cartController.removeFromCart)
+user.get('/getcartquantity',userAuth.verifyUser,cartController.getQuantity)
 
 
 //profile
