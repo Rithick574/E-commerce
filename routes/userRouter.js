@@ -8,6 +8,8 @@ require('../auth/passport');
 const userAuth=require('../middleware/userAuth')
 const productController=require('../controllers/product')
 const cartController=require('../controllers/cartController')
+const orderController=require('../controllers/orderController')
+const wishlistController=require('../controllers/wishlistController')
 
 
 //home page
@@ -46,9 +48,13 @@ user.get('/product/:productId',userAuth.verifyUser,productController.viewProduct
 //view guest 
 user.get('/product/guest/:productId',userAuth.userExist,productController.viewProductGuest)
 
-//shop,cart,wishlist
+//shop,cart
 user.get('/shop',userAuth.verifyUser,productController.ShopProduct)
-user.get('/wishlist',userAuth.verifyUser,productController.wishList)
+
+//wishlist
+user.get('/wishlist',userAuth.verifyUser,wishlistController.wishList)
+user.post('/wishlist',userAuth.verifyUser,wishlistController.addtoWishList)
+user.post('/wishlistdelete/',userAuth.verifyUser,wishlistController.deletefromWishlist)
 
 //guest shop
 user.get('/guest/shop',userAuth.userExist,productController.ShopProductGuest)
@@ -62,8 +68,18 @@ user.post('/removefromcart',userAuth.verifyUser,cartController.removeFromCart)
 user.get('/getcartquantity',userAuth.verifyUser,cartController.getQuantity)
 
 
+//place order
+user.get('/placeorder',userAuth.verifyUser,orderController.PlaceOrder)
+user.post('/addAddress-Checkout',userAuth.verifyUser,orderController.addAddress)
+user.delete('/deleteAddress/:addressId',userAuth.verifyUser,orderController.deleteAddress)
+user.post('/placeOrder',userAuth.verifyUser,orderController.postCheckout)
+user.get('/trackOrder',userAuth.verifyUser,orderController.orderHistory)
+
+
 //profile
 user.get('/profile',userAuth.verifyUser,userController.userProfile)
+user.get('/viewproduct/:orderId',userAuth.verifyUser,userController.vieworderedProduct)
+user.get('/cancelorder/:orderId',userAuth.verifyUser,userController.cancelOrder)
 
 //logout
 user.get("/logout",userController.logOut)

@@ -28,6 +28,7 @@ const ProductsSchema = new Schema({
   brandId: { type: Schema.Types.ObjectId },
   categoryId: { type: Schema.Types.ObjectId },
   isDeleted: {type: Boolean, default: false,
+  Status:{type:String}
   },
 });
 

@@ -2,9 +2,10 @@ require("dotenv").config();
 const Twilio = require("twilio");
 const bcrypt = require("bcrypt");
 require("../config/DBconnection");
+const Order = require("../model/orderSchema");
 const register = require("../model/userSchema");
 const { sentOTP } = require("../auth/OTPauth");
-const product = require("../model/productSchema");
+const PRODUCT = require("../model/productSchema");
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -16,7 +17,7 @@ const client = require("twilio")(accountSid, authToken);
 const homePage = async (req, res) => {
   try {
     const username = req.session.user;
-    const data = await product.find({ isDeleted: false });
+    const data = await PRODUCT.find({ isDeleted: false });
     res.render("user/home", { product: data, username });
   } catch (error) {
     console.error(error);
@@ -28,7 +29,7 @@ const homePage = async (req, res) => {
 const guestPage = async (req, res) => {
     const username = req.session.user;
     try {
-      const data = await product.find();
+      const data = await PRODUCT.find();
       res.render("user/guestUser", {
         title: "Guest User",
         product: data,
@@ -283,15 +284,68 @@ const resetpassword = async (req, res) => {
 //user Profile
 const userProfile = async (req, res) => {
   const username = req.session.user; 
-  console.log(username);
+
   try {
       const data = await register.find({ email: username });
-      console.log(data);
+      // console.log(data);
 
       res.render('user/userProfile', { profile: data[0], username });
   } catch (error) {
     console.log('profile error');
      res.render('error/404')
+  }
+};
+
+//view ordered product
+const vieworderedProduct=async(req,res)=>{
+try {
+  const username=req.session.user
+  const orderId = req.params.orderId;
+  const order = await Order.findById(orderId).populate('Items.productId');
+  if (!order) {
+      return res.render('error/404'); 
+  }
+  res.render('user/productDetails', { orderedProducts: order.Items,username });
+
+} catch (error) {
+  console.error('Error viewing ordered products:', error);
+  res.render('error/404');
+}
+}
+
+
+//cancel order user side
+//cancel order user side
+const cancelOrder = async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      console.log('Order not found');
+      return res.render('error/404');
+    }
+
+    if (order.Status === "Order Placed" || order.Status === "Shipped") {
+      const productsToUpdate = order.Items;
+      for (const product of productsToUpdate) {
+        const cancelProduct = await PRODUCT.findById(product.ProductId);
+
+        if (cancelProduct) {
+          cancelProduct.AvailableQuantity += product.Quantity;
+          await cancelProduct.save();
+        }
+      }
+      order.Status = "Cancelled";
+      await order.save();
+      return res.redirect("/trackOrder");
+    } else {
+      console.log("Order cannot be cancelled");
+     
+    }
+  } catch (error) {
+    console.error("Error cancelling the order:", error);
+    res.render('error/404');
   }
 };
 
@@ -319,5 +373,7 @@ module.exports = {
   resetpassword,
   passport,
   userProfile,
+  cancelOrder,
+  vieworderedProduct,
   logOut,
 };

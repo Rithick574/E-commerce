@@ -57,9 +57,6 @@
     </div>
 
 
-
-
-
 <div class="py-3 py-md-5 bg-light">
     <div class="container">
         <div class="row">
@@ -89,7 +86,7 @@
                                     </a>
                                         <div class="mt-2">
                                             <button class="btn btn1 rounded-3 add-to-cart-button" data-product-id="<%= product._id %>">Add To Cart</button>
-                                            <a href="#" class="btn btn1 rounded-3"> <i class="fa fa-heart"></i> </a>
+                                            <a href="#" class="btn btn1 rounded-3 add-to-wishlist-button" data-product-id="<%= product._id %>"> <i class="fa fa-heart"></i> </a>
                                             <a href="/product/<%= product._id %>" class="btn btn1 rounded-3"> View </a>
                                         </div>
                                     </div>
@@ -152,6 +149,38 @@ function updateCartQuantity() {
         });
       });
     });
+
+
+    document.querySelectorAll('.add-to-wishlist-button').forEach(button => {
+  button.addEventListener('click', function (event) {
+    event.preventDefault();
+
+
+    const productId = this.getAttribute('data-product-id');
+    const icon = this.querySelector('.fa-heart');
+    
+    $.ajax({
+      url: '/wishlist/',
+      method: 'POST',
+      data: {
+        productId: productId,
+  },
+      success: function (response) {
+        if (response.added) {
+          icon.style.color = 'red';
+        } else {
+          
+          icon.style.color = '';
+        }
+      },
+      error: function (error) {
+        console.error('Error updating wishlist:', error);
+      }
+    });
+  });
+});
+
+
   </script>
   
 

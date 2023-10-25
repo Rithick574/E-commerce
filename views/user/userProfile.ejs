@@ -1,3 +1,5 @@
+<%-include('../partials/userHeader') %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -101,9 +103,11 @@
               <div class="col-md-2">
                 <div class="card shadow border ">
                   <div class="card-body  justify-content-center">
+                   <a href="/trackOrder" style="text-decoration: none; color: black;">
                     <i class="fa-solid fa-clock-rotate-left fa-2xl" style="color: #000000" ></i>
                     <br>
                     <h5>Orders History</h5>
+                   </a>
                   </div>
                 </div>
               </div>
@@ -172,6 +176,8 @@
         </div>
       </div>
     </div>
+    <br>
+    <br>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -189,3 +195,6 @@
     ></script>
   </body>
 </html>
+
+
+<%-include('../partials/userFooter') %>

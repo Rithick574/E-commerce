@@ -1,0 +1,54 @@
+<%- include('../partials/userHeader') %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <!-- Add your CSS or stylesheets here -->
+</head>
+<body>
+    
+
+<div class=" bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Ordered Products</h1>
+            </div>
+          
+            <% orderedProducts.forEach((product) => { %>
+                            <div class="col-md-3">
+                                <div class="product-card shadow-lg p-3 bg-body rounded-3">
+                                    <a href="/product/<%= product._id %>">
+                                    <div class="product-card-img" style="padding: 30px;">
+                                        <!-- <label class="stock bg-success">In Stock</label> -->
+                                        <td><img src="/product-images/<%= product.productId.images[0].mainimage %>"  alt=""></td>
+                                    </div>
+                                    <div class="product-card-body">
+                                        <p class="product-brand ">Quantity: <%= product.quantity %></p>
+                                        <h5 class="product-name">
+                                            
+                                            <%= product.productId.name %>
+                                           
+                                        </h5>
+                                        <div>
+                                            <span class="selling-price">Rs.<%= product.productId.descountedPrice %></span>
+                                           
+                                        </div>
+                                    </a>
+                                        <div class="mt-2">
+                                          
+                                            <a href="/product/<%= product.productId._id %>" class="btn btn1 rounded-3"> View Product </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+</body>
+</html>
+
+<%- include('../partials/userFooter') %>

@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>hello</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
- 
-  </head>
-  <body id="body">
+<%-include('../partials/userHeader') %>
   <br><br>
 <!-- sidebar + content -->
 <section class="">
@@ -186,8 +176,8 @@
                     </div>
                     <div class="col-xl-3 col-md-3 col-sm-5">
                       <div class="d-flex flex-row align-items-center mb-1">
-                        <h4 class="mb-1 me-1">₹<%=data.basePrice%></h4>
-                        <span class="text-danger">₹<%=data.descountedPrice%></s></span>
+                        <h4 class="mb-1 me-1" >₹<%=data.descountedPrice%></h4>
+                        <span class="text-dark" style="text-decoration: line-through;">₹<%=data.basePrice%></s></span>
                       </div>
                       <%if(data.stock>0){%>
                         <h6 class="text-success">In stock</h6>
@@ -241,5 +231,4 @@
       </div>
     </div>
   </section>
-  </body>
-</html>
+  <%-include('../partials/userFooter') %>

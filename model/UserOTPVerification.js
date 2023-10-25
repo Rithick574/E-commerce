@@ -4,7 +4,7 @@ const connection=require("../config/DBconnection")
 
 
 const OTPschema= mongoose.Schema({
-    username: String,
+  username: String,
   number: String,
   email: String,
   password: String,

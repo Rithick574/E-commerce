@@ -68,12 +68,7 @@ const viewProduct=async(req,res)=>{
     
 
      
-//wishlist
-const wishList=(req,res)=>{
-      const username =req.session.user;
-      res.render('user/wishlist',{username})
-  }
-  
+
 
 
 
@@ -290,7 +285,6 @@ const editProduct=async(req,res)=>{
   module.exports={
     viewProduct,
     ShopProduct,
-    wishList,
     viewProductGuest,
     ShopProductGuest,
     Products,

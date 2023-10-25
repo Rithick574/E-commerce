@@ -6,25 +6,43 @@ const product=require('../model/productSchema')
 
 
 //view cart
-const viewCart=async(req,res)=>{
+const   viewCart=async(req,res)=>{
+ 
     try{
+      console.log("inside tryy");
         const email = req.session.user;
         // console.log(email);
         const user = await User.findOne({ email: email });
 
         if (!user) {
-           
+          
             return res.status(404).render('error/404');
         }
-
         // console.log("user" + user._id);
       const userId = user._id;
     
 
       const cart = await Cart.findOne({ userId: userId }).populate("products.productId" ); 
+     
 
+      if (!cart || cart.products.length === 0) {
+      //  const
+        return res.render('user/cart', {
+           username: email,
+           product :[] ,
+           subtotal:0,
+           total:0,
+           coupon:0,
+           gstAmount:0,
+           totalQuantity:0
 
-      const product = cart.products;
+          });
+    }
+    
+    const product = cart.products;
+        console.log("cartt",cart);
+    
+      
       // console.log(product, "==============k==============");
       // console.log(product[0].productId, "=============l===============");
       // console.log(product);
@@ -47,9 +65,10 @@ const viewCart=async(req,res)=>{
       const couponValue = 50;
       total -= couponValue;
     }
+    req.session.totalPrice=total;
 
     res.render("user/cart", {
-      username: user,
+      username: email,
       product: cart.products,
       cart,
       subtotal: subtotal,
@@ -60,7 +79,7 @@ const viewCart=async(req,res)=>{
     });
   
     }catch(error){
-        console.log("error in view cart");
+        console.log("error in view cart!!!!!!!!!!!!!");
         res.render('error/404')
     }
 }
@@ -130,9 +149,9 @@ const addToCart = async (req, res) => {
    //update quantity
    const updateQuantity=async(req,res)=>{
     const { productId, quantity,cartId } = req.body;
-    console.log(productId);
-    console.log(quantity);
-    console.log(cartId);
+    // console.log(productId);
+    // console.log(quantity);
+    // console.log(cartId);
     try{
 
       const cart = await Cart.findOne({ _id: cartId }).populate("products.productId" )
