@@ -16,7 +16,7 @@
     <% wishlist.forEach((item) => { %>
         <% const product = item.products; %>
     <div class="col-md-12">
-      <div class="card shadow-0 border rounded-3">
+      <div class="card shadow-lg border rounded-3 p-2 m-5">
         <div class="card-body">
           <div class="row g-0">
             <div class="col-xl-3 col-md-4 d-flex justify-content-center">
@@ -32,17 +32,17 @@
 
             <div class="col-xl-6 col-md-5 col-sm-7">
               <a href="/user/product/details/<%- product._id %>" style="text-decoration: none;">
-                <h5><%= product[0].name %></h5>
+                <h4><%= product[0].name %></h4>
               </a>
               <br>
-
-             
-            </div>
-            <div class="col-xl-3 col-md-3 col-sm-5">
               <div class="d-flex flex-row align-items-center mb-1">
                 <h4 class="mb-1 me-1">₹<%= product[0].descountedPrice %></h4>
                 <span class="text-dark" style="text-decoration: line-through;">₹<%= product[0].basePrice %></span>
               </div>
+             
+            </div>
+            <div class="col-xl-3 col-md-3 col-sm-5">
+             
               <% if (product[0].stock > 0) { %>
                 <h6 class="text-success">In stock</h6>
               <% } else { %>

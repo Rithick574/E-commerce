@@ -6,6 +6,8 @@ const Order = require("../model/orderSchema");
 const register = require("../model/userSchema");
 const { sentOTP } = require("../auth/OTPauth");
 const PRODUCT = require("../model/productSchema");
+const Wishlist=require('../model/wishlistSchema')
+
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -18,10 +20,22 @@ const homePage = async (req, res) => {
   try {
     const username = req.session.user;
     const data = await PRODUCT.find({ isDeleted: false });
-    res.render("user/home", { product: data, username });
+    const user = await register.findOne({ email: username });
+    const userId = user._id;
+    const userWishlist = await Wishlist.findOne({ user: userId });
+    const wishlist = userWishlist ? userWishlist.products : [];
+
+   
+    res.render("user/home", { 
+      product: data, 
+      username,
+      wishlist,
+      cartCount: res.locals.cartCount
+    });
+
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
+    return res.render('error/404')
   }
 };
 
@@ -314,7 +328,7 @@ try {
 }
 
 
-//cancel order user side
+
 //cancel order user side
 const cancelOrder = async (req, res) => {
   try {

@@ -9,7 +9,7 @@ const product=require('../model/productSchema')
 const   viewCart=async(req,res)=>{
  
     try{
-      console.log("inside tryy");
+      // console.log("inside tryy");
         const email = req.session.user;
         // console.log(email);
         const user = await User.findOne({ email: email });
@@ -38,9 +38,9 @@ const   viewCart=async(req,res)=>{
 
           });
     }
-    
+
     const product = cart.products;
-        console.log("cartt",cart);
+        // console.log("cartt",cart);
     
       
       // console.log(product, "==============k==============");

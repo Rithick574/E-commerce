@@ -13,13 +13,7 @@ const CartSchema = new Schema({
 });
 
 
-CartSchema.methods.calculateTotalQuantity = function () {
-  let totalQuantity = 0;
-  this.products.forEach(item => {
-      totalQuantity += item.quantity;
-  });
-  return totalQuantity;
-};
+
 
 
 const Cart = mongoose.model('Cart', CartSchema);

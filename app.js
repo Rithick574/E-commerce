@@ -3,13 +3,14 @@ const express=require('express')
 const cors=require("cors");
 const morgan=require('morgan')
 const path=require('path')
-const nocache = require('nocache');
 const session = require('express-session')
 const { v4: uuidv4 } = require('uuid');
 const connectDB=require('./config/DBconnection')
+const nocache = require('nocache');
 const multer=require("multer")
 const passport=require("passport")
 const flash = require('express-flash');
+const cartCountMiddleware = require('./middleware/cartCountMiddleware');
 
 
 
@@ -24,8 +25,6 @@ app.use(nocache());
 
 //view engine setting
 app.set('view engine','ejs')
-
-
 
 //to parse request body
 app.use(express.json());
@@ -76,8 +75,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-
+//helper
+app.use(cartCountMiddleware);
 
 //routes
 app.use('/',userRouter)

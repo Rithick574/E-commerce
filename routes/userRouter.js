@@ -10,10 +10,12 @@ const productController=require('../controllers/product')
 const cartController=require('../controllers/cartController')
 const orderController=require('../controllers/orderController')
 const wishlistController=require('../controllers/wishlistController')
+const calculateCartCount = require('../middleware/cartCountMiddleware');
+
 
 
 //home page
-user.get('/',userAuth.verifyUser,userController.homePage);
+user.get('/',userAuth.verifyUser,calculateCartCount,userController.homePage);
 
 //guest user
 user.get('/guestuser',userAuth.userExist,userController.guestPage)
