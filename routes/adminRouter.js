@@ -10,6 +10,7 @@ const productController=require('../controllers/product')
 const brandController=require('../controllers/brandController')
 const categoryController=require('../controllers/categoryController')
 const upload = require('../middleware/multer');
+const orderController=require('../controllers/orderController')
 
 
 
@@ -31,7 +32,6 @@ admin.get('/login',adminAuth.adminExist, adminController.adminlogin);
 admin.post('/login',adminAuth.adminExist, adminController.adminLogged);
 
 // // Protected admin dashboard route
-
 admin.get('/dashboard',adminAuth.verifyAdmin, adminController.isAdmin)
 admin.get('/customers',adminAuth.verifyAdmin,adminController.Customers)
 
@@ -50,6 +50,9 @@ admin.post('/add-brand',adminAuth.verifyAdmin,brandController.AddBrandss)
 admin.get('/category',adminAuth.verifyAdmin,categoryController.CategoryList)
 admin.get('/add-category',adminAuth.verifyAdmin,categoryController.AddCategory)
 admin.post('/add-category',adminAuth.verifyAdmin,categoryController.AddCategoryy)
+
+//orderlist
+admin.get('/orders',adminAuth.verifyAdmin,orderController.OrderList)
 
 //multiple image upload using multer
 admin.post("/upload",adminAuth.verifyAdmin, upload.fields(uploadFields),productController.addProductPost);

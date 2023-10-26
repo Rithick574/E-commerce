@@ -23,8 +23,8 @@
                   <td> <% let dt=new Date(brand.timeStamp)%>
                     <%let day=["monday",'tuesday','wednesday','friday','satuarday','sunday']%>
                     <%=dt.getDate()%>/<%=dt.getMonth()+1%>/<%=dt.getFullYear()%>  %></td>
-                  <td><a href="/admin/editbrand/<%= brand._id %>">Edit</a></td>
-                  <td><a href="/admin/deletebrand/<%= brand._id %>">Delete</a></td>
+                  <td><a href="/admin/editbrand/<%= brand._id %>" style="text-decoration: none;">Edit</a></td>
+                  <td><a href="/admin/deletebrand/<%= brand._id %>" onclick="return confirm('are you Sure ?')" style="color: red; text-decoration: none;">Delete</a></td>
                 </tr>
               <% }); %>
 

@@ -363,6 +363,75 @@ const cancelOrder = async (req, res) => {
   }
 };
 
+//address page view in profile
+const address=async(req,res)=>{
+  try {
+    const username=req.session.user;
+    const user = await register.findOne({ email: username });
+
+     if (user) {
+      res.render('user/address', {username, user });
+    } else {
+      console.log("User not found");
+      res.render('error/404');
+    }
+  } catch (error) {
+    console.log(error);
+    res.render('error/404')
+  }
+}
+
+//add address profile 
+const addaddressProfile=async(req,res)=>{
+  try {
+    const addressData = {
+      Name: req.body.Name,
+      AddressLane: req.body.Address,
+      City: req.body.City,
+      Pincode: req.body.Pincode,
+      State: req.body.State,
+      Mobile: req.body.Mobile,
+  };
+  const userEmail = req.session.user;
+  
+  const user = await register.findOne({ email: userEmail });
+  if (!user) {
+    return res.render('user/404');
+}
+  user.Address.push(addressData);
+        await user.save();
+        return res.redirect('/address');
+  
+ 
+  } catch (error) {
+    res.render('error/404')
+  }
+}
+
+
+//delete address from the profile
+const deleteAddress = async (req, res) => {
+  try {
+      const userEmail = req.session.user;
+      const user = await register.findOne({ email: userEmail });
+
+      if (!user) {
+        console.log('User not found');
+        res.render('error/404')
+      }
+      const addressId = req.params.addressId; 
+      const userId = user._id;
+
+      await register.findOneAndUpdate(
+        { _id: userId },
+        { $pull: { Address: { _id: addressId } } }
+      );
+      res.json({success:true})
+  } catch (err) {
+      console.error('Error deleting address:', err);
+     res.render('error/404')
+  }
+};
 
 
 
@@ -389,5 +458,8 @@ module.exports = {
   userProfile,
   cancelOrder,
   vieworderedProduct,
+  address,
+  addaddressProfile,
+  deleteAddress,
   logOut,
 };

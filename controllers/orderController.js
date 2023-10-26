@@ -8,8 +8,6 @@ const moment = require('moment');
 
 
 
-
-
 const PlaceOrder=async(req,res)=>{
     const email = req.session.user;
     const user = await User.findOne({ email: email });
@@ -49,27 +47,6 @@ const addAddress=async(req,res)=>{
     }
 };
 
-
-//delete address
-const deleteAddress = async (req, res) => {
-    try {
-        const userEmail = req.session.user;
-        const user = await User.findOne({ email: userEmail });
-
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
-
-        const addressId = req.params.addressId; 
-        const userId = user._id;
-
-        await User.findByIdAndUpdate(userId, { $pull: { Address: { _id: addressId } } });
-        // res.status(200).send('Address deleted successfully');
-    } catch (err) {
-        console.error('Error deleting address:', err);
-       res.render('error/404')
-    }
-};
 
 
 //order placing 
@@ -182,12 +159,24 @@ const orderHistory=async(req,res)=>{
     }
 }
 
+
+
+//////////////Admin///////////////////
+
+const OrderList=async(req,res)=>{
+    try {
+        res.render('admin/orders')
+    } catch (error) {
+        
+    }
+}
+
   
 
 module.exports={
     PlaceOrder,
     addAddress,
-    deleteAddress,
     postCheckout,
-    orderHistory
+    orderHistory,
+    OrderList
 }

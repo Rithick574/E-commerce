@@ -134,7 +134,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form action="/addAddress-Checkout" method="post">
+            <form action="/addaddressProfile" method="post">
               <div class="mb-3">
                 <label for="fullName" class="form-label">Full Name</label>
                 <input
@@ -220,11 +220,11 @@
         </div>
       </div>
     </div>
-    <form id="orderForm" action="/placeOrder" method="post">
+   
       <div class="container custom-container main">
         <div class="row">
           <!-- Left Column - Col-7 -->
-            <div class="col-md-7">
+            <div class="col-md-12">
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">Saved Addresses</h5>
@@ -232,15 +232,7 @@
                   <%user.Address.forEach(function(Address) { %>
          
                   <div class="address-card row">
-                    <div class="col-1">
-                      <input
-                        type="radio"
-                        name="Address"
-                        value="<%=Address._id%>"
-                        id="address1"
-                        checked
-                      />
-                    </div>
+                   
                     <div class="col-5">
                       <div class="address-line">Name:</div>
                       <div class="address-line">Address:</div>
@@ -258,8 +250,11 @@
                       <div class="address-value"><%=Address.Mobile%></div>
                     </div>
                     <div class="col-1">
-        
-        </div>
+                     <button class="btn btn-danger" onclick="deleteAddress('<%= Address._id %>')">
+                         Delete
+                      </button>
+                    </div>
+
                   </div>
                   <%})%>
                   <a
@@ -274,65 +269,33 @@
               </div>
             </div>
             
-            <!-- Right Column - Col-5 -->
-            <div class="col-md-5">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Payment Methods</h5>
       
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      name="paymentMethod"
-                      id="cod"
-                      value="cod"
-                      checked
-                    />
-                    <label class="form-check-label" for="cod">
-                      Cash on Delivery (COD)
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      name="paymentMethod"
-                      id="online"
-                      value="online"
-                    />
-                    <label class="form-check-label" for="online">
-                      Online Payment
-                    </label>
-                  </div>
-                  <div class="justify-content-center">
-                    <button class="btn btn-success mt-4" id="confirmOrderButton">
-                      Confirm Order
-                    </button>
-                    <a href="/shop"><button class="btn btn-secondary mt-4" type="button">Back to Shop</button></a>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-      </form>
+   
       
       
     <script>
 
 
+  function deleteAddress(addressId) {
+ 
+  fetch(`/deleteAddress/${addressId}`, {
+    method: 'DELETE',
+  })
+    .then(response => {
+      if (response.ok) {
+        location.reload();
+      } else {
+        console.error('Error deleting address');
+      }
+    })
+    .catch(error => {
+      console.error('Error deleting address:', error);
+    });
+}
 
-      document
-        .getElementById("confirmOrderButton")
-        .addEventListener("click", function () {
-          var selectedPaymentMethod = document.querySelector(
-            'input[name="paymentMethod"]:checked'
-          ).value;
-          document.getElementById("selectedPaymentMethod").value =
-            selectedPaymentMethod;
-          document.getElementById("orderForm").submit();
-        });
+
     </script>
 
     <script

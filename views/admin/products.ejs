@@ -47,7 +47,7 @@
 
                           <td class="icon-cell">
                             <form action="/admin/archiveProduct/<%= product._id %>" method="POST">
-                              <button onclick="return confirm('are you want to Delete <%= product.name %> ?')" type="submit" class="<%= product.isDeleted ? 'archived-button' : 'active-button' %>">
+                              <button onclick="return confirm('are you Sure ?')" type="submit" class="<%= product.isDeleted ? 'archived-button' : 'active-button' %>">
                                 <ion-icon name="trash-outline"></ion-icon>
                               </button>
                             </form>

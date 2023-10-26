@@ -23,8 +23,8 @@
                 <td> <% let dt=new Date(category.timeStamp)%>
                   <%let day=["monday",'tuesday','wednesday','friday','satuarday','sunday']%>
                   <%=dt.getDate()%>/<%=dt.getMonth()+1%>/<%=dt.getFullYear()%>  %></td>
-                <td><a href="/admin/editcategory/<%= category._id %>" >Edit</a></td>
-                <td><a href="/admin/deletecategory/<%= category._id %>" >Delete</a></td>
+                <td><a href="/admin/editcategory/<%= category._id %>" style=" text-decoration: none;" >Edit</a></td>
+                <td><a href="/admin/deletecategory/<%= category._id %>" onclick="return confirm('are you Sure ?')" style="color: red; text-decoration: none;" >Delete</a></td>
             <% }); %>
 
             <tbody>    

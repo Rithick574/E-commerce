@@ -73,7 +73,6 @@ user.get('/getcartquantity',userAuth.verifyUser,cartController.getQuantity)
 //place order
 user.get('/placeorder',userAuth.verifyUser,orderController.PlaceOrder)
 user.post('/addAddress-Checkout',userAuth.verifyUser,orderController.addAddress)
-user.delete('/deleteAddress/:addressId',userAuth.verifyUser,orderController.deleteAddress)
 user.post('/placeOrder',userAuth.verifyUser,orderController.postCheckout)
 user.get('/trackOrder',userAuth.verifyUser,orderController.orderHistory)
 
@@ -82,6 +81,9 @@ user.get('/trackOrder',userAuth.verifyUser,orderController.orderHistory)
 user.get('/profile',userAuth.verifyUser,userController.userProfile)
 user.get('/viewproduct/:orderId',userAuth.verifyUser,userController.vieworderedProduct)
 user.get('/cancelorder/:orderId',userAuth.verifyUser,userController.cancelOrder)
+user.get('/address',userAuth.verifyUser,userController.address)
+user.post('/addaddressProfile',userAuth.verifyUser,userController.addaddressProfile)
+user.delete('/deleteAddress/:addressId',userAuth.verifyUser,userController.deleteAddress)
 
 //logout
 user.get("/logout",userController.logOut)
