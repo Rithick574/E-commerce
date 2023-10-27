@@ -53,6 +53,8 @@ admin.post('/add-category',adminAuth.verifyAdmin,categoryController.AddCategoryy
 
 //orderlist
 admin.get('/orders',adminAuth.verifyAdmin,orderController.OrderList)
+admin.put('/updateOrderStatus/:orderId',adminAuth.verifyAdmin,orderController.updateOrderStatus)
+admin.get('/orders/details/:orderId',adminAuth.verifyAdmin,orderController.viewOrderDetails)
 
 //multiple image upload using multer
 admin.post("/upload",adminAuth.verifyAdmin, upload.fields(uploadFields),productController.addProductPost);

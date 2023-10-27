@@ -434,6 +434,38 @@ const deleteAddress = async (req, res) => {
 };
 
 
+const updateProfile=async(req,res)=>{
+  try {
+    const userEmail = req.session.user;
+    const newName = req.body.name;
+    const newEmail = req.body.email;
+    const newPhoneNumber = req.body.phone;
+
+
+    const user = await register.findOne({ email: userEmail });
+    user.name = newName;
+    user.email = newEmail;
+    user.phone = newPhoneNumber;
+    
+    await user.save();
+    if (!user) {
+      return res.render('error/404');
+    }
+
+    
+    res.json({success:true})
+  } catch (error) {
+    console.log('Error updating user profile:', error);
+    res.json({ success: false, error: 'Failed to update profile' });
+  }
+}
+
+
+//account settings in the profile
+const accountSettings=(req,res)=>{
+
+}
+
 
 //logout
 const logOut = (req, res) => {
@@ -461,5 +493,7 @@ module.exports = {
   address,
   addaddressProfile,
   deleteAddress,
+  updateProfile,
+  accountSettings,
   logOut,
 };

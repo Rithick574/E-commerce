@@ -1,43 +1,107 @@
 <%- include('../partials/adminheader.ejs') -%>
 
-
-
 <div class="details">
-    <div class="recentOrders">
-        <div class="cardHeader">
-            <h1>Order List</h1>
-           
-                  <table class="table table-light table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col">Sr No</th>
-                        <th scope="col">Order ID</th>
-                        <th scope="col">Customer ID</th>
-                        <th scope="col">Ordered Date</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Payment Method</th>
-                        <th scope="col">Payment Status</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Actions</th> 
-                      </tr>
-                    </thead>
-                  </table>
-            
+  <div class="recentOrders">
+    <h1>Order List</h1>
+    <div class="cardHeader" style="width: 1250px;">
+        <% if(order.length> 0) { %> 
+      <table class="table  table-borderless">
+        <thead>
+          <tr>
+            <th scope="col">Sr No.</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Customer ID</th>
+            <th scope="col">Ordered Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Payment Method</th>
+            <th scope="col">Payment Status</th>
+            <th scope="col">Total</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let i = 0; i < order.length; i++) { %>
+            <tr>
+              <td><%= i + 1 %></td>
+              <td><%= order[i]._id %></td>
+              <td><%= order[i].UserId %></td>
+              <td>
+                <% const orderDate = new Date(order[i].OrderDate); %>
+                <%= orderDate.toLocaleString('default', { month: 'short' }) %>
+                <%= orderDate.getDate() %>,
+                <%= orderDate.getFullYear() %>
+                <%= orderDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
+              </td>
+              <td>
+                <% if (order[i].Status !== 'Cancelled') { %>
+                    <% const currentStatus = order[i].Status || 'Order Placed'; %>
+                    <select class="form-select" id="statusSelect<%= i %>" onchange="updateOrderStatus('<%= order[i]._id %>', this.value)">
+                        <option value="Order Placed" <%= currentStatus === 'Order Placed' ? 'selected' : '' %>>Order Placed</option>
+                        <option value="Shipped" <%= currentStatus === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                        <option value="Delivered" <%= currentStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                        <option value="Rejected" <%= currentStatus === 'Rejected' ? 'selected' : '' %>>Rejected</option>
+                      </select>
+                      
+                <% } else { %>
+                    Cancelled
+                  <% } %>
+
+              </td>
+              <td>
+                <%= order[i].PaymentMethod %>
+              </td>
+              <td>
+                <%= order[i].PaymentStatus %>
+              </td>
+              <td>
+                <%= order[i].TotalPrice %>
+              </td>
+              <td>
+                <a href="/admin/orders/details/<%= order[i]._id %>" class="btn btn-dark btn-sm">
+                  View Details
+                </a>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+      <% } else { %>
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">No Orders Yet</h5>
+            <p class="card-text">There are currently no orders available.</p>
+          </div>
         </div>
-
-       
+        <% } %>
+      
     </div>
-
-   
-    
-    
+  </div>
 </div>
-
-</div>
-
 </div>
 
 
+<script>
+    function updateOrderStatus(orderId, newStatus) {
+  fetch(`/admin/updateOrderStatus/${orderId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ status: newStatus }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        alert('Order status updated successfully!');
+      } else {
+        alert('Failed to update order status.');
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+}
 
+</script>
 
-<%-include('../partials/adminfooter.ejs') %>
+<%- include('../partials/adminfooter.ejs') -%>

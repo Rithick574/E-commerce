@@ -93,7 +93,7 @@
                                     data-product-id="<%= product._id %>">
                                     <i
                                         class="fa fa-heart <% if (wishlist.includes(product._id)) { %>text-danger<% } %>"></i>
-                                </a>
+                                </a> 
                                 <a href="/product/<%= product._id %>" class="btn btn1 rounded-3"> View </a>
                             </div>
                         </div>
@@ -176,14 +176,10 @@
                     success: function (response) {
                         console.log(icon.style.color)
                         if (response.added) {
-                            // icon.style.color = 'red';
                             icon.classList.add('text-danger')
-                            //   location.reload()
+                          
                         } else {
-
-                            // icon.style.color = '';
                             icon.classList.remove('text-danger')
-                            //   location.reload()
                         }
                     },
                     error: function (error) {

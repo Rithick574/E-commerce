@@ -71,8 +71,10 @@ const adminLogged = async (req, res) => {
   const blockData = await User.findOne({ _id: id });
   if (blockData.Status == "Active") {
     const blocked = await User.updateOne({ _id: id }, { Status: "Blocked" });
+    
   } else if (blockData.Status == "Blocked") {
     const blocked = await User.updateOne({ _id: id }, { Status: "Active" });
+   
   }
   // const pageNum = req.query.page;
   // const perPage = 10;

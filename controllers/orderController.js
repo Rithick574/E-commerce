@@ -8,6 +8,7 @@ const moment = require('moment');
 
 
 
+
 const PlaceOrder=async(req,res)=>{
     const email = req.session.user;
     const user = await User.findOne({ email: email });
@@ -50,7 +51,7 @@ const addAddress=async(req,res)=>{
 
 
 //order placing 
-const postCheckout=async(req,res)=>{
+const  postCheckout=async(req,res)=>{
     try {
         // console.log("inside body", req.body);
 
@@ -165,11 +166,46 @@ const orderHistory=async(req,res)=>{
 
 const OrderList=async(req,res)=>{
     try {
-        res.render('admin/orders')
+        const Orders= await Order.find();
+        res.render('admin/orders',{ order:Orders })
     } catch (error) {
-        
+        console.error(error);
+        res.render('error/admin404');
     }
 }
+
+const updateOrderStatus=async(req,res)=>{
+    try {
+        const orderId = req.params.orderId;
+      
+        const newStatus = req.body.status;
+    
+        await Order.findByIdAndUpdate(orderId, { Status: newStatus });
+    } catch (error) {
+       
+        console.error('Error updating order status:', error);
+        res.json({ success: false });
+    }
+}
+
+
+const viewOrderDetails=async(req,res)=>{
+    try {
+      
+        const orderId = req.params.orderId;
+        const orders = await Order.findById(orderId).populate('Items.productId');
+        if (!orders) {
+            return res.render('error/admin404'); 
+        }
+        
+        res.render('admin/orderviewproduct', { orderedProducts: orders.Items });
+      
+      } catch (error) {
+        console.log('Error viewing ordered products:', error);
+     
+      }
+      }
+
 
   
 
@@ -178,5 +214,7 @@ module.exports={
     addAddress,
     postCheckout,
     orderHistory,
-    OrderList
+    OrderList,
+    updateOrderStatus,
+    viewOrderDetails
 }

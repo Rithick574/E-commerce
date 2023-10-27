@@ -84,6 +84,8 @@ user.get('/cancelorder/:orderId',userAuth.verifyUser,userController.cancelOrder)
 user.get('/address',userAuth.verifyUser,userController.address)
 user.post('/addaddressProfile',userAuth.verifyUser,userController.addaddressProfile)
 user.delete('/deleteAddress/:addressId',userAuth.verifyUser,userController.deleteAddress)
+user.post('/updateProfile',userAuth.verifyUser,userController.updateProfile)
+user.get('/accountSettings',userAuth.verifyUser,userController.accountSettings)
 
 //logout
 user.get("/logout",userController.logOut)
