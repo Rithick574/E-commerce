@@ -12,7 +12,7 @@ const { ObjectId } = require("mongodb");
 
 //get admin login
 const adminlogin=(req,res)=>{
-    res.render('admin/adminlogin')
+    res.render('admin/adminlogin',{ errr: "" })
 };
 
 
@@ -31,6 +31,10 @@ const adminLogged = async (req, res) => {
     const isMatch = await bcrypt.compare(password, adminData.password);
 
     if (!isMatch) {
+      console.log("Invalid Password");
+      const errr1 = "Invalid credentials";
+      return res.render("admin/adminlogin", { errr: errr1 });
+
       return res.status(401).json({ message: "Invalid credentials" });
     } else {
       req.session.logged = true;

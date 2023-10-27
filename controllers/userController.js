@@ -446,7 +446,7 @@ const updateProfile=async(req,res)=>{
     user.name = newName;
     user.email = newEmail;
     user.phone = newPhoneNumber;
-    
+
     await user.save();
     if (!user) {
       return res.render('error/404');
@@ -463,9 +463,78 @@ const updateProfile=async(req,res)=>{
 
 //account settings in the profile
 const accountSettings=(req,res)=>{
-
+  const username= req.session.user;
+res.render('user/accSettings',{username})
 }
 
+
+const userPasswordReset=async(req,res)=>{
+  try {
+
+    const newPassword = req.body.newPassword;
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const user = await register.findOne({ email: req.session.user });
+    user.password = hashedPassword;
+    await user.save();
+    res.json({ success: true });
+  } catch (error) {
+     console.error('Error resetting password:', error);
+    res.json({ success: false });
+  }
+}
+
+
+//edit user address from user profile
+const edituserAddress=async(req,res)=>{
+  try {
+    const addressId = req.params.addressId;
+    const user = await register.findOne({ email: req.session.user });
+    if (!user) {
+      return res.render('error/404'); 
+    }
+    const addressToEdit = user.Address.id(addressId);
+
+    if (!addressToEdit) {
+      return res.render('error/404'); 
+    }
+    res.render('user/editAddress', { address: addressToEdit, username: req.session.user,addressId: addressId });
+
+  } catch (error) {
+    console.error('%c Error innedirt address:',error, 'color: red; font-weight: bold;');
+
+  }
+}
+
+//updateediteduserAddress
+const updateediteduserAddress=async(req,res)=>{
+try {
+  const addressId = req.params.addressId;
+    const user = await register.findOne({ email: req.session.user });
+    if (!user) {
+      return res.render('error/404'); 
+    }
+    const addressToEdit = user.Address.id(addressId);
+
+    if (!addressToEdit) {
+      return res.render('error/404'); 
+    }
+
+    addressToEdit.Name = req.body.Name;
+    addressToEdit.AddressLane = req.body.Address;
+    addressToEdit.City = req.body.City;
+    addressToEdit.Pincode = req.body.Pincode;
+    addressToEdit.State = req.body.State;
+    addressToEdit.Mobile = req.body.Mobile;
+
+    await user.save();
+
+    res.redirect('/address');
+
+} catch (error) {
+  console.error('Error updating user address:', error);
+  res.render('error/404');
+}
+}
 
 //logout
 const logOut = (req, res) => {
@@ -495,5 +564,8 @@ module.exports = {
   deleteAddress,
   updateProfile,
   accountSettings,
+  userPasswordReset,
+  edituserAddress,
+  updateediteduserAddress,
   logOut,
 };

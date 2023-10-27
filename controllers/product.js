@@ -4,6 +4,8 @@ const Brands = require("../model/brandSchema");
 const Category = require("../model/categorySchema");
 const Categories = require('../model/categorySchema');
 const { ObjectId } = require("mongodb");
+const Wishlist=require('../model/wishlistSchema')
+const register=require('../model/userSchema')
 
 
 
@@ -32,7 +34,7 @@ const viewProduct=async(req,res)=>{
           const username =req.session.user;
           const productData= await Product.findById(productId);
           console.log(" guest view productsa");
-          res.render('user/viewproduct', { product: productData,username});
+          res.render('user/guestviewproduct', { product: productData,username});
          }catch(error){
           res.status(500).send('internal server error')
          }
@@ -43,8 +45,17 @@ const viewProduct=async(req,res)=>{
     const ShopProduct=async(req,res)=>{
       try{
         const username =req.session.user;
+        const user = await register.findOne({ email: username });
+        const userId = user._id;
         const viewallProducts = await Product.find();
-        res.render('user/shop', { viewallProducts,username});
+        const userWishlist = await Wishlist.findOne({ user: userId });
+        const wishlist = userWishlist ? userWishlist.products : [];
+    
+        res.render('user/shop', {
+           viewallProducts,
+           username,
+           wishlist
+          });
     
       }catch(error){
         console.error(error);
@@ -54,17 +65,17 @@ const viewProduct=async(req,res)=>{
     }
     
     //shop for guest
-    const ShopProductGuest=async(req,res)=>{
-       try{
-         const username =req.session.user;
-         const viewallProducts = await Product.find();
-         res.render('user/shop', { viewallProducts,username});
+    // const ShopProductGuest=async(req,res)=>{
+    //    try{
+    //      const username =req.session.user;
+    //      const viewallProducts = await Product.find();
+    //      res.render('user/shop', { viewallProducts,username});
      
-       }catch(error){
-         console.error(error);
-             res.status(500).send('Internal Server Error');
-       }
-     }
+    //    }catch(error){
+    //      console.error(error);
+    //          res.status(500).send('Internal Server Error');
+    //    }
+    //  }
     
 
      
@@ -286,7 +297,7 @@ const editProduct=async(req,res)=>{
     viewProduct,
     ShopProduct,
     viewProductGuest,
-    ShopProductGuest,
+    // ShopProductGuest,
     Products,
     addProduct,
     addProductPost,

@@ -1,4 +1,4 @@
-<%-include('../partials/userHeader') %>
+<%-include('../partials/userHeader',{ cartCount: cartCount }) %>
   <br><br>
 <!-- sidebar + content -->
 <section class="">
@@ -185,8 +185,14 @@
                         <h6 class="text-danger">out of stock</h6>
                           <%}%>
                       <div class="mt-4">
-                        <button class="btn btn-dark shadow-0" type="button">Add to cart</button>
-                        <a href="#!" class="btn btn-dark border px-2 pt-2 icon-hover"><i class="fa-solid fa-heart fa-lg" style="color: #ffffff;"></i></a>
+                        <button class="btn btn-dark rounded-3 add-to-cart-button"  data-product-id="<%= data._id %>">Add to cart</button>
+                       
+                        <a href="#!" class="btn btn-dark border px-2 pt-2 add-to-wishlist-button"  data-product-id="<%= data._id %>">
+                          <i class="fa fa-heart <% if (wishlist.includes(data._id)) { %>text-danger<% } %>"></i>
+                        </a>
+
+                         
+
                       </div>
                     </div>
                   </div>
@@ -226,9 +232,66 @@
             <h1>404 not found</h1>
             <%}%>
   
-          <!-- Pagination -->
+          
         </div>
       </div>
     </div>
   </section>
+
+  <script>
+     document.querySelectorAll('.add-to-cart-button').forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const productId = this.getAttribute('data-product-id');
+
+
+                $.ajax({
+                    url: '/addtocart/' + productId,
+                    method: 'POST',
+                    success: function (response) {
+
+                        alert('Product added to cart');
+                        location.reload()
+                    },
+                    error: function (error) {
+                        console.error('Error adding product to cart:', error);
+                    }
+                });
+            });
+        });
+
+
+        document.querySelectorAll('.add-to-wishlist-button').forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+
+
+                const productId = this.getAttribute('data-product-id');
+                const icon = this.querySelector('.fa-heart');
+
+                $.ajax({
+                    url: '/wishlist/',
+                    method: 'POST',
+                    data: {
+                        productId: productId,
+                    },
+                    success: function (response) {
+                        console.log(icon.style.color)
+                        if (response.added) {
+                            icon.classList.add('text-danger')
+                          
+                        } else {
+                            icon.classList.remove('text-danger')
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error updating wishlist:', error);
+                    }
+                });
+            });
+        });
+
+        
+  </script>
   <%-include('../partials/userFooter') %>

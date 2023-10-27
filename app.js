@@ -10,7 +10,7 @@ const nocache = require('nocache');
 const multer=require("multer")
 const passport=require("passport")
 const flash = require('express-flash');
-const cartCountMiddleware = require('./middleware/cartCountMiddleware');
+// const cartCountMiddleware = require('./middleware/cartCountMiddleware');
 
 
 
@@ -76,7 +76,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //helper
-app.use(cartCountMiddleware);
+// app.use(cartCountMiddleware);
 
 //routes
 app.use('/',userRouter)

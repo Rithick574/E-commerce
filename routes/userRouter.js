@@ -20,6 +20,7 @@ user.get('/',userAuth.verifyUser,calculateCartCount,userController.homePage);
 //guest user
 user.get('/guestuser',userAuth.userExist,userController.guestPage)
 
+
 //login
 user.get('/login',userAuth.userExist,userController.login)
 user.post('/login',userAuth.userExist,userController.logged)
@@ -45,54 +46,55 @@ user.post('/resetpassword',userAuth.userExist,userController.resetpassword)
 
 
 //view product
-user.get('/product/:productId',userAuth.verifyUser,productController.viewProduct)
+user.get('/product/:productId',userAuth.verifyUser,calculateCartCount,productController.viewProduct)
 
 //view guest 
 user.get('/product/guest/:productId',userAuth.userExist,productController.viewProductGuest)
 
 //shop,cart
-user.get('/shop',userAuth.verifyUser,productController.ShopProduct)
+user.get('/shop',userAuth.verifyUser,calculateCartCount,productController.ShopProduct)
 
 //wishlist
-user.get('/wishlist',userAuth.verifyUser,wishlistController.wishList)
-user.post('/wishlist',userAuth.verifyUser,wishlistController.addtoWishList)
-user.post('/wishlistdelete/',userAuth.verifyUser,wishlistController.deletefromWishlist)
+user.get('/wishlist',userAuth.verifyUser,calculateCartCount,wishlistController.wishList)
+user.post('/wishlist',userAuth.verifyUser,calculateCartCount,wishlistController.addtoWishList)
+user.post('/wishlistdelete/',userAuth.verifyUser,calculateCartCount,wishlistController.deletefromWishlist)
 
 //guest shop
-user.get('/guest/shop',userAuth.userExist,productController.ShopProductGuest)
+// user.get('/guest/shop',productController.ShopProductGuest)
 
 
 //cart
-user.post("/addtocart/:productId",userAuth.verifyUser,cartController.addToCart)
-user.get('/cart',userAuth.verifyUser,cartController.viewCart)
-user.post('/updatequantity',userAuth.verifyUser,cartController.updateQuantity)
-user.post('/removefromcart',userAuth.verifyUser,cartController.removeFromCart)
-user.get('/getcartquantity',userAuth.verifyUser,cartController.getQuantity)
+user.post("/addtocart/:productId",userAuth.verifyUser,calculateCartCount,cartController.addToCart)
+user.get('/cart',userAuth.verifyUser,calculateCartCount,cartController.viewCart)
+user.post('/updatequantity',userAuth.verifyUser,calculateCartCount,cartController.updateQuantity)
+user.post('/removefromcart',userAuth.verifyUser,calculateCartCount,cartController.removeFromCart)
+// user.get('/getcartquantity',userAuth.verifyUser,cartController.getQuantity)
 
 
 //place order
-user.get('/placeorder',userAuth.verifyUser,orderController.PlaceOrder)
-user.post('/addAddress-Checkout',userAuth.verifyUser,orderController.addAddress)
-user.post('/placeOrder',userAuth.verifyUser,orderController.postCheckout)
-user.get('/trackOrder',userAuth.verifyUser,orderController.orderHistory)
+user.get('/placeorder',userAuth.verifyUser,calculateCartCount,orderController.PlaceOrder)
+user.post('/addAddress-Checkout',userAuth.verifyUser,calculateCartCount,orderController.addAddress)
+user.post('/placeOrder',userAuth.verifyUser,calculateCartCount,orderController.postCheckout)
+user.get('/trackOrder',userAuth.verifyUser,calculateCartCount,orderController.orderHistory)
 
 
 //profile
-user.get('/profile',userAuth.verifyUser,userController.userProfile)
-user.get('/viewproduct/:orderId',userAuth.verifyUser,userController.vieworderedProduct)
-user.get('/cancelorder/:orderId',userAuth.verifyUser,userController.cancelOrder)
-user.get('/address',userAuth.verifyUser,userController.address)
-user.post('/addaddressProfile',userAuth.verifyUser,userController.addaddressProfile)
-user.delete('/deleteAddress/:addressId',userAuth.verifyUser,userController.deleteAddress)
-user.post('/updateProfile',userAuth.verifyUser,userController.updateProfile)
-user.get('/accountSettings',userAuth.verifyUser,userController.accountSettings)
+user.get('/profile',userAuth.verifyUser,calculateCartCount,userController.userProfile)
+user.get('/viewproduct/:orderId',userAuth.verifyUser,calculateCartCount,userController.vieworderedProduct)
+user.get('/cancelorder/:orderId',userAuth.verifyUser,calculateCartCount,userController.cancelOrder)
+user.get('/address',userAuth.verifyUser,calculateCartCount,userController.address)
+user.post('/addaddressProfile',userAuth.verifyUser,calculateCartCount,userController.addaddressProfile)
+user.delete('/deleteAddress/:addressId',userAuth.verifyUser,calculateCartCount,userController.deleteAddress)
+user.post('/updateProfile',userAuth.verifyUser,calculateCartCount,userController.updateProfile)
+user.get('/accountSettings',userAuth.verifyUser,calculateCartCount,userController.accountSettings)
+user.post('/userPasswordReset',userAuth.verifyUser,calculateCartCount,userController.userPasswordReset)
+user.get('/edituserAddress/:addressId',userAuth.verifyUser,calculateCartCount,userController.edituserAddress)
+user.post('/edituserAddress/:addressId',userAuth.verifyUser,calculateCartCount,userController.updateediteduserAddress)
 
 //logout
 user.get("/logout",userController.logOut)
 
-user.get('/checkout',(req,res)=>{
-    res.render('user/checkout')
-})
+
 
 
 

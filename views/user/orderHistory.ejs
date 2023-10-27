@@ -97,7 +97,7 @@ padding-top: 15px;
                                             <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Order Cancelled</p
                                               class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
                                           </li>
-                                          <% } else if (order.Status === "Order Placed" || order.Status === "Shipped") { %>
+                                          <% } else if (order.Status === "Shipped") { %>
                                             <li class="list-inline-item items-list">
                                                 <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Shipped</p
                                                   class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
@@ -105,17 +105,29 @@ padding-top: 15px;
                                               <li class="list-inline-item items-list">
                                                 <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">On the way
                                                 </p>
+                                                <br>
+                                                <i class="fa-solid fa-truck fa-bounce fa-2xl"></i>
                                               </li>
+                                              <li class="list-inline-item items-list">
+                                                <p class="py-1 px-2 rounded text-white">
+                                                </p>
+                                              </li>
+
+                                              <% } else if (order.Status === "Delivered") { %>
+                                               
                                               <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
-                                                <p style="margin-right: -8px;" style="background-color: #f37a27;">Delivered</p>
+                                                <!-- <p style="margin-right: -8px;" style="background-color: #f37a27;">Delivered</p> -->
+                                                <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Delivered</p>
                                               </li>
                                               
                                             
                                               
                                              
-                                              <% } else { %>  
-                                                <p class="card-text" style="color: red;"><b>Order Rejected By Admin</b></p>
-                                           
+                                              <% } else if(order.Status === "Rejected" ) { %> 
+                                                <li class="list-inline-item items-list text-end " style="margin-right: 8px;">
+                                                  <span class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Rejected By Seller</span> 
+                                                </li>
+                                               
                                             <% } %>
                                    
                                    
@@ -132,7 +144,7 @@ padding-top: 15px;
                     </div>
                     <div class="col-md-4 mt-3 d-flex justify-content-end">
                              
-                                <% if (order.Status !== "Cancelled") { %>
+                                <% if (order.Status !== "Cancelled" && order.Status !== "Rejected") { %>
                                     <button type="button" class="btn btn-dark m-2">
                                       <a href="/cancelorder/<%= order._id %>" style="text-decoration: none; color: rgb(255, 255, 255);">Cancel Order</a>
                                     </button>

@@ -1,0 +1,88 @@
+<%-include('../partials/userHeader') %>
+
+
+
+<div class="container" >
+    <div class="row  d-flex justify-content-center" >
+        <div class="card custom-card p-5 m-5 shadow-lg bg-body rounded" style="width: 50%;">
+        <form action="/edituserAddress/<%= addressId %>" method="post">
+            <div class="mb-3">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input
+                type="text"
+                class="form-control"
+                name="Name"
+                id="fullName"
+                placeholder="Enter your full name"
+                value="<%= address.Name %>" 
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <input
+                type="text"
+                class="form-control"
+                name="Address"
+                id="address"
+                placeholder="Enter your address"
+                value="<%= address.AddressLane %>"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="city" class="form-label">City</label>
+              <input
+                type="text"
+                class="form-control"
+                id="city"
+                name="City"
+                placeholder="Enter your city"
+                value="<%= address.City %>"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="pincode" class="form-label">Pincode</label>
+              <input
+                type="text"
+                class="form-control"
+                id="pincode"
+                name="Pincode"
+                placeholder="Enter your pincode"
+                value="<%= address.Pincode %>"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="state" class="form-label">State</label>
+              <input
+                type="text"
+                class="form-control"
+                id="state"
+                name="State"
+                placeholder="Enter your state"
+                value="<%= address.State %>"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="mobileNumber" class="form-label"
+                >Mobile Number</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="mobileNumber"
+                name="Mobile"
+                placeholder="Enter your mobile number"
+                value="<%= address.Mobile %>"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-dark" style="background-color: black;">Submit</button>
+          </form>
+        </div>
+    </div>
+</div>
+
+<%-include('../partials/userFooter') %>

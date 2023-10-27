@@ -112,7 +112,7 @@
         border-radius: 5px;
         cursor: pointer;
       }
-    </style
+    </style>
   </head>
   <body>
     <div
@@ -226,12 +226,12 @@
           <!-- Left Column - Col-7 -->
             <div class="col-md-12">
               <div class="card">
-                <div class="card-body">
+                <div class="card-body shadow-lg bg-body rounded">
                   <h5 class="card-title">Saved Addresses</h5>
       
                   <%user.Address.forEach(function(Address) { %>
          
-                  <div class="address-card row">
+                  <div class="address-card row p-3 m-2 shadow-lg bg-body rounded">
                    
                     <div class="col-5">
                       <div class="address-line">Name:</div>
@@ -255,16 +255,23 @@
                       </button>
                     </div>
 
+                    <div class="col-2">
+                        <a href="/edituserAddress/<%= Address._id %>" class="btn btn-primary" >  Edit address</a> 
+                    </div>
+
+
                   </div>
                   <%})%>
+                <div class="m-2">
                   <a
-                    class="btn btn-dark"
-                    style="background-color: black;"
-                    data-bs-toggle="modal"
-                    data-bs-target="#addAddressModal"
-                  >
-                  <i class="fas fa-plus-circle"></i> Add Address
-                </a>
+                  class="btn btn-dark"
+                  style="background-color: black;"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addAddressModal"
+                >
+                <i class="fas fa-plus-circle"></i> Add Address
+              </a>
+                </div>
                 </div>
               </div>
             </div>

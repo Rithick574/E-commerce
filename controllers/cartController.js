@@ -6,7 +6,7 @@ const product=require('../model/productSchema')
 
 
 //view cart
-const   viewCart=async(req,res)=>{
+const viewCart=async(req,res)=>{
  
     try{
       // console.log("inside tryy");
@@ -26,7 +26,7 @@ const   viewCart=async(req,res)=>{
      
 
       if (!cart || cart.products.length === 0) {
-      //  const
+     
         return res.render('user/cart', {
            username: email,
            product :[] ,
@@ -171,11 +171,11 @@ const addToCart = async (req, res) => {
       let subtotal = 0;
       let totalQuantity = 0;
       cart.products.forEach((item) => {
-        console.log(item,"isinde for each");
+        // console.log(item,"isinde for each");
       subtotal += item.quantity * item.productId.descountedPrice;
       totalQuantity += item.quantity;
     });
-    console.log(subtotal);
+    // console.log(subtotal);
 
     const gstRate = 0.12;
     const gstAmount = subtotal * gstRate;

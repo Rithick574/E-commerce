@@ -102,7 +102,7 @@
           </div>
         </div>
       </div>
-
+      <% if (Array.isArray(product) && product.length > 0) { %>
       <div class="col-md-4">
         <div class="card border shadow mt-5">
           <div class="card-body">
@@ -174,6 +174,9 @@
             </div>
           </div>
           </div>
+          <% } else { %>
+            <h2></h2>
+            <% } %>
         </div>
       </div>
 
@@ -195,11 +198,11 @@
 
         currentQuantity += 1;
         quantityElement.innerText = currentQuantity;
-        console.log("count increased...")
+        // console.log("count increased...")
       } else if (count === -1 && currentQuantity > 1) {
         currentQuantity -= 1;
         quantityElement.innerText = currentQuantity;
-        console.log("count decreased...")
+        // console.log("count decreased...")
       }
 
 
