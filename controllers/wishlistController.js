@@ -39,14 +39,15 @@ const wishList=async(req,res)=>{
     const userId = user._id;
     const wishlist = await Wishlist.find({ user: userId }).populate('products');
 
-    console.log('Wishlist Items:', wishlist); 
+    // console.log('Wishlist Items:', wishlist); 
     
+
     res.render('user/wishlist', {
         username:userEmail,
         wishlist: wishlist,
       });
     } catch (error) {
-     
+       console.log("error in view to wishlist");
     }
  }
 
@@ -64,7 +65,7 @@ const wishList=async(req,res)=>{
         res.json({ success:true});
 
     } catch (error) {
-        
+      console.log("error in delete to wishlist"); 
     }
  }
  

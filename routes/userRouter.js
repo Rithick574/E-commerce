@@ -27,7 +27,7 @@ user.post('/login',userAuth.userExist,userController.logged)
 
 //passport
 user.get("/auth/google",passport.authenticate('google',{scope:["profile","email"]}));
-user.get("/auth/google/done", passport.authenticate('google',{ failureRedirect: '/login'}),userController.passport)
+user.get("/auth/google/done",calculateCartCount,passport.authenticate('google',{ failureRedirect: '/login'}),userController.passport)
 
 
 
@@ -78,6 +78,7 @@ user.post('/placeOrder',userAuth.verifyUser,calculateCartCount,orderController.p
 user.get('/trackOrder',userAuth.verifyUser,calculateCartCount,orderController.orderHistory)
 
 
+
 //profile
 user.get('/profile',userAuth.verifyUser,calculateCartCount,userController.userProfile)
 user.get('/viewproduct/:orderId',userAuth.verifyUser,calculateCartCount,userController.vieworderedProduct)
@@ -90,6 +91,8 @@ user.get('/accountSettings',userAuth.verifyUser,calculateCartCount,userControlle
 user.post('/userPasswordReset',userAuth.verifyUser,calculateCartCount,userController.userPasswordReset)
 user.get('/edituserAddress/:addressId',userAuth.verifyUser,calculateCartCount,userController.edituserAddress)
 user.post('/edituserAddress/:addressId',userAuth.verifyUser,calculateCartCount,userController.updateediteduserAddress)
+user.post('/downloadinvoice',userAuth.verifyUser,calculateCartCount,userController.generateInvoices)
+user.get('/downloadinvoice/:orderId',userAuth.verifyUser,calculateCartCount,userController.downloadInvoice)
 
 //logout
 user.get("/logout",userController.logOut)

@@ -7,6 +7,7 @@ const register = require("../model/userSchema");
 const { sentOTP } = require("../auth/OTPauth");
 const PRODUCT = require("../model/productSchema");
 const Wishlist=require('../model/wishlistSchema')
+const {generateInvoice}=require('../utility/invoiceCreator')
 
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -97,9 +98,22 @@ const login = (req, res) => {
 };
 
 
-const passport = (req, res) => {
+const passport = async(req, res) => {
   try {
-    console.log(req.user);
+    console.log(req.user.displayName,'!!@@@@@@@@@@@@@@@!!!!!!!');
+    let userInformation = {
+      name: req.user.displayName,
+      email: req.user.emails[0].value,
+      Status:"Active",
+      timeStamp:Date.now(),
+    };
+    console.log(userInformation);
+
+    req.session.user=userInformation.email;
+    req.session.loggedin = true;
+
+    const insert=await register.insertMany([userInformation])
+
     res.redirect("/");
   } catch (error) {
     throw error;
@@ -536,6 +550,51 @@ try {
 }
 }
 
+
+//generate invoice
+const generateInvoices=async(req,res)=>{
+  try {
+    const { orderId } = req.body;
+   
+    const orderDetails= await Order.find({_id:orderId}).populate('Address').populate("Items.productId");
+    
+    console.log(orderDetails,'@@@@@@@@@@@');
+
+    const ordersId = orderDetails[0]._id;
+
+    console.log(ordersId);
+
+    if (orderDetails) {
+      const invoicePath = await generateInvoice(orderDetails); 
+
+      res.json({ success: true, message: 'Invoice generated successfully', invoicePath });
+    } else {
+      res.status(500).json({ success: false, message: 'Failed to generate the invoice' });
+    }
+  
+  
+  } catch (error) {
+    console.error('error in invoice downloading')
+    res.status(500).json({ success: false, message: 'Error in generating the invoice' });
+  }
+  }
+
+
+
+//download invoice
+const downloadInvoice=async(req,res)=>{
+try {
+  const id=req.params.orderId
+  console.log(id,'!!#########');
+  const filePath = `D:\\E-commerce\\pdf\\${id}.pdf`;
+  res.download(filePath,`invoice.pdf`)
+} catch (error) {
+  console.error('Error in downloading the invoice:', error);
+  res.status(500).json({ success: false, message: 'Error in downloading the invoice' });
+}
+}
+
+
 //logout
 const logOut = (req, res) => {
   req.session.destroy();
@@ -567,5 +626,7 @@ module.exports = {
   userPasswordReset,
   edituserAddress,
   updateediteduserAddress,
+  generateInvoices,
+  downloadInvoice,
   logOut,
 };

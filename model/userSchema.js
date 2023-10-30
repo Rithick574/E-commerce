@@ -13,11 +13,11 @@ const UserSchema= new mongoose.Schema({
     timeStamp:{type:Date},
     phone: {
         type: String,
-        required: true
+        // required: true
     },
     password: {
          type: String,
-         required:true
+        //  required:true
          },
     Status: {
          type: String ,

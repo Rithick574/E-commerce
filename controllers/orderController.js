@@ -4,6 +4,7 @@ const Cart=require('../model/cartSchema')
 const Order = require("../model/orderSchema");
 const Product=require('../model/productSchema')
 const moment = require('moment');
+const easyinvoice = require('easyinvoice');
 
 
 

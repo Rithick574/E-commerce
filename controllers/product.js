@@ -120,15 +120,15 @@ const Products = async (req, res) => {
 
       try {
 
-        console.log(req.session)
         console.log('reached ++++')
-        const main = req.files["main"][0];
-        const img1 = req.files["image1"][0];
-        const img3 = req.files["image3"][0];
-        const img2 = req.files["image2"][0];
-  
-  
-    
+        const { image1, image2, image3, image4 } = req.files; 
+
+    const updatedImages = {
+      mainimage: (image1 && image1[0]) ? image1[0].filename : '',
+      image1: (image2 && image2[0]) ? image2[0].filename : '',
+      image2: (image3 && image3[0]) ? image3[0].filename : '',
+      image3: (image4 && image4[0]) ? image4[0].filename : ''
+    };
       
     
         const {
@@ -140,20 +140,14 @@ const Products = async (req, res) => {
           description,
           stock,
         } = req.body;
-    
-        console.log("name is " + productname);
+
+      
         let categoryId = await Category.find({ name: category });
         let brandId = await Brands.findOne({ name: brand });
-        console.log(brandId);
-        console.log(categoryId);
+       
         const data = {
           name: productname,
-          images: {
-            mainimage: main.filename,
-            image1: img1.filename,
-            image2: img2.filename,
-            image3: img3.filename,
-          },
+          images: [updatedImages], 
           description: description,
           stock: stock,
           basePrice: price,
@@ -178,7 +172,7 @@ const Products = async (req, res) => {
 const editProduct=async(req,res)=>{
       try {
         const productId = req.params.productId;
-        const product = await Product.findById(productId);
+        const product = await Product.findById(productId); 
         if (!product) {
           return res.status(404).send('Product not found');
         }
@@ -190,71 +184,56 @@ const editProduct=async(req,res)=>{
       }
   
   }
-  
-  const updateProduct=async(req,res)=>{
-  
+  const updateProduct = async (req, res) => {
     try {
-      console.log('reached ++++')
-          const main = req.files["main"][0];
-          const img1 = req.files["image1"][0];
-          const img3 = req.files["image3"][0];
-          const img2 = req.files["image2"][0];
-    
-    
-      
-          console.log("Uploaded files:");
-          console.log(main);
-          console.log(img1);
-          console.log(img2);
-          console.log(img3);
-          const {
-            productname,
-            price,
-            discountprice,
-            brand,
-            category,
-            description,
-            stock,
-          } = req.body;
-          console.log("name is " + productname);
-          let categoryId = await Categories.find({ name: category });
-          let brandId = await Brands.findOne({ name: brand });
-          console.log(brandId);
-          console.log(categoryId);
-     //
-      const Id = req.params.productId;
-      console.log(Id);
-      const updatedProductData = {
-          name: productname,
-          basePrice: price,
-          description: description,
-          brandId: brandId._id,
-          categoryId: categoryId._id,
-          stock: stock,
-          descountedPrice: discountprice,
-          images: {
-            mainimage: main.filename,
-            image1: img1.filename,
-            image2: img2.filename,
-            image3: img3.filename,
-          },
-          timeStamp: Date.now(),
-      };
-      console.log(updatedProductData);
-      await Product.updateOne({ _id: new ObjectId(Id) }, { $set:updatedProductData });
+      const productId = req.params.productId;
+      const { productname, price, discountprice, brand, category, description, stock } = req.body;
+      const { image1, image2, image3, image4 } = req.files; 
   
-      // if (!updatedProduct) {
-      //   return res.status(404).send('Product not found');
-      // }
-      // console.log(updatedProduct);
-      console.log("updated");
+      const existingProduct = await Product.findById({_id: productId});
+      const existingImages = existingProduct.images[0];
+      // console.log(existingProduct);
+      if (!existingProduct) {
+        return res.status(404).send('Product not found');
+      }
+  
+    
+  
+      const updatedImages = {
+        mainimage: (image1 && image1[0]) ? image1[0].filename : existingImages.mainimage,
+        image1: (image2 && image2[0]) ? image2[0].filename : existingImages.image1,
+        image2: (image3 && image3[0]) ? image3[0].filename : existingImages.image2,
+        image3: (image4 && image4[0]) ? image4[0].filename : existingImages.image3
+      };
+  
+      const categoryId = await Categories.findOne({ name: category });
+      const brandId = await Brands.findOne({ name: brand });
+  
+      const updatedProductData = {
+        name: productname,
+        basePrice: price,
+        description: description,
+        brandId: brandId._id,
+        categoryId: categoryId._id,
+        stock: stock,
+        descountedPrice: discountprice,
+        $set: {
+          images: [updatedImages], 
+          timeStamp: Date.now(),
+        }
+      };
+  
+      await Product.updateOne({ _id: productId }, updatedProductData );
+  
+      console.log("Product updated");
       res.redirect('/admin/products');
     } catch (err) {
       console.log(err);
-      res.status(500).send('Internal Server Error 1');
+      res.status(500).send('Internal Server Error');
     }
- 
-  }
+  };
+  
+  
   
   //archieve product(dsoft delete)
   const archiveProduct = async (req, res) => {
