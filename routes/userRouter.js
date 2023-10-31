@@ -75,7 +75,9 @@ user.post('/removefromcart',userAuth.verifyUser,calculateCartCount,cartControlle
 user.get('/placeorder',userAuth.verifyUser,calculateCartCount,orderController.PlaceOrder)
 user.post('/addAddress-Checkout',userAuth.verifyUser,calculateCartCount,orderController.addAddress)
 user.post('/placeOrder',userAuth.verifyUser,calculateCartCount,orderController.postCheckout)
+user.get('/ordersuccess',userAuth.verifyUser,calculateCartCount,orderController.orderSuccess)
 user.get('/trackOrder',userAuth.verifyUser,calculateCartCount,orderController.orderHistory)
+user.post('/verify-payment',userAuth.verifyUser,calculateCartCount,orderController.verifyPayment)
 
 
 

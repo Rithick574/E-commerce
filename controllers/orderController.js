@@ -5,6 +5,10 @@ const Order = require("../model/orderSchema");
 const Product=require('../model/productSchema')
 const moment = require('moment');
 const easyinvoice = require('easyinvoice');
+const razorpay = require("../utility/razorpay");
+const mongoose = require("mongoose");
+const crypto = require('crypto');
+
 
 
 
@@ -54,14 +58,13 @@ const addAddress=async(req,res)=>{
 //order placing 
 const  postCheckout=async(req,res)=>{
     try {
-        // console.log("inside body", req.body);
+        
 
         const PaymentMethod = req.body.paymentMethod;
     
         const Address = req.body.Address;
      
         const Email=req.session.user
-        
         
         const amount = req.session.totalPrice;
       
@@ -70,14 +73,37 @@ const  postCheckout=async(req,res)=>{
         
 
         const cart = await Cart.findOne({ userId: userid }).populate("products.productId");
-        console.log(cart+"!!!!!!!!!!!");
+        // console.log(cart+"!!!!!!!!!!!");
+
+
 
 
         if (!cart) {
             console.error("No cart found for the user.");
-           console.log("hello world");
+        //    console.log("hello world");
             return res.render('error/404');
           }
+
+          const address = await User.findOne({
+            _id:userid,
+            Address:{
+              $elemMatch:{_id: new mongoose.Types.ObjectId(Address)}
+            }
+          })
+
+        //   console.log("address====",address); 
+        //   console.log("add====",address.Address[0].AddressLane,)
+
+
+          const add = {
+            Name: address.Address[0].Name,
+            Address:  address.Address[0].AddressLane,
+            Pincode: address.Address[0].Pincode,
+            City: address.Address[0].City,
+            State: address.Address[0].State,
+            Mobile:  address.Address[0].Mobile,
+          }
+
 
         const newOrders = new Order({
             UserId: userid,
@@ -85,18 +111,18 @@ const  postCheckout=async(req,res)=>{
             OrderDate: moment(new Date()).format("llll"),
             ExpectedDeliveryDate: moment().add(4, "days").format("llll"),
             TotalPrice: req.session.totalPrice,
-            Address: Address,
+            Address: add,
             PaymentMethod: PaymentMethod,
           });
 
-          console.log(newOrders.Items);
+          // console.log(newOrders.Items);
 
           const order = await newOrders.save();
 
           await Cart.findByIdAndDelete(cart._id);
 
          
-          console.log(order, "in orders");
+          // console.log(order, "in orders");
           req.session.orderId = order._id;
 
           for (const item of order.Items) {
@@ -122,7 +148,23 @@ const  postCheckout=async(req,res)=>{
 
           }
           if (PaymentMethod === "cod") {
-            res.render('user/orderSuccess')
+            res.json({ codSuccess: true });
+          }else {
+         
+            const order = {
+              amount: amount,
+              currency: "INR",
+              receipt: req.session.orderId,
+            };
+            await razorpay
+              .createRazorpayOrder(order)
+              .then((createdOrder) => {
+                console.log("payment response", createdOrder);
+                res.json({ createdOrder, order });
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           }
 
        
@@ -207,8 +249,48 @@ const viewOrderDetails=async(req,res)=>{
       }
       }
 
-
+const orderSuccess=(req,res)=>{
+    const username = req.session.user
+    res.render('user/orderSuccess',{username})  
+}
   
+
+const verifyPayment=async(req,res)=>{
+  try {
+    console.log("it is the body", req.body);
+    let hmac = crypto.createHmac("sha256", process.env.KEY_SECRET);
+    console.log(
+      req.body.payment.razorpay_order_id +
+        "|" +
+        req.body.payment.razorpay_payment_id
+    );
+    hmac.update(
+      req.body.payment.razorpay_order_id +
+        "|" +
+        req.body.payment.razorpay_payment_id
+    );
+
+    hmac = hmac.digest("hex");
+    if (hmac === req.body.payment.razorpay_signature) {
+      const orderId = new mongoose.Types.ObjectId(
+        req.body.order.createdOrder.receipt
+      );
+      console.log("reciept", req.body.order.createdOrder.receipt);
+      const updateOrderDocument = await Order.findByIdAndUpdate(orderId, {
+        PaymentStatus: "Paid",
+        PaymentMethod: "Online",
+      });
+      console.log("hmac success");
+      res.json({ success: true });
+    } else {
+      console.log("hmac failed");
+      res.json({ failure: true });
+    }
+
+  } catch (error) {
+    console.error("failed to verify the payment",error);
+  }
+}
 
 module.exports={
     PlaceOrder,
@@ -217,5 +299,7 @@ module.exports={
     orderHistory,
     OrderList,
     updateOrderStatus,
-    viewOrderDetails
+    viewOrderDetails,
+    orderSuccess,
+    verifyPayment
 }
