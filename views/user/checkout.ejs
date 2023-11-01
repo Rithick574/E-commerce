@@ -345,6 +345,7 @@
       data: $('#form-checkout').serialize(),
       success: (response) => {
         if (response.codSuccess) {
+          
           window.location = '/ordersuccess'
           console.log('response got')
         } else {

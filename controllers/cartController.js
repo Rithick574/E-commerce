@@ -186,6 +186,8 @@ const addToCart = async (req, res) => {
       const couponValue = 50; 
       total -= couponValue;
     }
+    
+    req.session.totalPrice=total
 
     res.json({
       success: true,

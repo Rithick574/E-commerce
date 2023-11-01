@@ -21,7 +21,9 @@
     padding: 0px 0px;
     border-radius: 0px;
 }
-
+.small-alert .swal2-popup {
+    font-size: 12px;
+}
 
 .main-navbar .top-navbar .dropdown-menu .dropdown-item{
     padding: 8px 16px;

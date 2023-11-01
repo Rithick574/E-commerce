@@ -47,14 +47,22 @@ const viewProduct=async(req,res)=>{
         const username =req.session.user;
         const user = await register.findOne({ email: username });
         const userId = user._id;
-        const viewallProducts = await Product.find();
+        const page = parseInt(req.query.page) || 1; 
+        const productsCount = await Product.find().count();
+        const pageSize = 5; 
+        const totalProducts = Math.ceil(productsCount / pageSize);
+        const skip = (page - 1) * pageSize;
+
+        const viewallProducts = await Product.find().skip(skip).limit(pageSize);
         const userWishlist = await Wishlist.findOne({ user: userId });
         const wishlist = userWishlist ? userWishlist.products : [];
     
         res.render('user/shop', {
            viewallProducts,
            username,
-           wishlist
+           wishlist,
+           productsCount: totalProducts ,
+           page: page
           });
     
       }catch(error){

@@ -65,6 +65,11 @@
           <% } %>
         </tbody>
       </table>
+
+
+    
+
+
       <% } else { %>
         <div class="card text-center">
           <div class="card-body">
@@ -75,6 +80,29 @@
         <% } %>
       
     </div>
+
+   <!-- Pagination -->
+<nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="/admin/orders?page=<%= current - 1 %>" style="color: black;" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <% for (let i = 1; i <= pages; i++) { %>
+      <li class="page-item">
+        <a class="page-link" href="/admin/orders?page=<%= i %>" style="color: black;"><%= i %></a>
+      </li>
+    <% } %>
+    <li class="page-item">
+      <a class="page-link" href="/admin/orders?page=<%= current + 1 %>" style="color: black;" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+
   </div>
 </div>
 </div>

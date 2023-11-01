@@ -183,7 +183,7 @@ const orderHistory=async(req,res)=>{
         const userid = user._id;
       
         const orders = await Order.find({ UserId: userid })
-        .sort({ orderDate: -1 })
+        .sort({ OrderDate: -1 })
         .populate(
             'Items.productId'
         );
@@ -207,15 +207,32 @@ const orderHistory=async(req,res)=>{
 
 //////////////Admin///////////////////
 
-const OrderList=async(req,res)=>{
-    try {
-        const Orders= await Order.find();
-        res.render('admin/orders',{ order:Orders })
-    } catch (error) {
-        console.error(error);
-        res.render('error/admin404');
-    }
-}
+
+const OrderList = async (req, res) => {
+  try {
+    const perPage = 5; 
+
+    const page = parseInt(req.query.page) || 1;
+    const totalOrders = await Order.find().count();
+    // console.log(totalOrders);
+    const totalProducts = Math.ceil(totalOrders / perPage);
+    // console.log(totalProducts);
+    const skip = (page - 1) * perPage;
+    // console.log(skip);
+    const orders = await Order.find().sort({ OrderDate: -1 }).skip(skip).limit(perPage).exec();
+    // console.log(orders);
+
+    res.render('admin/orders', {
+      order: orders,
+      current: page,
+      pages: totalProducts
+    });
+  } catch (error) {
+    console.error(error);
+    res.render('error/admin404');
+  }
+};
+
 
 const updateOrderStatus=async(req,res)=>{
     try {
@@ -257,7 +274,7 @@ const orderSuccess=(req,res)=>{
 
 const verifyPayment=async(req,res)=>{
   try {
-    console.log("it is the body", req.body);
+    
     let hmac = crypto.createHmac("sha256", process.env.KEY_SECRET);
     console.log(
       req.body.payment.razorpay_order_id +

@@ -89,6 +89,7 @@
                             <div class="mt-2">
                                 <button class="btn btn1 rounded-3 add-to-cart-button"
                                     data-product-id="<%= product._id %>">Add To Cart</button>
+                                    
                                 <a href="#" class="btn btn1 rounded-3 add-to-wishlist-button"
                                     data-product-id="<%= product._id %>">
                                     <i
@@ -176,6 +177,16 @@
                     success: function (response) {
                         console.log(icon.style.color)
                         if (response.added) {
+                        Swal.fire({
+                         position: 'top',
+                         icon: 'success',
+                         title: 'Added to Wishliist',
+                         showConfirmButton: false,
+                         timer: 1500,
+                         customClass: {
+                         popup: 'small-alert',
+                                }
+                      })
                             icon.classList.add('text-danger')
                           
                         } else {
