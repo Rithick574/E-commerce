@@ -11,6 +11,8 @@ const brandController=require('../controllers/brandController')
 const categoryController=require('../controllers/categoryController')
 const upload = require('../middleware/multer');
 const orderController=require('../controllers/orderController')
+const bannerController=require('../controllers/bannerController')
+const couponController=require('../controllers/CouponController')
 
 
 
@@ -32,8 +34,14 @@ admin.get('/login',adminAuth.adminExist, adminController.adminlogin);
 //Admin login Route
 admin.post('/login',adminAuth.adminExist, adminController.adminLogged);
 
-// // Protected admin dashboard route
+// admin dashboard route
 admin.get('/dashboard',adminAuth.verifyAdmin, adminController.isAdmin)
+admin.get('/count-orders-by-day',adminAuth.verifyAdmin, adminController.getCount)
+admin.get('/count-orders-by-month',adminAuth.verifyAdmin, adminController.getCount)
+admin.get('/count-orders-by-year',adminAuth.verifyAdmin, adminController.getCount)
+admin.get('/latestOrders',adminAuth.verifyAdmin, adminController.getOrdersAndSellers)
+
+//view customer
 admin.get('/customers',adminAuth.verifyAdmin,adminController.Customers)
 
 
@@ -42,15 +50,22 @@ admin.get('/addProduct',adminAuth.verifyAdmin,productController.addProduct)
 admin.get('/status',adminAuth.verifyAdmin,adminController.status)
 admin.get('/block/:id',adminAuth.verifyAdmin,adminController.user_Blocking)
 
-//add brand
+// brand
 admin.get('/brands',adminAuth.verifyAdmin,brandController.BrandsList)
 admin.get('/addbrand',adminAuth.verifyAdmin,brandController.addBrands)
 admin.post('/add-brand',adminAuth.verifyAdmin,brandController.AddBrandss)
+admin.get('/deletebrand/:brandId',adminAuth.verifyAdmin,brandController.deleteBrand)
+admin.get('/editbrand/:brandId',adminAuth.verifyAdmin,brandController.editBrand)
+admin.post('/editbrand/:brandId',adminAuth.verifyAdmin,brandController.updateBrand)
 
-//add category
+// category
 admin.get('/category',adminAuth.verifyAdmin,categoryController.CategoryList)
 admin.get('/add-category',adminAuth.verifyAdmin,categoryController.AddCategory)
 admin.post('/add-category',adminAuth.verifyAdmin,categoryController.AddCategoryy)
+admin.delete('/deletecategory/:categoryId',adminAuth.verifyAdmin,categoryController.deleteCategory)
+admin.get('/editcategory/:categoryId',adminAuth.verifyAdmin,categoryController.editCategory)
+admin.post('/edit-category/:categoryId', adminAuth.verifyAdmin, categoryController.updateCategory);
+
 
 //orderlist
 admin.get('/orders',adminAuth.verifyAdmin,orderController.OrderList)
@@ -65,6 +80,15 @@ admin.post('/editProduct/:productId',adminAuth.verifyAdmin, productController.ed
 admin.post('/updateProduct/:productId',adminAuth.verifyAdmin,upload.fields(uploadFields), productController.updateProduct);
 admin.post('/archiveProduct/:productId',adminAuth.verifyAdmin, productController.archiveProduct);
 
+//bannner managemet
+admin.get('/bannerManagement',adminAuth.verifyAdmin, bannerController.bannerManagement)
+
+//coupon management
+admin.get('/couponmanagent',adminAuth.verifyAdmin, couponController.CouponManagement)
+admin.post('/addCoupon',adminAuth.verifyAdmin, couponController.addCoupon)
+
+//sales report
+admin.get('/generatepdf',adminAuth.verifyAdmin, productController.generatepdf)
 
 // // Admin logout route
 admin.get('/logout', adminController.adminLogout);

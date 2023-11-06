@@ -65,6 +65,7 @@ user.post('/wishlistdelete/',userAuth.verifyUser,calculateCartCount,wishlistCont
 
 //cart
 user.post("/addtocart/:productId",userAuth.verifyUser,calculateCartCount,cartController.addToCart)
+user.get('/getproduct/:productId',userAuth.verifyUser,calculateCartCount,cartController.stockcheck)
 user.get('/cart',userAuth.verifyUser,calculateCartCount,cartController.viewCart)
 user.post('/updatequantity',userAuth.verifyUser,calculateCartCount,cartController.updateQuantity)
 user.post('/removefromcart',userAuth.verifyUser,calculateCartCount,cartController.removeFromCart)
@@ -95,6 +96,7 @@ user.get('/edituserAddress/:addressId',userAuth.verifyUser,calculateCartCount,us
 user.post('/edituserAddress/:addressId',userAuth.verifyUser,calculateCartCount,userController.updateediteduserAddress)
 user.post('/downloadinvoice',userAuth.verifyUser,calculateCartCount,userController.generateInvoices)
 user.get('/downloadinvoice/:orderId',userAuth.verifyUser,calculateCartCount,userController.downloadInvoice)
+user.get('/aboutus',userAuth.verifyUser,calculateCartCount,userController.aboutUs)
 
 //logout
 user.get("/logout",userController.logOut)

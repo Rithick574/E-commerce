@@ -7,8 +7,22 @@
                         <h1>Order List</h1>
                           <a href="/admin/orders" class="btn">back</a>
                     </div>
+
+                   
+
+                    <div class="card shadow p-5 m-2">
+                        <div class="order-details">
+                            <h2>Customer Information</h2>
+                            <h6>Name: <%= customerName %></h6>
+                            <p>Address: <%= customerAddress.AddressLane %>, <%= customerAddress.City %>, <%= customerAddress.State %>, <%= customerAddress.Pincode %></p>
+                        </div>
+
+                        <div class="order-total ">
+                            <h5>Total Order Price: Rs. <%= customerOrderTotal %> </h5>
+                        </div>
+
                     <% orderedProducts.forEach((product) => { %>
-                        <div class="card shadow p-5 m-2">
+                       
                     <div class="product-card-img" style="padding: 30px;">
                         <!-- <label class="stock bg-success">In Stock</label> -->
                         <td><img src="/product-images/<%= product.productId.images[0].mainimage %>"  alt="qwert" style="height: 250px;"></td>
@@ -21,14 +35,13 @@
                             <%= product.productId.name %>
                            
                         </h5>
-                        <div>
-                            <span class="selling-price">Rs.<%= product.productId.descountedPrice %></span>
-                           
-                        </div>
+                      
 
                 </div>
                 </div>
                 <% }); %>
+
+                
 
                
                 

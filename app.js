@@ -44,7 +44,6 @@ app.use(morgan('tiny'))
 
 // app.use(cookieParser());
 
-//nocache
 
 
 //session
@@ -81,6 +80,11 @@ app.use(passport.session());
 //routes
 app.use('/',userRouter)
 app.use("/admin",adminRouter.admin);
+
+app.use((err, req, res, next) => {
+  console.error(err.stack); 
+  res.status(404).render('error/404');
+});
 
 
 

@@ -206,26 +206,36 @@
       }
 
 
-  $.ajax({
-    url: '/updatequantity', 
-    method: 'POST', 
-    data: {
-      productId: productId,
-      quantity: currentQuantity,
-      cartId: cartId,
-    },
-    success: function (response) {
+      $.ajax({
+  url: '/updatequantity',
+  method: 'POST',
+  data: {
+    productId: productId,
+    quantity: currentQuantity,
+    cartId: cartId,
+  },
+  success: function (response) {
+    if (response.error === "Requested quantity exceeds available stock") {
+      alert("No stock available");
+      quantityElement.innerText = response.maxStock;
+      currentQuantity = response.maxStock;
+    } else {
       console.log("Response from the server:", response);
-
-      $('#subtotalAmount').text( + response.subtotal.toFixed(2));
+      $('#subtotalAmount').text(response.subtotal.toFixed(2));
       $('#gstAmount').text('Rs. ' + response.gstAmount.toFixed(2));
       $('#totalQuantityValue').text(response.totalQuantity);
       $('#totalPrice').text('Rs. ' + response.total.toFixed(2));
-
     }
-  });
+  },
+  error: function (error) {
+    console.error('Error updating quantity:', error);
+    alert('Requested quantity exceeds available stock');
+    location.reload()
+    
+  }
+});
 
-      console.log("updated quantity successfully");
+
 
     }
 

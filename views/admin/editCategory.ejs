@@ -8,15 +8,15 @@
 <div class="details">
     <div class="recentOrders">
       
-        <h2>Add Category</h2>
+        <h2>Edit Category</h2>
         <% if (error) { %>
           <p style="color: red;"><%= error %></p>
       <% } %>
-        <form class="row g-3"  method="POST" action="/admin/add-category">
+        <form class="row g-3"  method="POST" action="/admin/edit-category/<%= category._id %>">
        
-            <div class="col-md-12">
+            <div class="col-md-12"> 
               <label for="inputEmail4" class="form-label">Category Name</label>
-              <input  class="form-control" id="categoryName" type="text" name="categoryName" required >
+              <input  class="form-control" id="categoryName" type="text" name="categoryName" value="<%= category.name %>" required >
               
 
             </div>
@@ -39,7 +39,7 @@
 
           <div class="d-flex justify-content-around">
             <div class="cardHeader d-flex">
-              <button type="submit" class="btn">Add Category</button>
+              <button type="submit" class="btn">Edit Category</button>
           </div>
           
             <div class="cardHeader d-flex">

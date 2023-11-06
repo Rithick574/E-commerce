@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- Coding by CodingLab || www.codinglabweb.com -->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="../assets/favicon.png" type="favicon/png">
     <title>OTP Verification Form</title>
-    <link rel="stylesheet" href="../css/otpstyle.css" />
+    <link rel="stylesheet" href="/css/otpstyle.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Boxicons CSS -->
@@ -20,6 +19,9 @@
         <i class="bx bxs-check-shield"></i>
       </header>
       <h4>Enter OTP Code</h4>
+      <% if (message) { %>
+        <p style="color: red;"><%= message %></p>
+      <% } %>
       <div id="otp-message" class="error-message"></div>
       <form action="/verifyOTP" method="post">
         <div class="input-field">
@@ -85,7 +87,7 @@
         console.log("Resend OTP request error");
         if (response.responseJSON && response.responseJSON.success === false) {
           
-          $("#error-message").html("Invalid OTP");
+          $("#otp-message").html("Invalid OTP");
         } else {
           $("#otp-message").html("An error occurred. Please try again later.");
         }

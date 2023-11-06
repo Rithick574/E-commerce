@@ -1,22 +1,421 @@
 <%-include('../partials/adminheader.ejs') %>
 
+
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Select Date Range</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate">
+           
+            <div class="row mt-5">
+                <div class="col-sm-6"> 
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="pdfCheckbox">
+                        <label class="form-check-label" for="pdfCheckbox">
+                            PDF
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-6"> 
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="excelCheckbox">
+                        <label class="form-check-label" for="excelCheckbox">
+                            Excel
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
+        
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="generateReportBtn">Generate Report</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
             
             <div class="details">
                 <div class="recentOrders">
                     <div class="cardHeader">
                         <h1>Dashboard</h1>
-                        <!-- <a href="#" class="btn">View All</a> -->
+                        <button type="button"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-dark">Download Sales Report</button>
+
                     </div>
 
-                </div>
+                    <div class="container mt-4">
+                        <div class="row">
+                          <div class="col-lg-12">
+                              <div class="card mb-4 shadow" style="background-color: #fff;">
+                                <h2 class="card-header">Sales Analysis</h2>
+                                <div class="card-body">
+                                  <div class="row">
+                                      <div class="dropdown">
+                                          <button class="btn btn-secondary dropdown-toggle" type="button" id="timeIntervalDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            By Day
+                                          </button>
+                                          <ul class="dropdown-menu" aria-labelledby="timeIntervalDropdown">
+                                            <li><a class="dropdown-item" id="byDayOption">By Day</a></li>
+                                            <li><a class="dropdown-item" id="byMonthOption">By Month</a></li>
+                                            <li><a class="dropdown-item" id="byYearOption">By Year</a></li>
+                                          </ul>
+                                        </div>
+                                    <div class="col-lg-12">
+                                      <canvas id="salesGraphAmount"></canvas>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <canvas id="salesGraphCount"></canvas>
+                                       
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                      
+                          <div class="col-lg-12">
+                              <div class="card mb-4 shadow" style="background-color: #fff;">
+                                  <h2 class="card-header">Latest Orders</h2>
+                                  <div class="card-body ">
+                                      <div class="table-responsive">
+                                          <table class="table table-borderless">
+                                              <thead>
+                                                  <tr>
+                                                      <th>Order ID</th>
+                                                      <th>Date</th>
+                                                      <th>Total</th>
+                                                      <th>Payment</th>
+                                                      <th>Status</th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody id="latestOrdersTable">
+                                              </tbody>
+                                          </table>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      
+                          <div class="col-lg-12">
+                              <div class="card shadow" style="background-color: #fff;">
+                                  <h2 class="card-header">Best Sellers</h2>
+                                  <div class="card-body">
+                                      <div class="table-responsive">
+                                          <table class="table table-borderless">
+                                              <thead>
+                                                  <tr>
+                                                      <th>Product Image</th>
+                                                      <th>Product</th>
+                                                      <th>Product Name</th>
+                                                      <th>Price</th>
+                                                      <th>Status</th>
+                                                      <th>Sold</th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody id="bestSellersTable">
+                                              </tbody>
+                                          </table>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
 
-               
+                </div> 
                 
             </div>
+
+            <style>
+                .header {
+                background-color: #000000;
+                color: #fff;
+                padding: 20px;
+                text-align: center;
+                min-height: 80px; 
+              }
+              
+                .container {
+                  display: flex;
+                  flex-wrap: wrap;
+                  justify-content: space-between;
+                  padding: 20px;
+                }
+              
+                .card {
+                  background-color: #fff;
+                  padding: 20px;
+                  border-radius: 8px;
+                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                  margin-bottom: 20px;
+                  flex: 1;
+                }
+              
+                .graph {
+                  margin-right: 0;
+                }
+              
+                .table-responsive {
+                  overflow-x: auto;
+                }
+              </style>
+              
+            
 
 
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              
+<script>
+
+    updateSalesGraph("day");
+document.getElementById("byDayOption").addEventListener("click", function() {
+    document.getElementById("timeIntervalDropdown").textContent = "By Day";
+    updateSalesGraph("day");
+});
+
+
+
+
+document.getElementById("byMonthOption").addEventListener("click", function() {
+    document.getElementById("timeIntervalDropdown").textContent = "By Month";
+    updateSalesGraph("month");
+});
+
+document.getElementById("byYearOption").addEventListener("click", function() {
+    document.getElementById("timeIntervalDropdown").textContent = "By Year";
+    updateSalesGraph("year");
+});
+
+
+async function fetchSalesData(timeInterval) {
+    try {
+        let response;
+        if (timeInterval === "day") {
+             response = await fetch('/admin/count-orders-by-day');
+        } else if (timeInterval === "month") {
+            console.log("monthsss");
+            response = await fetch(`/admin/count-orders-by-${timeInterval}`);
+        } else if (timeInterval === "year") {
+            console.log("yearssss");
+            response = await fetch(`/admin/count-orders-by-${timeInterval}`);
+        } else {
+            return false;
+        }
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+      
+        const data = await response.json();
+       
+       
+        return data;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
+
+
+
+async function fetchOrdersAndSales() {
+    try {
+
+      const response = await fetch("/admin/latestOrders");
+      if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+       
+      return data;
+    } catch (error) {
+      console.log("Error fetching data", error);
+    }
+  }
+
+
+
+
+async function updateSalesGraph(timeInterval) {
+    const salesData = await fetchSalesData(timeInterval);
+    const Amount = document.getElementById("salesGraphAmount").getContext("2d");
+    const Count = document.getElementById("salesGraphCount").getContext("2d");
+
+    if (window.myChart1) {
+        window.myChart1.destroy();
+    }
+    if (window.myChart2) {
+        window.myChart2.destroy();
+    }
+
+    window.myChart1 = new Chart(Amount, {
+        type: "line",
+        data: {
+            labels: salesData.labelsByCount,
+            datasets: [{ 
+                label: "Sales by orders",
+                data: salesData.dataByCount,
+                borderColor: "red",
+                fill: false
+            }]
+        },
+        options: {
+            legend: { display: false },
+        }
+    });
+    const barColors = ["red", "green","blue","orange","brown"];
+    window.myChart2 = new Chart(Count, {
+        type: "bar",
+        data: {
+            labels: salesData.labelsByAmount,
+            datasets: [
+                {
+                    label: "Sales by count",
+                    data: salesData.dataByAmount,
+                    backgroundColor: barColors,
+                    borderColor: "white",
+                    borderWidth: 3,
+                },
+            ],
+        },
+        options: {
+            scales: {
+                x: [{
+                    grid: {
+                        display: true
+                    }
+                }],
+                y: [{
+                    beginAtZero: true,
+                    maxTicksLimit: 5
+                }]
+            }
+        },
+    });
+
+}
+
+
+
+async function updateLatestOrdersAndBestSellers() {
+    const data = await fetchOrdersAndSales();
+    const latestOrdersTable = document.getElementById("latestOrdersTable");
+    const bestSellersTable = document.getElementById("bestSellersTable");
+    const ordersData = data.latestOrders;
+    const bestSellersData = data.bestSeller;
+
+    ordersData.forEach((order) => {
+        const row = latestOrdersTable.insertRow();
+        const orderIdCell = row.insertCell(0);
+        const dateCell = row.insertCell(1);
+        const totalCell = row.insertCell(2);
+        const paymentCell = row.insertCell(3);
+        const statusCell = row.insertCell(4);
+
+        orderIdCell.textContent = order._id;
+        dateCell.textContent = order.OrderDate; 
+        totalCell.textContent = order.TotalPrice; 
+        paymentCell.textContent = order.PaymentMethod; 
+        statusCell.textContent = order.PaymentStatus; 
+    });
+
+    bestSellersData.forEach((seller) => {
+        const row = bestSellersTable.insertRow();
+        const productImageCell = row.insertCell(0);
+        const productCell = row.insertCell(1);
+        const productNameCell = row.insertCell(2);
+        const priceCell = row.insertCell(3);
+        const statusCell = row.insertCell(4);
+        const salesCell = row.insertCell(5);
+
+        const imgElement = document.createElement("img");
+        const imageUrl = "/product-images/" + seller.productDetails.images[0].mainimage;
+        imgElement.src = imageUrl;
+        imgElement.style.maxWidth = "50px";
+        productImageCell.appendChild(imgElement);
+
+        productCell.textContent = seller.productDetails._id; 
+        productNameCell.textContent = seller.productDetails.name; 
+        priceCell.textContent = seller.productDetails.descountedPrice; 
+        statusCell.textContent = seller.productDetails.stock === 0 ? "Out of Stock" : "In Stock";
+        salesCell.textContent = seller.totalCount;
+    });
+}
+
+
+
+updateSalesGraph();
+updateLatestOrdersAndBestSellers();
+
+document.getElementById('generateReportBtn').addEventListener('click', function() {
+    
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+   
+    const generatePDF = document.getElementById('pdfCheckbox').checked;
+    const generateExcel = document.getElementById('excelCheckbox').checked;
+
+   
+    generateReport(startDate, endDate, generatePDF, generateExcel);
+
+    $('#dateModal').modal('hide');
+});
+
+
+function generatePDFReport() {
+    
+    fetch('/admin/generatepdf')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+           
+            console.log('Fetched orders:', data);
+          
+        })
+        .catch(error => {
+            console.error('Error fetching orders:', error);
+        });
+
+}
+
+
+function generateExcelReport() {
+   
+}
+
+
+function generateReport(startDate, endDate, generatePDF, generateExcel) {
+   if(generatePDF){
+    generatePDFReport();
+   }
+   if(generateExcel){
+    generateExcelReport();
+   }
+}
+
+
+
+</script>
 
 
 

@@ -20,7 +20,7 @@ const client = require("twilio")(accountSid, authToken);
 const homePage = async (req, res) => {
   try {
     const username = req.session.user;
-    const data = await PRODUCT.find({ isDeleted: false });
+    const data = await PRODUCT.find({ isDeleted: false }).sort({ timeStamp: -1 }).limit(8); 
     const user = await register.findOne({ email: username });
     const userId = user._id;
     const userWishlist = await Wishlist.findOne({ user: userId });
@@ -44,7 +44,7 @@ const homePage = async (req, res) => {
 const guestPage = async (req, res) => {
     const username = req.session.user;
     try {
-      const data = await PRODUCT.find();
+      const data = await PRODUCT.find().limit(8);
       res.render("user/guestUser", {
         title: "Guest User",
         product: data,
@@ -140,6 +140,7 @@ const sentOtp = async (req, res) => {
         phone: req.body.phone,
         password: pass,
       };
+
       req.session.data = destruc_data;
 
       const datas = await register.findOne({ $or: [{ email }, { phone }] });
@@ -151,7 +152,7 @@ const sentOtp = async (req, res) => {
       const data = await sentOTP(phone);
       console.log(data.phone);
 
-      return res.render("user/otp", { data, phone });
+      return res.render("user/otp", { data, phone,message:""});
     } catch (error) {
       console.log(error);
       res.render('error/404')
@@ -208,8 +209,10 @@ const verifyOTP = async (req, res) => {
        
         return res.redirect("/");
       } else {
+        console.log(req.session.data);
         console.log("Invalid OTP");
-        res.render('error/404')
+        return res.render("user/otp",{message:"Invalid OTP",data: req.session.data})
+        // res.render('error/404')
       }
     } catch (err) {
       throw err;
@@ -246,7 +249,7 @@ const sentforgotOTP = async (req, res) => {
     const { phone } = req.body;
     const datass = await sentOTP(phone);
     console.log(datass.phone);
-    res.render("user/forgototp", { data: datass.phone });
+    res.render("user/forgototp", { data: datass.phone,message:"" });
 };
 
 const verifygorgotOTP = async (req, res) => {
@@ -281,7 +284,7 @@ const verifygorgotOTP = async (req, res) => {
         res.render("user/resetpassword", { phone });
       } else {
         console.log("Invalid OTP");
-        res.status(500).send("Invali otp");
+        res.render('user/forgototp',{message:"Invalid OTP",data:phone})
       }
     } catch (error) {
       throw error;
@@ -349,6 +352,8 @@ const cancelOrder = async (req, res) => {
     const orderId = req.params.orderId;
     const order = await Order.findById(orderId);
 
+    
+
     if (!order) {
       console.log('Order not found');
       return res.render('error/404');
@@ -356,14 +361,19 @@ const cancelOrder = async (req, res) => {
 
     if (order.Status === "Order Placed" || order.Status === "Shipped") {
       const productsToUpdate = order.Items;
+     
       for (const product of productsToUpdate) {
-        const cancelProduct = await PRODUCT.findById(product.ProductId);
+        const cancelProduct = await PRODUCT.findById(product.productId);
+        
 
         if (cancelProduct) {
-          cancelProduct.AvailableQuantity += product.Quantity;
+          cancelProduct.stock += product.quantity;
           await cancelProduct.save();
         }
       }
+
+      
+    
       order.Status = "Cancelled";
       await order.save();
       return res.redirect("/trackOrder");
@@ -585,13 +595,18 @@ const generateInvoices=async(req,res)=>{
 const downloadInvoice=async(req,res)=>{
 try {
   const id=req.params.orderId
-  console.log(id,'!!#########');
   const filePath = `D:\\E-commerce\\pdf\\${id}.pdf`;
   res.download(filePath,`invoice.pdf`)
 } catch (error) {
   console.error('Error in downloading the invoice:', error);
   res.status(500).json({ success: false, message: 'Error in downloading the invoice' });
 }
+}
+
+//About Us
+const aboutUs=(req,res)=>{
+  const username=req.session.user
+  res.render('user/aboutUs',{username})
 }
 
 
@@ -628,5 +643,6 @@ module.exports = {
   updateediteduserAddress,
   generateInvoices,
   downloadInvoice,
+  aboutUs,
   logOut,
 };

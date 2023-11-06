@@ -87,7 +87,7 @@ const  postCheckout=async(req,res)=>{
           const address = await User.findOne({
             _id:userid,
             Address:{
-              $elemMatch:{_id: new mongoose.Types.ObjectId(Address)}
+              $elemMatch:{_id: new mongoose.Types.ObjectId(Address)} 
             }
           })
 
@@ -104,12 +104,13 @@ const  postCheckout=async(req,res)=>{
             Mobile:  address.Address[0].Mobile,
           }
 
+          const currentDate = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }); 
 
         const newOrders = new Order({
             UserId: userid,
             Items: cart.products,
-            OrderDate: moment(new Date()).format("llll"),
-            ExpectedDeliveryDate: moment().add(4, "days").format("llll"),
+            OrderDate: currentDate,
+            ExpectedDeliveryDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
             TotalPrice: req.session.totalPrice,
             Address: add,
             PaymentMethod: PaymentMethod,
@@ -257,8 +258,22 @@ const viewOrderDetails=async(req,res)=>{
         if (!orders) {
             return res.render('error/admin404'); 
         }
+
+        const user = await User.findById(orders.UserId);
+
+        const orderedProducts = orders.Items;
+
+        let customerOrderTotal = 0;
+        orderedProducts.forEach((product) => {
+            customerOrderTotal += product.productId.descountedPrice * product.quantity;
+        });
         
-        res.render('admin/orderviewproduct', { orderedProducts: orders.Items });
+        res.render('admin/orderviewproduct', {
+           orderedProducts: orders.Items ,
+           customerName: user.Address[0].Name,
+           customerAddress: user.Address[0],
+           customerOrderTotal: customerOrderTotal
+          });
       
       } catch (error) {
         console.log('Error viewing ordered products:', error);
@@ -297,10 +312,10 @@ const verifyPayment=async(req,res)=>{
         PaymentStatus: "Paid",
         PaymentMethod: "Online",
       });
-      console.log("hmac success");
+      // console.log("hmac success");
       res.json({ success: true });
     } else {
-      console.log("hmac failed");
+      // console.log("hmac failed");
       res.json({ failure: true });
     }
 

@@ -16,11 +16,13 @@
           </div>
           <div class="col-md-6">
             <label for="brand" class="form-label">Brand</label>
+           
             <select id="brand" name="brand" class="form-select">
-                <% brands.forEach(brand => { %>
-                    <option><%= brand.name %></option>
-                <% }); %>
-            </select>
+              <% brands.forEach(brand => { %>
+                  <option <% if (product.brandId.toString() === brand._id.toString() ) 
+                  { %> selected <% } %>><%= brand.name %></option>
+              <% }); %>
+          </select>
         </div>
         
          
@@ -40,11 +42,12 @@
           </div>
           <div class="col-md-12">
             <label for="inputState" class="form-label">Category</label>
+           
             <select id="inputState" name="category" class="form-select">
               <% categories.forEach(category => { %>
-                <option><%= category.name %></option>
-            <% }); %>
-            </select>
+                  <option <% if (product.categoryId.toString() === category._id.toString() ) { %> selected <% } %>><%= category.name %></option>
+              <% }); %>
+          </select>
           </div>
 
           <div class="mb-3">

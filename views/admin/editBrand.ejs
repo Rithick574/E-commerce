@@ -8,19 +8,16 @@
 <div class="details">
     <div class="recentOrders">
       
-        <h2>Add Category</h2>
+        <h2>Edit Brands</h2>
         <% if (error) { %>
           <p style="color: red;"><%= error %></p>
       <% } %>
-        <form class="row g-3"  method="POST" action="/admin/add-category">
+        <form class="row g-3"  method="POST" action="/admin/editbrand/<%= Brand._id %>" >
        
             <div class="col-md-12">
-              <label for="inputEmail4" class="form-label">Category Name</label>
-              <input  class="form-control" id="categoryName" type="text" name="categoryName" required >
-              
-
+              <label for="inputEmail4" class="form-label">Brand Name</label>
+              <input  class="form-control" name="Brandname" id="Brand_name" type="text" value="<%= Brand.name %>" required >
             </div>
-        
            <br>
            <br>
            <br>
@@ -39,11 +36,11 @@
 
           <div class="d-flex justify-content-around">
             <div class="cardHeader d-flex">
-              <button type="submit" class="btn">Add Category</button>
+              <button type="submit" class="btn">Edit Brand</button>
           </div>
           
             <div class="cardHeader d-flex">
-                <a href="/admin/category" class="btn">Cancel</a>
+                <a href="/admin/brands" class="btn">Cancel</a>
                
             </div>
         </div>

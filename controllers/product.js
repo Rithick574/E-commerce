@@ -147,6 +147,10 @@ const Products = async (req, res) => {
           category,
           description,
           stock,
+          Spec1,
+          Spec2,
+          Spec3,
+          Spec4
         } = req.body;
 
       
@@ -163,6 +167,10 @@ const Products = async (req, res) => {
           timeStamp: Date.now(),
           brandId: new ObjectId(brandId._id),
           categoryId: new ObjectId(categoryId._id),
+          highlight1:Spec1,
+          highlight2:Spec2,
+          highlight3:Spec3,
+          highlight4:Spec4
         };
         const insert = await Product.insertMany([data]);
         res.redirect("/admin/products");
@@ -196,10 +204,11 @@ const editProduct=async(req,res)=>{
     try {
       const productId = req.params.productId;
       const { productname, price, discountprice, brand, category, description, stock } = req.body;
+    
       const { image1, image2, image3, image4 } = req.files; 
   
       const existingProduct = await Product.findById({_id: productId});
-      const existingImages = existingProduct.images[0];
+      const existingImages = existingProduct.images[0];  
       // console.log(existingProduct);
       if (!existingProduct) {
         return res.status(404).send('Product not found');
@@ -216,6 +225,14 @@ const editProduct=async(req,res)=>{
   
       const categoryId = await Categories.findOne({ name: category });
       const brandId = await Brands.findOne({ name: brand });
+      console.log(categoryId);
+
+      
+
+      if (!categoryId || !brandId) {
+        return res.status(404).send('Category or brand not found');
+      }
+
   
       const updatedProductData = {
         name: productname,
@@ -230,6 +247,8 @@ const editProduct=async(req,res)=>{
           timeStamp: Date.now(),
         }
       };
+
+     
   
       await Product.updateOne({ _id: productId }, updatedProductData );
   
@@ -237,7 +256,7 @@ const editProduct=async(req,res)=>{
       res.redirect('/admin/products');
     } catch (err) {
       console.log(err);
-      res.status(500).send('Internal Server Error');
+     res.render('error/admin404')
     }
   };
   
@@ -274,6 +293,11 @@ const editProduct=async(req,res)=>{
   
   };
   
+
+  //generate sales report in pdf
+  const generatepdf=async(req,res)=>{
+    
+  }
   
  
 
@@ -291,4 +315,5 @@ const editProduct=async(req,res)=>{
     editProduct,
     updateProduct,
     archiveProduct,
+    generatepdf
   }

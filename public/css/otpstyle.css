@@ -29,7 +29,7 @@ body {
 .container header {
   height: 65px;
   width: 65px;
-  background: #4070f4;
+  background: #7896e7;
   color: #fff;
   font-size: 2.5rem;
   border-radius: 50%;
@@ -79,9 +79,15 @@ form button {
   color: red;
 }
 form button.active {
-  background: #4070f4;
+  background: #7896e7;
   pointer-events: auto;
 }
 form button:hover {
-  background: #0e4bf1;
+  background: #7896e7;
+}
+input[type="text"] {
+  width: 500px; 
+  height: 45px; 
+  padding: 10px; 
+  border: 1px solid #ced4da; 
 }

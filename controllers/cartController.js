@@ -149,9 +149,7 @@ const addToCart = async (req, res) => {
    //update quantity
    const updateQuantity=async(req,res)=>{
     const { productId, quantity,cartId } = req.body;
-    // console.log(productId);
-    // console.log(quantity);
-    // console.log(cartId);
+
     try{
 
       const cart = await Cart.findOne({ _id: cartId }).populate("products.productId" )
@@ -164,6 +162,19 @@ const addToCart = async (req, res) => {
       if (!productInCart) {
         return res.status(404).json({ success: false, error: "Product not found in the cart" });
       }
+
+
+      const productDetails = await product.findById(productId);
+      const maxStocks = productDetails.stock;
+  
+      if (quantity > productDetails.stock) {
+        return res.status(400).json({ 
+          success: false, 
+          error: "Requested quantity exceeds available stock", 
+          maxStock: maxStocks
+        });
+      }
+      
       productInCart.quantity = quantity;
   
       await cart.save();
@@ -256,6 +267,25 @@ const getQuantity=async(req,res)=>{
 }
 
 
+//checking the stock when add to cart
+const stockcheck=async(req,res)=>{
+  try {
+    const productId = req.params.productId;
+  
+    const productss = await product.findById(productId);
+    if (!productss) {
+      return res.status(404).json({ message: 'Product not found' });
+  }
+  console.log(productss);
+  res.json({product:productss});
+  
+  } catch (error) {
+    console.error('error while stock checking',error)
+    res.render('error/404')
+  }
+}
+
+
 
 module.exports = {
   addToCart,
@@ -263,4 +293,5 @@ module.exports = {
   updateQuantity,
   removeFromCart,
   getQuantity,
+  stockcheck,
 };

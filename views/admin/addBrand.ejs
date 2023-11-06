@@ -9,6 +9,9 @@
     <div class="recentOrders">
       
         <h2>Add Brands</h2>
+        <% if (error) { %>
+          <p style="color: red;"><%= error %></p>
+      <% } %>
         <form class="row g-3"  method="POST" action="/admin/add-brand" >
        
             <div class="col-md-12">
