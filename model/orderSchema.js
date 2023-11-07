@@ -16,7 +16,7 @@ const ShippedAddressSchema = new Schema({
 
 
 const OrdersSchema = new Schema({
-  UserId: { type: Schema.Types.ObjectId },
+  UserId: { type: Schema.Types.ObjectId, ref: "users" },
   Status: { type: String, default:"Order Placed"},
   Items: [{
      productId: { type: Schema.Types.ObjectId , ref: "products" },

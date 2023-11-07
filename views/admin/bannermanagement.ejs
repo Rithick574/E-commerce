@@ -1,23 +1,39 @@
-<%-include('../partials/adminheader.ejs') %>
+<%- include('../partials/adminheader.ejs') %>
 
+<style>
+    
+    .form-group input[type="text"],
+    .form-group input[type="file"] {
+        width: 100%; 
+        padding: 10px; 
+        border: 1px solid #ccc; 
+        border-radius: 5px; 
+    }
+</style>
 
-            <div class="details">
-                <div class="recentOrders">
-                    <div class="cardHeader">
-                        <h1>Banner</h1>
-                        <!-- <a href="#" class="btn">View All</a> -->
-                    </div>
-
+<div class="details">
+    <div class="recentOrders">
+        <div class="cardHeader">
+            <h1>Add Banner</h1>
+        </div>
+        <div class="cardBody">
+            <form action="/admin/uploadBanner" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">Banner Title</label>
+                    <input type="text" id="title" name="title" required>
                 </div>
+                <br>
 
-
-
-            </div>
-
-
+                <div class="form-group">
+                    <label for="image">Banner Image</label>
+                    <input type="file" id="image" name="image" accept=".jpg, .png, .jpeg ,.svg" required>
+                </div>
+                <br>
+                <br>
+                <button type="submit" class="btn btn-dark">Upload Banner</button>
+            </form>
         </div>
     </div>
+</div>
 
-
-
-    <%-include('../partials/adminfooter.ejs') %>
+<%- include('../partials/adminfooter.ejs') %>

@@ -2,10 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const Twilio = require('twilio');
 const auth = express.Router();
-const User = require('../model/UserOTPVerification');
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
-const {signup} = require('../controllers/userController')
+
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;

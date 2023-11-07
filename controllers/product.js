@@ -5,7 +5,8 @@ const Category = require("../model/categorySchema");
 const Categories = require('../model/categorySchema');
 const { ObjectId } = require("mongodb");
 const Wishlist=require('../model/wishlistSchema')
-const register=require('../model/userSchema')
+const register=require('../model/userSchema');
+const { findByIdAndDelete } = require('../model/adminSchema');
 
 
 
@@ -225,7 +226,7 @@ const editProduct=async(req,res)=>{
   
       const categoryId = await Categories.findOne({ name: category });
       const brandId = await Brands.findOne({ name: brand });
-      console.log(categoryId);
+      
 
       
 
@@ -252,7 +253,7 @@ const editProduct=async(req,res)=>{
   
       await Product.updateOne({ _id: productId }, updatedProductData );
   
-      console.log("Product updated");
+     
       res.redirect('/admin/products');
     } catch (err) {
       console.log(err);
@@ -296,8 +297,51 @@ const editProduct=async(req,res)=>{
 
   //generate sales report in pdf
   const generatepdf=async(req,res)=>{
-    
+    try {
+      console.log("staticBackdrop");
+    } catch (error) {
+      console.log("error while generating sales report pdf");
+    }
   }
+  
+
+  const deletesingleImage = async (req, res) => {
+    try {
+      const productId = req.params.id;
+      const imageIndex = req.params.index;
+      const product = await Product.findById(productId);
+  
+      if (!product) {
+        return res.status(404).send('Product not found');
+      }
+  
+      let imageField = '';
+      let deletedImage = '';
+  
+      if (imageIndex === '0') {
+        imageField = 'images.0.mainimage';
+        deletedImage = product.images[0].mainimage;
+      } else if (imageIndex === '1') {
+        imageField = 'images.0.image1';
+        deletedImage = product.images[0].image1;
+      } else if (imageIndex === '2') {
+        imageField = 'images.0.image2';
+        deletedImage = product.images[0].image2;
+      } else if (imageIndex === '3') {
+        imageField = 'images.0.image3';
+        deletedImage = product.images[0].image3;
+      } else {
+        return res.status(404).send('Image not found');
+      }
+  
+      await Product.updateOne({ _id: productId }, { $unset: { [imageField]: 1 } });
+  
+      return res.status(200).send(`Image '${deletedImage}' deleted successfully`);
+    } catch (error) {
+      console.error('Error while deleting the product image:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
   
  
 
@@ -315,5 +359,6 @@ const editProduct=async(req,res)=>{
     editProduct,
     updateProduct,
     archiveProduct,
-    generatepdf
+    generatepdf,
+    deletesingleImage
   }

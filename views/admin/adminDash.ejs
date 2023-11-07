@@ -20,7 +20,7 @@
             <div class="row mt-5">
                 <div class="col-sm-6"> 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="pdfCheckbox">
+                        <input class="form-check-input" type="radio" name="downloadFormat" value="pdf" id="pdfCheckbox">
                         <label class="form-check-label" for="pdfCheckbox">
                             PDF
                         </label>
@@ -28,13 +28,14 @@
                 </div>
                 <div class="col-sm-6"> 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="excelCheckbox">
+                        <input class="form-check-input" type="radio" name="downloadFormat" value="excel" id="excelCheckbox">
                         <label class="form-check-label" for="excelCheckbox">
                             Excel
                         </label>
                     </div>
                 </div>
             </div>
+            
             
 
         </div>
@@ -344,7 +345,7 @@ async function updateLatestOrdersAndBestSellers() {
         const salesCell = row.insertCell(5);
 
         const imgElement = document.createElement("img");
-        const imageUrl = "/product-images/" + seller.productDetails.images[0].mainimage;
+        const imageUrl = "/product-images/" + seller.productDetails?.images[0]?.mainimage;
         imgElement.src = imageUrl;
         imgElement.style.maxWidth = "50px";
         productImageCell.appendChild(imgElement);
@@ -374,7 +375,7 @@ document.getElementById('generateReportBtn').addEventListener('click', function(
    
     generateReport(startDate, endDate, generatePDF, generateExcel);
 
-    $('#dateModal').modal('hide');
+    $('#staticBackdrop').modal('hide');
 });
 
 

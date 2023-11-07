@@ -8,6 +8,8 @@ const { sentOTP } = require("../auth/OTPauth");
 const PRODUCT = require("../model/productSchema");
 const Wishlist=require('../model/wishlistSchema')
 const {generateInvoice}=require('../utility/invoiceCreator')
+const Coupon=require('../model/couponSchema')
+const Banner = require('../model/bannerSchema');
 
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -25,10 +27,13 @@ const homePage = async (req, res) => {
     const userId = user._id;
     const userWishlist = await Wishlist.findOne({ user: userId });
     const wishlist = userWishlist ? userWishlist.products : [];
+    console.log(userWishlist);
+    const banners = await Banner.find().limit(3); 
 
    
     res.render("user/home", { 
       product: data, 
+      banners,
       username,
       wishlist,
       cartCount: res.locals.cartCount
@@ -610,6 +615,24 @@ const aboutUs=(req,res)=>{
 }
 
 
+//view coupons
+const viewCoupon=async(req,res)=>{
+  try {
+    const username= req.session.user;
+    const Coupons=await Coupon.find()
+    if(!Coupons){
+      res.render('error/404')
+    }
+    console.log(Coupons);
+    const date = new Date()
+   
+    res.render('user/showCoupon',{coupon:Coupons,username,date})
+  } catch (error) {
+    console.error('error while rendering coupon page')
+  }
+}
+
+
 //logout
 const logOut = (req, res) => {
   req.session.destroy();
@@ -644,5 +667,6 @@ module.exports = {
   generateInvoices,
   downloadInvoice,
   aboutUs,
+  viewCoupon,
   logOut,
 };

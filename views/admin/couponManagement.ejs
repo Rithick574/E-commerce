@@ -21,11 +21,17 @@
                         <p class="card-text">DISCOUNT TYPE : <%=coupon.discountType%></p>
                         <p class="card-text">AMOUNT : <%=coupon.amount%></p>
                         <p class="card-text">COUPON TYPE : <%=coupon.couponType%></p>
-                        <p class="card-text">START DATE : <%=coupon.startDate%></p>
+                        <% let dt=new Date(coupon.startDate)%>
+                      
+                       
+                        <p class="card-text">START DATE :  <%=dt.getDate()%>/<%=dt.getMonth()+1%>/<%=dt.getFullYear()%>  %></p>
                         <% if ( date < coupon.endDate){%>
-                          <p class="card-text">EXPIRES ON : <%=coupon.endDate%></p>
+                          <% let dte=new Date(coupon.endDate) %>
+                          
+                          <p class="card-text">EXPIRES ON :   <%=dte.getDate()%>/<%=dte.getMonth()+1%>/<%=dte.getFullYear()%>  %></p>
                         <%}else{%>
-                          <p class="card-text text-danger">EXPIRED ON : <%=coupon.endDate%></p>
+                          <% let de=new Date(coupon.endDate) %>
+                          <p class="card-text text-danger">EXPIRED ON :<%=de.getDate()%>/<%=de.getMonth()+1%>/<%=de.getFullYear()%>  %></p>
                         <%}%>
                           <button class="btn btn-dark">Edit Coupon</button>
                       </div>

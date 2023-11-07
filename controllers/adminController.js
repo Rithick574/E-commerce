@@ -198,7 +198,7 @@ const getCount=async(req,res)=>{
             total: totalAmountByMonthYear[monthYear],
           })
         );
-        console.log("by monthhh",amountsByMonth);
+       
       
         ordersByMonth.sort((a, b) => (a._id < b._id ? -1 : 1));
         amountsByMonth.sort((a, b) => (a._id < b._id ? -1 : 1));

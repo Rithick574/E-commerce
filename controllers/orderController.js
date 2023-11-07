@@ -223,6 +223,7 @@ const OrderList = async (req, res) => {
     const orders = await Order.find().sort({ OrderDate: -1 }).skip(skip).limit(perPage).exec();
     // console.log(orders);
 
+    
     res.render('admin/orders', {
       order: orders,
       current: page,

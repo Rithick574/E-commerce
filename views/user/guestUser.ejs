@@ -71,11 +71,11 @@
                             <div class="col-md-3">
                                 <div class="product-card shadow-lg p-3 bg-body rounded-3">
                                     <a href="/product/guest/<%= product._id %>">
-                                    <div class="product-card-img" style="padding: 30px;">
+                                    <div class="product-card-img" style="padding: 30px; height: 300px;">
                                         <!-- <label class="stock bg-success">In Stock</label> -->
-                                        <td><img src="/product-images/<%=product.images[0].mainimage%>"  alt=""></td>
+                                        <td><img src="/product-images/<%=product?.images[0]?.mainimage%>"  alt="qwertyu"></td>
                                     </div>
-                                    <div class="product-card-body">
+                                    <div class="product-card-body" ">
                                         <p class="product-brand "><%= product.brand %></p>
                                         <h5 class="product-name">
                                             

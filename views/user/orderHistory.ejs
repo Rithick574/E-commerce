@@ -62,7 +62,7 @@ padding-top: 15px;
       <% } else { %>
         <% orders.forEach(order => { %>
         <!-- Start of order card -->
-        <div class="col-md-12 mt-3">
+        <div class="col-md-6 mt-3">
             <div class="card border-rounded shadow">
                 <div class="card-body">
                     <h4 class="mt-4">Products Bought:</h4>
@@ -82,6 +82,15 @@ padding-top: 15px;
                     <p class="card-text">Total Price : <span class="blue-text"><b><%= order.TotalPrice %> Rs only</b></span></p>
                     <p class="card-text">Order Status:<b> <%= order.Status %></b></p>
                     <p class="card-text">Payment Method: <%= order.PaymentMethod %></p>
+                   
+                    <p class="card-text">
+                     Ordered Address:
+                      <%= order.Address.Address %>, 
+                      <%= order.Address.City %>, 
+                      <%= order.Address.State %>
+                       - <%= order.Address.Pincode %>
+                    </p>
+
                     <button type="button" class="btn btn-dark m-2">
                         <a href="/viewproduct/<%= order._id %>" style="text-decoration: none; color: rgb(255, 255, 255);">View Product</a>
                           </button>

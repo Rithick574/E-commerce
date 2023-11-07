@@ -97,6 +97,7 @@ user.post('/edituserAddress/:addressId',userAuth.verifyUser,calculateCartCount,u
 user.post('/downloadinvoice',userAuth.verifyUser,calculateCartCount,userController.generateInvoices)
 user.get('/downloadinvoice/:orderId',userAuth.verifyUser,calculateCartCount,userController.downloadInvoice)
 user.get('/aboutus',userAuth.verifyUser,calculateCartCount,userController.aboutUs)
+user.get('/coupons',userAuth.verifyUser,calculateCartCount,userController.viewCoupon)
 
 //logout
 user.get("/logout",userController.logOut)

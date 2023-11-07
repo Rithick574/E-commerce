@@ -13,6 +13,7 @@ const upload = require('../middleware/multer');
 const orderController=require('../controllers/orderController')
 const bannerController=require('../controllers/bannerController')
 const couponController=require('../controllers/CouponController')
+const uploadBanner = require('../middleware/bannerMulter');
 
 
 
@@ -44,7 +45,7 @@ admin.get('/latestOrders',adminAuth.verifyAdmin, adminController.getOrdersAndSel
 //view customer
 admin.get('/customers',adminAuth.verifyAdmin,adminController.Customers)
 
-
+//products
 admin.get('/products',adminAuth.verifyAdmin,productController.Products)
 admin.get('/addProduct',adminAuth.verifyAdmin,productController.addProduct)
 admin.get('/status',adminAuth.verifyAdmin,adminController.status)
@@ -79,9 +80,11 @@ admin.post("/upload",adminAuth.verifyAdmin, upload.fields(uploadFields),productC
 admin.post('/editProduct/:productId',adminAuth.verifyAdmin, productController.editProduct);
 admin.post('/updateProduct/:productId',adminAuth.verifyAdmin,upload.fields(uploadFields), productController.updateProduct);
 admin.post('/archiveProduct/:productId',adminAuth.verifyAdmin, productController.archiveProduct);
+admin.delete('/delete-image/:id/:index',adminAuth.verifyAdmin, productController.deletesingleImage)
 
 //bannner managemet
 admin.get('/bannerManagement',adminAuth.verifyAdmin, bannerController.bannerManagement)
+admin.post('/uploadBanner',adminAuth.verifyAdmin, uploadBanner.single('image'), bannerController.uploadBanner)
 
 //coupon management
 admin.get('/couponmanagent',adminAuth.verifyAdmin, couponController.CouponManagement)

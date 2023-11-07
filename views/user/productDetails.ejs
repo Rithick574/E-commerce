@@ -24,7 +24,7 @@
                                     <a href="/product/<%= product._id %>">
                                     <div class="product-card-img" style="padding: 30px;">
                                         <!-- <label class="stock bg-success">In Stock</label> -->
-                                        <td><img src="/product-images/<%= product.productId.images[0].mainimage %>"  alt=""></td>
+                                        <td><img src="/product-images/<%= product?.productId.images[0]?.mainimage %>"  alt=""></td>
                                     </div>
                                     <div class="product-card-body">
                                         <p class="product-brand ">Quantity: <%= product.quantity %></p>
