@@ -25,15 +25,12 @@ module.exports = {
                     "country": "Kerala"
                 },
                 "client": {
-                    // "company": orderDetails.ShippedAddress.Name,
-                    // "address": orderDetails.ShippedAddress.Address,
-                    // "zip":orderDetails.ShippedAddress.Pincode ,
-                    // "zip": orderDetails.ShippedAddress.Pincode,
-                    // "city": orderDetails.ShippedAddress.City,
-                    // "state":orderDetails.ShippedAddress.State,
-                    // "Mob No":orderDetails.ShippedAddress.Mobaile,
-                    // "state": orderDetails.ShippedAddress.State,
-                    // "Mob No": orderDetails.ShippedAddress.Mobaile
+                    "company": orderDetails[0].Address.Name,
+                    "address": orderDetails[0].Address.Address,
+                    "zip":orderDetails[0].Address.Pincode ,
+                    "city": orderDetails[0].Address.City,
+                    "state":orderDetails[0].Address.State,
+                    "Mob No": orderDetails[0].Address.Mobile
                 },
                 "information": {
                     "Order ID": orderDetails[0]._id,

@@ -30,10 +30,10 @@
                         <h5 class="brand-name">Phone Bazaar</h5>
                     </div>
                     <div class="col-md-5 my-auto">
-                        <form role="search">
+                        <form id="searchForm" role="search" action="/searchProducts" method="post">
                             <div class="input-group">
-                                <input type="search" placeholder="Search your product" class="form-control " />
-                                <button class="btn bg-white search-button " type="submit">
+                                <input type="search" id="searchInput" placeholder="Search your product" name="searchAllProduct" class="form-control" />
+                                <button type="submit" class="btn bg-white search-button">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>

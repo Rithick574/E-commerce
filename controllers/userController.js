@@ -572,8 +572,6 @@ const generateInvoices=async(req,res)=>{
     const { orderId } = req.body;
    
     const orderDetails= await Order.find({_id:orderId}).populate('Address').populate("Items.productId");
-    
-    console.log(orderDetails,'@@@@@@@@@@@');
 
     const ordersId = orderDetails[0]._id;
 
@@ -631,6 +629,10 @@ const viewCoupon=async(req,res)=>{
     console.error('error while rendering coupon page')
   }
 }
+
+
+
+
 
 
 //logout

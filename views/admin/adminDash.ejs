@@ -279,6 +279,7 @@ async function updateSalesGraph(timeInterval) {
             legend: { display: false },
         }
     });
+    
     const barColors = ["red", "green","blue","orange","brown"];
     window.myChart2 = new Chart(Count, {
         type: "bar",
@@ -286,7 +287,7 @@ async function updateSalesGraph(timeInterval) {
             labels: salesData.labelsByAmount,
             datasets: [
                 {
-                    label: "Sales by count",
+                    label: "Sales by Amount",
                     data: salesData.dataByAmount,
                     backgroundColor: barColors,
                     borderColor: "white",

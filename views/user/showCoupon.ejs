@@ -2,8 +2,8 @@
 
 <div class="container-fluid">
     <div class="row p-5">
-        <div class="d-flex justify-content-center">
-            <h2>Coupons</h2>
+        <div class="d-flex justify-content-center">    
+                <h2>Coupons</h2>
         </div>
         <% coupon.forEach((coupons) => { %>
             <div class="col-md-6 p-3">
@@ -11,6 +11,9 @@
                     <div class="card-header">
                         <%= coupons.couponName %>
                     </div>
+                    <div class="image-container">
+                        <img src="/assets/Coupon.png" alt="no image" style="height: 100px;">
+                       </div>
                     <div class="card-body">
                         <h5 class="card-title">Coupon Code: <%= coupons.couponCode %></h5>
                         <p class="card-text" id="copyText<%= coupons._id %>">Copy Coupon Code</p>

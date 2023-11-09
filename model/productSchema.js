@@ -31,9 +31,8 @@ const ProductsSchema = new Schema({
   timeStamp: { type: Date },
   brandId: { type: Schema.Types.ObjectId },
   categoryId: { type: Schema.Types.ObjectId },
-  isDeleted: {type: Boolean, default: false,
-  Status:{type:String}
-  },
+  isDeleted: { type: Boolean, default: false },
+  Status: { type: String },
 });
 
 

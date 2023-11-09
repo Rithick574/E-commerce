@@ -21,8 +21,12 @@ const viewProduct=async(req,res)=>{
         const productId = req.params.productId;
         const username =req.session.user;
         const productData= await Product.findById(productId);
-        console.log("view productsa");
-        res.render('user/viewproduct', { product: productData,username});
+        const user = await register.findOne({ email: username });
+        const userId = user._id;
+        const userWishlist = await Wishlist.findOne({ user: userId });
+        const wishlist = userWishlist ? userWishlist.products : [];
+
+        res.render('user/viewproduct', { product: productData,username,wishlist});
        }catch(error){
         res.status(500).send('internal server error')
        }
@@ -57,11 +61,18 @@ const viewProduct=async(req,res)=>{
         const viewallProducts = await Product.find().skip(skip).limit(pageSize);
         const userWishlist = await Wishlist.findOne({ user: userId });
         const wishlist = userWishlist ? userWishlist.products : [];
+
+        const categories = await Category.find();
+        const brands = await Brands.find();
+
+
     
         res.render('user/shop', {
            viewallProducts,
            username,
+           categories,
            wishlist,
+           brands, 
            productsCount: totalProducts ,
            page: page
           });
@@ -72,6 +83,111 @@ const viewProduct=async(req,res)=>{
       }
    
     }
+
+
+
+    
+//filter by categories
+const postFilterProduct = async (req, res) => {
+ 
+  try {
+    
+    const { selectedBrands, selectedCategory, selectedPrice } = req.body;
+    const username = req.session.user;
+    const user = await register.findOne({ email: username });
+    const userId = user._id;
+    const brands = await Brands.find({});
+    const categories = await Category.find({});
+    const page = parseInt(req.query.page) || 1;
+     const pageSize = 5;
+     const skip = (page - 1) * pageSize;
+
+    const filter = {};
+
+        if (selectedBrands) {
+            filter.brandId = selectedBrands;
+        }
+        if (selectedCategory) {
+          console.log(selectedCategory);
+            filter.categoryId = selectedCategory;
+        }
+        if (selectedPrice) {
+            const priceValue = parseInt(selectedPrice);
+            filter.descountedPrice = { $lte: priceValue };
+        }
+
+        const viewallProducts = await Product.find(filter).skip(skip).limit(pageSize);
+        const productDataCount = await Product.countDocuments(filter); 
+
+        const totalProducts = Math.ceil(productDataCount / pageSize);
+
+        const userWishlist = await Wishlist.findOne({ user: userId });
+        const wishlist = userWishlist ? userWishlist.products : [];
+
+        // console.log("productData====",viewallProducts);
+
+        res.render('user/shop', {
+          username,
+          categories, 
+          viewallProducts,
+          wishlist,
+          brands, 
+          productsCount: totalProducts ,
+          page: page
+         });
+
+  } catch (error) {
+    console.error('Error filtering products :', error);
+    res.status(500).json({ message: 'Internal server error while filtering products.' });
+  }
+};
+
+
+
+//search products in shop
+const searchProducts=async(req,res)=>{
+  try {
+    const search=req.body.searchAllProduct;
+    const username=req.session.user;
+    const brands = await Brands.find({});
+    const categories = await Category.find({});
+    const user = await register.findOne({ email: username });
+    const userId = user._id;
+    const userWishlist = await Wishlist.findOne({ user: userId });
+    const wishlist = userWishlist ? userWishlist.products : [];
+
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = 5;
+    const skip = (page - 1) * pageSize;
+
+    const productDataCount=await Product.find({
+      name: { $regex: "^" + search,$options: "i" },
+    }).count()
+
+    const totalProducts = Math.ceil(productDataCount / pageSize);
+
+    const viewallProducts= await Product.find({
+      name: { $regex: "^" + search,$options: "i" },
+    }).skip(skip).limit(pageSize)
+
+    res.render('user/shop', {
+      username,
+      categories, 
+      viewallProducts,
+      wishlist,
+      brands, 
+      productsCount: totalProducts ,
+      page: page
+     });
+
+
+  } catch (error) {
+    console.log("error while searching",error);
+    res.render('error/404')
+  }
+}
+
+
     
     //shop for guest
     // const ShopProductGuest=async(req,res)=>{
@@ -204,7 +320,7 @@ const editProduct=async(req,res)=>{
   const updateProduct = async (req, res) => {
     try {
       const productId = req.params.productId;
-      const { productname, price, discountprice, brand, category, description, stock } = req.body;
+      const { productname, price, discountprice, brand, category, description, stock, Spec1, Spec2 ,Spec3 , Spec4 } = req.body;
     
       const { image1, image2, image3, image4 } = req.files; 
   
@@ -243,6 +359,10 @@ const editProduct=async(req,res)=>{
         categoryId: categoryId._id,
         stock: stock,
         descountedPrice: discountprice,
+        highlight1:Spec1,
+        highlight2:Spec2,
+        highlight3:Spec3,
+        highlight4:Spec4,
         $set: {
           images: [updatedImages], 
           timeStamp: Date.now(),
@@ -304,7 +424,7 @@ const editProduct=async(req,res)=>{
     }
   }
   
-
+//delete single image
   const deletesingleImage = async (req, res) => {
     try {
       const productId = req.params.id;
@@ -343,6 +463,8 @@ const editProduct=async(req,res)=>{
     }
   };
   
+
+
  
 
 
@@ -360,5 +482,7 @@ const editProduct=async(req,res)=>{
     updateProduct,
     archiveProduct,
     generatepdf,
-    deletesingleImage
+    deletesingleImage,
+    postFilterProduct,
+    searchProducts
   }

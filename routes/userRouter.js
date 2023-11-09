@@ -51,8 +51,9 @@ user.get('/product/:productId',userAuth.verifyUser,calculateCartCount,productCon
 //view guest 
 user.get('/product/guest/:productId',userAuth.userExist,productController.viewProductGuest)
 
-//shop,cart
+//shop,search
 user.get('/shop',userAuth.verifyUser,calculateCartCount,productController.ShopProduct)
+user.post('/searchProducts',userAuth.verifyUser,calculateCartCount,productController.searchProducts)
 
 //wishlist
 user.get('/wishlist',userAuth.verifyUser,calculateCartCount,wishlistController.wishList)
@@ -80,6 +81,9 @@ user.get('/ordersuccess',userAuth.verifyUser,calculateCartCount,orderController.
 user.get('/trackOrder',userAuth.verifyUser,calculateCartCount,orderController.orderHistory)
 user.post('/verify-payment',userAuth.verifyUser,calculateCartCount,orderController.verifyPayment)
 
+
+//filter
+user.post('/filterProduct',userAuth.verifyUser,calculateCartCount,productController.postFilterProduct);
 
 
 //profile

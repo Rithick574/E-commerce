@@ -1,158 +1,127 @@
 <%-include('../partials/userHeader',{ cartCount: cartCount }) %>
-  <br><br>
+  <br>
 <!-- sidebar + content -->
 <section class="">
     <div class="container">
       <div class="row">
         <!-- sidebar -->
-        <div class="col-lg-3">
-          
-          
-          <!-- Collapsible wrapper -->
-          <div class="collapse card d-lg-block mb-5" id="navbarSupportedContent">
-            <div class="accordion" id="accordionPanelsStayOpenExample">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                  <button
-                          class="accordion-button text-dark bg-light"
-                          type="button"
-                          data-mdb-toggle="collapse"
-                          data-mdb-target="#panelsStayOpen-collapseTwo"
-                          aria-expanded="true"
-                          aria-controls="panelsStayOpen-collapseTwo"
-                          >
-                    Categories
-                  </button>
-                </h2>
-                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
-                  <div class="accordion-body">
-                    <div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked />
-                        <label class="form-check-label" for="flexCheckChecked1">under 20000</label>
-                        <span class="badge badge-secondary float-end">120</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked />
-                        <label class="form-check-label" for="flexCheckChecked2">Flagship</label>
-                        <span class="badge badge-secondary float-end">15</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3" checked />
-                        <label class="form-check-label" for="flexCheckChecked3">Basic phones</label>
-                        <span class="badge badge-secondary float-end">35</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4" checked />
-                        <label class="form-check-label" for="flexCheckChecked4">under 10000</label>
-                        <span class="badge badge-secondary float-end">89</span>
-                      </div>
-                      
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                  <button
-                          class="accordion-button text-dark bg-light"
-                          type="button"
-                          data-mdb-toggle="collapse"
-                          data-mdb-target="#panelsStayOpen-collapseTwo"
-                          aria-expanded="true"
-                          aria-controls="panelsStayOpen-collapseTwo"
-                          >
-                    Brands
-                  </button>
-                </h2>
-                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
-                  <div class="accordion-body">
-                    <div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked />
-                        <label class="form-check-label" for="flexCheckChecked1">samsung</label>
-                        <span class="badge badge-secondary float-end">120</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked />
-                        <label class="form-check-label" for="flexCheckChecked2">IQ</label>
-                        <span class="badge badge-secondary float-end">15</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3" checked />
-                        <label class="form-check-label" for="flexCheckChecked3">realme</label>
-                        <span class="badge badge-secondary float-end">35</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4" checked />
-                        <label class="form-check-label" for="flexCheckChecked4">oppo</label>
-                        <span class="badge badge-secondary float-end">89</span>
-                      </div>
-                     
-                      
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                  <button
-                          class="accordion-button text-dark bg-light"
-                          type="button"
-                          data-mdb-toggle="collapse"
-                          data-mdb-target="#panelsStayOpen-collapseTwo"
-                          aria-expanded="true"
-                          aria-controls="panelsStayOpen-collapseTwo"
-                          >
-                    Price
-                  </button>
-                </h2>
-                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
-                  <div class="accordion-body">
-                    <div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked />
-                        <label class="form-check-label" for="flexCheckChecked1">Highest to Lowest</label>
-                        <span class="badge badge-secondary float-end">120</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked />
-                        <label class="form-check-label" for="flexCheckChecked2">Lowest to Highest</label>
-                        <span class="badge badge-secondary float-end">15</span>
-                      </div>
-                      
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              
+        <div class="col-lg-3" id="sidebar">
 
-            </div>
-          </div>
+          <form action="/filterProduct" method="post">
+
+          <div class="card p-2">
+            <div class="card-body">
+              <h5 class="card-title"> Categories</h5>
+              <br>
+              <h6 class="card-subtitle mb-2 text-muted">Filter By  Categories</h6>
+              <br>
+              <% categories.forEach(category => { %>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="<%= category._id %>" name="selectedCategory" id="<%= category.name %>">
+                    <label class="form-check-label" for="<%= category.name %>">
+                        <%= category.name %>
+                    </label>
+                </div>
+            <% }) %>
+         
         </div>
+        </div>
+
+<br>
+
+        <div class="card p-2">
+          <div class="card-body">
+            <h5 class="card-title"> Brands </h5>
+            <br>
+            <h6 class="card-subtitle mb-2 text-muted">Filter By  Brands</h6>
+            <br>
+            <% brands.forEach(brand => { %>
+              <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="<%= brand._id %>" name="selectedBrands" id="<%= brand.name %>">
+                  <label class="form-check-label" for="<%= brand._id %>">
+                      <%= brand.name %>
+                  </label>
+              </div>
+          <% }) %>
+       
+      </div>
+      </div>
+
+      <br>
+
+      <div class="card p-2">
+        <div class="card-body">
+          <h5 class="card-title"> Price</h5>
+          <br>
+          <h6 class="card-subtitle mb-2 text-muted">Filter By  Price</h6>
+          <br>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="10000" name="selectedPrice" id="price1">
+            <label class="form-check-label" for="price1">
+              below 10000
+            </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="20000" name="selectedPrice" id="price2" >
+          <label class="form-check-label" for="price2">
+            below 20000
+          </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="30000" name="selectedPrice" id="price3" >
+        <label class="form-check-label" for="price3">
+            below 30000
+        </label>          
+    </div> 
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="40000" name="selectedPrice" id="price4" >
+        <label class="form-check-label" for="price4">
+            below 40000
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="50000" name="selectedPrice" id="price5" >
+        <label class="form-check-label" for="price5">
+            below 50000
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="100000" name="selectedPrice" id="price6" >
+        <label class="form-check-label" for="price6">
+            below 100000
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="1000000" name="selectedPrice" id="price7" >
+        <label class="form-check-label" for="price7">
+            above 100000
+        </label>
+    </div>
+    
+    </div>
+    </div>
+<br>
+    <button type="submit" class="btn btn-outline-dark w-100 border border-secondary">Apply</button>
+ 
+          </form>
+
+
+        </div>
+       
         <!-- sidebar -->
+
         <!-- content -->
         <div class="col-lg-9">
           <header class="d-sm-flex align-items-center border-bottom mb-4 pb-3">
        
           </header>
-          <%if(viewallProducts){%>
+          <%if(viewallProducts.length > 0){%>
             <%viewallProducts.forEach((data)=>{ %>
           <div class="row justify-content-center mb-3">
             <div class="col-md-12">
               <div class="card shadow-0 border rounded-3">
                 <div class="card-body">
+                  <a href="/product/<%= data._id %>" style="text-decoration: none;">
                   <div class="row g-0">
                     <div class="col-xl-3 col-md-4 d-flex justify-content-center">
                       <div class="bg-image hover-zoom ripple rounded ripple-surface me-md-3 mb-3 mb-md-0">
@@ -166,14 +135,21 @@
                     </div>
                     
                     <div class="col-xl-6 col-md-5 col-sm-7" >
-                      <a href="/user/product/details/<%-data._id%>" style="text-decoration: none;"> <h5><%=data.name%></h5></a>
+                     
+                      <h5 style="color: rgb(65, 112, 241);"><%=data.name%></h5>
                       <br>
                     
   
                       <p class="text mb-4 mb-md-0">
-                        <%=data.description%>
+                        <ul>
+                          <li><%= data.highlight1 %></li>
+                          <li><%= data.highlight2 %></li>
+                          <li><%= data.highlight3 %></li>
+                          <li><%= data.highlight4 %></li>
+                      </ul>
                       </p>
                     </div>
+                    </a>
                     <div class="col-xl-3 col-md-3 col-sm-5">
                       <div class="d-flex flex-row align-items-center mb-1">
                         <h4 class="mb-1 me-1" >₹<%=data.descountedPrice%></h4>
@@ -203,7 +179,7 @@
   
           
   
-          <!-- <hr /> -->
+          <hr />
 
           <%})%>
          
@@ -231,7 +207,17 @@
         
 
           <%}else{%>
-            <h1>404 not found</h1>
+            <div class="d-flex justify-content-center mt-5">
+
+              <h2>No Matching Products</h2>
+            
+            </div>
+            <div class="d-flex justify-content-center mt-2">
+
+              <p> Use another Filter</p>
+            
+            </div>
+           
             <%}%>
   
           
@@ -239,15 +225,30 @@
       </div>
     </div>
   </section>
+  <br>
+<br>
+
+
 
   <script>
+
+
+
+
+
      document.querySelectorAll('.add-to-cart-button').forEach(button => {
             button.addEventListener('click', function (event) {
                 event.preventDefault();
 
                 const productId = this.getAttribute('data-product-id');
 
-
+                $.ajax({
+            url: '/getproduct/' + productId,
+            method: 'GET',
+            success: function (product) {
+                console.log(product.product.stock);
+                if (product.product.stock > 0) {
+                  console.log(product);
                 $.ajax({
                     url: '/addtocart/' + productId,
                     method: 'POST',
@@ -260,6 +261,15 @@
                         console.error('Error adding product to cart:', error);
                     }
                 });
+              }else {
+                   console.log(product.stock)
+                    alert('Item is out of stock');
+                }
+              },
+              error: function (error) {
+                console.error('Error fetching product details:', error);
+            }
+        });
             });
         });
 
@@ -293,6 +303,7 @@
                 });
             });
         });
+
 
         
   </script>
