@@ -11,6 +11,7 @@ const cartController=require('../controllers/cartController')
 const orderController=require('../controllers/orderController')
 const wishlistController=require('../controllers/wishlistController')
 const calculateCartCount = require('../middleware/cartCountMiddleware');
+const uploadProfile=require('../middleware/profilepicMulter')
 
 
 
@@ -102,11 +103,10 @@ user.post('/downloadinvoice',userAuth.verifyUser,calculateCartCount,userControll
 user.get('/downloadinvoice/:orderId',userAuth.verifyUser,calculateCartCount,userController.downloadInvoice)
 user.get('/aboutus',userAuth.verifyUser,calculateCartCount,userController.aboutUs)
 user.get('/coupons',userAuth.verifyUser,calculateCartCount,userController.viewCoupon)
+user.post('/uploadProfilePicture', userAuth.verifyUser, calculateCartCount, uploadProfile.single('profilePicture'), userController.uploadProfilePicture);
 
 //logout
 user.get("/logout",userController.logOut)
-
-
 
 
 

@@ -12,6 +12,8 @@ const Coupon=require('../model/couponSchema')
 const Banner = require('../model/bannerSchema');
 
 
+
+
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const verifySid = process.env.VERIFY_SID;
@@ -632,6 +634,36 @@ const viewCoupon=async(req,res)=>{
 
 
 
+//profile picture upload
+const uploadProfilePicture = async (req, res) => {
+  try {
+    const username = req.session.user;
+    const user = await register.findOne({ email: username });
+    const userId = user._id;
+
+    if (!req.file) {
+      console.error("No file uploaded");
+      return res.status(400).json({ success: false, error: "No file uploaded" });
+    }
+
+    const updateUser = await register.findOneAndUpdate(
+      { _id: userId },
+      { profilePhoto: req.file.filename },
+      { new: true }
+    );
+
+    if (updateUser) {
+      console.log("Updated");
+      return res.status(200).json({ success: true, message: "Profile picture uploaded successfully" });
+     
+    } else {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error while uploading profile picture:", error);
+    return res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};
 
 
 
@@ -670,5 +702,6 @@ module.exports = {
   downloadInvoice,
   aboutUs,
   viewCoupon,
+  uploadProfilePicture,
   logOut,
 };

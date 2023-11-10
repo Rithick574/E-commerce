@@ -11,6 +11,7 @@ const UserSchema= new mongoose.Schema({
         required:true
     },
     timeStamp:{type:Date},
+    profilePhoto:{type:String},
     phone: {
         type: String,
         // required: true

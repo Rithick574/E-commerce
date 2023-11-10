@@ -8,15 +8,7 @@
     <title>Document</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    
-<style>
-   .form-control {
-    margin-left: 90px;
-    width: 70%; 
-  }
-  
-</style>
+ 
   </head>
   <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -28,15 +20,18 @@
           <span class="close" id="closeModal" style="font-size: 30px; cursor: pointer;">&times;</span>
           <h2 class="text-center">Reset Password</h2>
           <form id="resetPasswordForm">
+
+            <label for="username" class="visually-hidden">Username or Email:</label>
+            <input type="text" id="username" name="username" class="visually-hidden" aria-hidden="true">
             <br>
             <div class="form-group">
               <label for="newPassword" >New Password</label>
-              <input type="password" class="form-control" id="newPassword" placeholder="New Password">
+              <input type="password" class="form-control" id="newPassword" placeholder="New Password"  autocomplete="new-password">
             </div>
             <br>
             <div class="form-group">
               <label for="confirmNewPassword">Confirm New Password</label>
-              <input type="password" class="form-control" id="confirmNewPassword" placeholder="Confirm New Password">
+              <input type="password" class="form-control" id="confirmNewPassword" placeholder="Confirm New Password" autocomplete="new-password">
             </div>
             <br>
             <div class="form-group" style="margin-bottom: 20px;">
@@ -58,20 +53,32 @@
                 <div
                   class="profile-pic d-flex flex-column align-items-center text-center  py-5"
                 >
-                <!-- <label class="-label" for="file"> -->
-                  <!-- <span class="glyphicon glyphicon-camera"></span>
-                  <span>Change Image</span> -->
-                <!-- </label> -->
-                <!-- <input id="file" type="file" onchange="loadFile(event)"/> -->
-                  <img
-                    class="rounded-circle mt-5 img-fluid"
-                    width="150px"
-                    src="<%= profile.profilePicture || 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg' %>"
-                    id="output"
-                    alt="Default Image"
-                  />
+             
 
-                  <span class="font-weight-bold"><%= profile.name %></span>
+                <div class="d-flex justify-content-center ms-5">
+                  <label class="form-label text-white m-1" for="customFile2"></label>
+                  <input type="file" accept="image/*" id="imageinput" onchange="uploadProfilePicture(event)" />
+
+                </div>
+                <br>
+           
+                <div class="profilePhoto">
+                  <img
+                  class="rounded-circle mt-5 img-fluid"
+                  width="150px"
+                  src="/profile-images/<%= profile.profilePhoto || 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg' %>"
+                  id="selectedAvathar" 
+                  alt="Default Image"
+                  style="object-fit: cover"
+                />
+                
+                  
+                </div>
+
+               
+        
+
+                  <span class="font-weight-bold"><b><%= profile.name %></b></span>
                   <span class="text-black-50"><%= profile.email %></span>
                 </div>
                 <div class=" d-flex justify-content-center">
@@ -94,15 +101,15 @@
                   
                   </div>
                   <div class="col-md-12">
-                    <label class="labels">Name</label>
+                    <label class="labels">Name :</label>
                     <input type="text" class="form-control" id="name" placeholder="Name" value="<%= profile.name %>" />
                   </div>
                   <div class="col-md-12">
-                    <label class="labels">Email</label>
+                    <label class="labels">Email :</label>
                     <input type="text" class="form-control" id="email" placeholder="Email" value="<%= profile.email %>" />
                   </div>
                   <div class="col-md-12">
-                    <label class="labels">Phone Number</label>
+                    <label class="labels">Phone Number :</label>
                     <input type="text" class="form-control" id="phone" placeholder="Phone Number" value="<%= profile.phone %>" />
 
                   </div>
@@ -125,10 +132,12 @@
                 </div>
                 
               </form>
-            
+              <br>
             </div>
           </div>
+          
         </div>
+       
 
         <div class="col-md-12">
         <!-- <div class="row"> -->
@@ -340,6 +349,38 @@ document.getElementById('resetPasswordForm').addEventListener('submit', function
       alert('Passwords do not match. Please check and try again.');
     }
   });
+
+
+
+
+
+
+  function uploadProfilePicture(event) {
+  const fileInput = event.target;
+  const file = fileInput.files[0];
+
+  const formData = new FormData();
+  formData.append('profilePicture', file);
+
+  fetch('/uploadProfilePicture', {
+    method: 'POST',
+    body: formData,
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      
+      const avatarImage = document.getElementById('selectedAvathar'); 
+avatarImage.src = URL.createObjectURL(file);
+      alert('Profile picture updated successfully!');
+    } else {
+      alert('Failed to update profile picture.');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
 
   
 
