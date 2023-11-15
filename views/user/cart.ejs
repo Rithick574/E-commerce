@@ -33,6 +33,13 @@
           <div class="m-4">
             <h4 class="card-title mb-4">Your shopping cart</h4>
             <% if (Array.isArray(product) && product.length > 0) { %>
+              <% if (errorMessage.length > 0) { %>
+                <div class="alert alert-danger" role="alert">
+                  <% errorMessage.forEach(message => { %>
+                    <p><%= message %></p>
+                  <% }); %>
+                </div>
+              <% } %>
               <% let subtotal = 0; %>
               <% product.forEach((data)=> { %>
 
@@ -163,7 +170,7 @@
 
             <div class="mt-3">
               <a href="/placeorder" class="btn btn-dark w-100 shadow-0 mb-2">
-                Place Order
+                Go to checkout
               </a>
             </div>
             

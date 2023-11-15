@@ -68,10 +68,17 @@ user.post('/wishlistdelete/',userAuth.verifyUser,calculateCartCount,wishlistCont
 //cart
 user.post("/addtocart/:productId",userAuth.verifyUser,calculateCartCount,cartController.addToCart)
 user.get('/getproduct/:productId',userAuth.verifyUser,calculateCartCount,cartController.stockcheck)
-user.get('/cart',userAuth.verifyUser,calculateCartCount,cartController.viewCart)
+
+
+user.get('/cart',userAuth.verifyUser,calculateCartCount,cartController.viewCart)//this one
+
+
 user.post('/updatequantity',userAuth.verifyUser,calculateCartCount,cartController.updateQuantity)
 user.post('/removefromcart',userAuth.verifyUser,calculateCartCount,cartController.removeFromCart)
-// user.get('/getcartquantity',userAuth.verifyUser,cartController.getQuantity)
+
+// Get Cart Quantity
+user.get('/getcartquantity', userAuth.verifyUser, calculateCartCount, cartController.getQuantity);
+
 
 
 //place order
@@ -107,6 +114,7 @@ user.post('/uploadProfilePicture', userAuth.verifyUser, calculateCartCount, uplo
 
 //logout
 user.get("/logout",userController.logOut)
+
 
 
 

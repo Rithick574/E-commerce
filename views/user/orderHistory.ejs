@@ -67,18 +67,36 @@ padding-top: 15px;
                 <div class="card-body">
                     <h4 class="mt-4">Products Bought:</h4>
                     <ul>
-                        <% order.Items.forEach((item) => { %>
-                            <li> 
-                                  <b><%= item.productId.name %> </b><br> Quantity: <%= item.quantity %> 
-                                </li>
-                                <br>
-                        <% }); %>
+                      <% order.Items.forEach((item) => { %>
+                        <li>
+                            <% if (item.productId && item.productId.name) { %>
+                                <b><%= item.productId.name %> </b><br> Quantity: <%= item.quantity %>
+                            <% } else { %>
+                                Product information not available
+                            <% } %>
+                        </li>
+                        <br>
+                    <% }); %>
+                    
                     </ul>
                   
                  
                     <p class="card-text">Order ID :  <%= order._id %> </p>
-                    <p class="card-text">Ordered Date: <%= order.OrderDate %></p>
-                    <p class="card-text">Expected Delivery Date: <%= order.ExpectedDeliveryDate %></p>
+                    <% console.log('order.timeStamp:', order.timeStamp) %>
+                    <% let orderDate = new Date(order.OrderDate) %>
+                    <p class="card-text">
+                        Ordered Date and Time:
+                        <%= orderDate.toLocaleDateString() || 'N/A' %> <%= orderDate.toLocaleTimeString() || 'N/A' %>
+                    </p>
+                    <p class="card-text">
+                      Expected Delivery Date and Time:
+                      <% if (order.ExpectedDeliveryDate) { %>
+                          <%= (new Date(order.ExpectedDeliveryDate)).toLocaleString() %> 
+                      <% } else { %>
+                          N/A
+                      <% } %>
+                  </p>
+                  
                     <p class="card-text">Total Price : <span class="blue-text"><b><%= order.TotalPrice %> Rs only</b></span></p>
                     <p class="card-text">Order Status:<b> <%= order.Status %></b></p>
                     <p class="card-text">Payment Method: <%= order.PaymentMethod %></p>

@@ -9,6 +9,12 @@
      
       <h2>Edit Products</h2>
 
+      <% if (errorMessage) { %>
+        <div class="alert alert-danger" role="alert">
+          <%= errorMessage %>
+        </div>
+      <% } %>
+
       <form class="row g-3"  method="POST" action="/admin/updateProduct/<%= product._id %>" enctype="multipart/form-data">
      
           <div class="col-md-6">
@@ -30,16 +36,17 @@
          
           <div class="col-md-6">
             <label for="inputCity" class="form-label">Price</label>
-            <input type="number" class="form-control" value="<%= product.basePrice %>" name="price" id="inputCity">
+            <input type="number" class="form-control" value="<%= product.basePrice %>" name="price" id="inputCity" min="0" required>
           </div>
         
           <div class="col-md-6">
             <label for="inputZip" class="form-label">Discounted Price</label>
-            <input type="number" class="form-control" value="<%= product.descountedPrice %>" name="discountprice" id="inputZip">
+            <input type="number" class="form-control" value="<%= product.descountedPrice %>" name="discountprice" id="inputZip" required min="0">
+
           </div>
           <div class="col-md-6">
             <label for="inputCity" class="form-label">Stock</label>
-            <input type="number" class="form-control" value="<%= product.stock %>" name="stock" id="stock">
+            <input type="number" class="form-control" value="<%= product.stock %>" name="stock" id="stock" required min="0">
           </div>
           <div class="col-md-12">
             <label for="inputState" class="form-label">Category</label>

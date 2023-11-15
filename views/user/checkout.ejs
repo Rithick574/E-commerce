@@ -338,9 +338,9 @@
           text: "Please add an address before confirming the order.",
           
         });
-        return
+        return;
       }
-    $.ajax({
+    $.ajax({ 
       url:'/placeOrder',
       method: 'post',
       data: $('#form-checkout').serialize(),
@@ -348,18 +348,21 @@
         if (response.codSuccess) {
           
           window.location = '/ordersuccess'
-          console.log('response got')
-        } else {
+          
+        } else if(response.online) {
          
-          console.log(response.createdOrder)
-          console.log(response.order)
           handlePayNowClick(response)
+        }else{
+          alert(response.error)
+          if(confirm){
+            window.location='/cart'
+          }
         }
       }
     })
   })
   function handlePayNowClick (order) {
-    console.log(order,'%%%%%%%%%%%%%%%%')
+  
     var options = {
     "key": "rzp_test_evMKTjM3ykRhMJ",
     "amount": order.createdOrder.amount, 
@@ -369,7 +372,7 @@
     "image": "http://localhost:8080/assets/logoPhonebazar.png",
     "order_id": order.createdOrder.id, 
     "handler": function (response){
-      console.log(response)
+     
         verifyPayment(response, order)
     },
     "prefill": {
@@ -387,7 +390,7 @@
   }
 
   function verifyPayment (payment, order) {
-    console.log('now in verifyPayment')
+   
     $.ajax({
       url: '/verify-payment',
       data: {
@@ -397,15 +400,16 @@
       method: 'post',
       success: (response) => {
         if (response.success) {
-          console.log('response got')
+        
           location.href = '/ordersuccess'
         }else{
-          console.log('response not get');
+        
           location.href = '*'
         }
       }
     })
   }
+  
 </script>
 
   </body>

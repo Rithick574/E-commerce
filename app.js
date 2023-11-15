@@ -83,7 +83,7 @@ app.use("/admin",adminRouter.admin);
 
 app.use((err, req, res, next) => {
   console.error(err.stack); 
-  res.status(404).render('error/404');
+  // res.status(404).render('error/404');
 });
 
 

@@ -12,6 +12,11 @@ const CartSchema = new Schema({
   TotalAmount: { type: Number },
 });
 
+CartSchema.methods.calculateTotalQuantity = function () {
+  return this.products.reduce((total, product) => total + product.quantity, 0);
+};
+
+
 const Cart = mongoose.model('Cart', CartSchema);
 
 module.exports = Cart 

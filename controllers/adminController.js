@@ -306,7 +306,8 @@ try {
 
 //admin sighout
 const adminLogout=(req,res)=>{
-  req.session.destroy();
+  // req.session.destroy();
+  req.session.logged = false;
   res.redirect('/admin/login')
 }
 

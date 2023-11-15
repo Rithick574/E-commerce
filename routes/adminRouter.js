@@ -91,7 +91,7 @@ admin.get('/couponmanagent',adminAuth.verifyAdmin, couponController.CouponManage
 admin.post('/addCoupon',adminAuth.verifyAdmin, couponController.addCoupon)
 
 //sales report
-admin.get('/generatepdf',adminAuth.verifyAdmin, productController.generatepdf)
+admin.post('/download-sales-report',adminAuth.verifyAdmin, productController.genereatesalesReport)
 
 // // Admin logout route
 admin.get('/logout', adminController.adminLogout);

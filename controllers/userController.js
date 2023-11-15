@@ -107,15 +107,13 @@ const login = (req, res) => {
 
 const passport = async(req, res) => {
   try {
-    console.log(req.user.displayName,'!!@@@@@@@@@@@@@@@!!!!!!!');
     let userInformation = {
       name: req.user.displayName,
       email: req.user.emails[0].value,
       Status:"Active",
       timeStamp:Date.now(),
     };
-    console.log(userInformation);
-
+  
     req.session.user=userInformation.email;
     req.session.loggedin = true;
 
@@ -525,6 +523,7 @@ const edituserAddress=async(req,res)=>{
     }
     const addressToEdit = user.Address.id(addressId);
 
+
     if (!addressToEdit) {
       return res.render('error/404'); 
     }
@@ -669,7 +668,8 @@ const uploadProfilePicture = async (req, res) => {
 
 //logout
 const logOut = (req, res) => {
-  req.session.destroy();
+  // req.session.destroy();
+  req.session.loggedin = false;
   res.redirect("/");
 };
 

@@ -24,7 +24,10 @@
             <tr>
               <td><%= i + 1 %></td>
               <td><%= order[i]._id %></td>
-              <td><%= order[i].UserId %></td>
+              <td>
+                <%= order[i].Address.Name  %>
+              </td>
+              
               <td>
                 <% const orderDate = new Date(order[i].OrderDate); %>
                 <%= orderDate.toLocaleString('default', { month: 'short' }) %>

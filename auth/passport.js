@@ -2,7 +2,7 @@ const passport=require("passport")
 const Users = require("../model/userSchema");
 require("dotenv").config();
 
-// Ensure the path to the 'google' module is correct
+
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 passport.serializeUser((user,done)=>{
@@ -22,7 +22,21 @@ passport.use("google",
                 scope: ["profile","email"],
           },
           async function (request, accessToken, refreshToken, profile, done) {
-              done(null, profile);
+            try {
+                const email=profile.emails[0].value
+                const exist= await Users.findOne({email:email});
+               
+                if(exist){
+                
+                    return done(null,false,"duplicate email");
+                }
+              
+
+                done(null,profile)  
+                
+            } catch (error) {
+                console.log(err);
+            }
           }
 
 ));

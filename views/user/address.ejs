@@ -282,29 +282,30 @@
    
       
       
-    <script>
-
-
-  function deleteAddress(addressId) {
- 
-  fetch(`/deleteAddress/${addressId}`, {
-    method: 'DELETE',
-  })
-    .then(response => {
-      if (response.ok) {
-        location.reload();
-      } else {
-        console.error('Error deleting address');
-      }
-    })
-    .catch(error => {
-      console.error('Error deleting address:', error);
-    });
-}
-
-
-    </script>
-
+        <script>
+          function deleteAddress(addressId) {
+          
+            const confirmed = confirm('Are you sure you want to delete this address?');
+        
+           
+            if (confirmed) {
+              fetch(`/deleteAddress/${addressId}`, {
+                method: 'DELETE',
+              })
+                .then(response => {
+                  if (response.ok) {
+                    location.reload();
+                  } else {
+                    console.error('Error deleting address');
+                  }
+                })
+                .catch(error => {
+                  console.error('Error deleting address:', error);
+                });
+            }
+          }
+        </script>
+        
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

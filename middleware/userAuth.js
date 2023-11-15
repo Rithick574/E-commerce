@@ -21,7 +21,8 @@ const userExist = async(req, res, next) => {
     const username = req.session.user;
     const user = await register.findOne({ email: username });
     if (user && user.Status === 'Blocked') {
-      req.session.destroy();
+      // req.session.destroy();
+      req.session.loggedin = false;
       return res.redirect('/login');
     }
     res.redirect("/");
