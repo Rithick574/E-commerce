@@ -2,9 +2,9 @@ require('../config/DBconnection')
 const Banner = require("../model/bannerSchema");
 
 
-const bannerManagement=(req,res)=>{
-
-res.render('admin/bannerManagement')
+const bannerManagement=async(req,res)=>{
+const banners=await Banner.find()
+res.render('admin/bannerManagement',{banners})
 
 }
 
@@ -31,9 +31,21 @@ const uploadBanner=async(req,res)=>{
     }
 }
 
+//delete banner
+const deleteBanner=async(req,res)=>{
+    try {
+        const bannerId = req.params.bannerId;
+        await Banner.findByIdAndDelete(bannerId);
+        res.redirect('/admin/bannerManagement');
+    } catch (error) {
+        console.error('error while delete banner:',error)
+    }
+}
+
 
 
 module.exports={
     bannerManagement,
-    uploadBanner
+    uploadBanner,
+    deleteBanner
 }

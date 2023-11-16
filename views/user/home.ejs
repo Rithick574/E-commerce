@@ -4,15 +4,15 @@
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
 
         <div class="carousel-inner p-1">
-            <% banners.forEach((banner, index) => { %>
+            <% banners.forEach((banner, index)=> { %>
                 <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
                     <img src="/banner-images/<%= banner.image %>" class="d-block w-100" alt="<%= banner.title %>">
-                <div class="carousel-caption d-none d-md-block">
-                   
+                    <div class="carousel-caption d-none d-md-block">
+
+                    </div>
                 </div>
-            </div>
-            <% }); %>
-           
+                <% }); %>
+
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
             data-bs-slide="prev">
@@ -36,45 +36,48 @@
 
                 <% product.forEach(product=> { %>
                     <div class="col-md-3">
-                        
+
                         <div class="product-card shadow-lg p-3 bg-body rounded-3">
-                            <% if (product.stock > 0) { %>
+                            <% if (product.stock> 0) { %>
                                 <label class="stock bg-success">In Stock</label>
-                            <% } else { %>
-                                <label class="stock bg-danger">Out of Stock</label>
-                            <% } %>
-                            <a href="/product/<%= product._id %>">
-                                <div class="product-card-img" style="padding: 30px; height: 300px;">
-                                  
-                                   
-
-                                    <td><img src="/product-images/<%=product?.images[0]?.mainimage%>" alt="No Such Images"></td>
-                                </div>
-                                <div class="product-card-body">
-                                    <p class="product-brand ">
-                                        <%= product.brand %>
-                                    </p>
-                                    <h5 class="product-name">
-
-                                        <%= product.name %>
-
-                                    </h5>
-                                    <div>
-                                        <span class="selling-price">Rs.<%= product.descountedPrice %></span>
-
-                                    </div>
-                            </a>
-                            <div class="mt-2">
-                                <% if (product.stock > 0) { %>
-                                <button class="btn btn1 rounded-3 add-to-cart-button"
-                                    data-product-id="<%= product._id %>">Add To Cart</button>
+                                <% } else { %>
+                                    <label class="stock bg-danger">Out of Stock</label>
                                     <% } %>
-                                <a href="#" class="btn btn1 rounded-3 add-to-wishlist-button"
-                                    data-product-id="<%= product._id %>">
-                                    <i class="fa fa-heart <% if (wishlist.includes( product._id )) { %>text-danger<% } %>"></i>
-                                </a> 
-                                <a href="/product/<%= product._id %>" class="btn btn1 rounded-3"> View </a>
-                            </div>
+                                        <a href="/product/<%= product._id %>">
+                                            <div class="product-card-img" style="padding: 30px; height: 300px;">
+
+
+
+                                                <td><img src="/product-images/<%=product?.images[0]?.mainimage%>"
+                                                        alt="No Such Images"></td>
+                                            </div>
+                                            <div class="product-card-body">
+                                                <p class="product-brand ">
+                                                    <%= product.brand %>
+                                                </p>
+                                                <h5 class="product-name">
+
+                                                    <%= product.name %>
+
+                                                </h5>
+                                                <div>
+                                                    <span class="selling-price">Rs.<%= product.descountedPrice %></span>
+
+                                                </div>
+                                        </a>
+                                        <div class="mt-2">
+                                            <% if (product.stock> 0) { %>
+                                                <button class="btn btn1 rounded-3 add-to-cart-button"
+                                                    data-product-id="<%= product._id %>">Add To Cart</button>
+                                                <% } %>
+                                                    <a href="#" class="btn btn1 rounded-3 add-to-wishlist-button"
+                                                        data-product-id="<%= product._id %>">
+                                                        <i
+                                                            class="fa fa-heart <% if (wishlist.includes( product._id )) { %>text-danger<% } %>"></i>
+                                                    </a>
+                                                    <a href="/product/<%= product._id %>" class="btn btn1 rounded-3">
+                                                        View </a>
+                                        </div>
                         </div>
                     </div>
             </div>
@@ -82,22 +85,21 @@
         </div>
     </div>
     </div>
-   
 
 
+
     </div>
     </div>
     </div>
-     
-    <div class="col-md-12 p-5 d-flex justify-content-center"> 
+
+    <div class="col-md-12 p-5 d-flex justify-content-center">
         <img src="assets/highlights.svg">
     </div>
 
 
-
+   
+   
     <script>
-
-
 
 
         function updateCartQuantity() {
@@ -119,53 +121,66 @@
 
 
         document.querySelectorAll('.add-to-cart-button').forEach(button => {
-    button.addEventListener('click', function (event) {
-        event.preventDefault();
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
 
-        const productId = this.getAttribute('data-product-id');
+                const productId = this.getAttribute('data-product-id');
 
-        $.ajax({
-            url: '/getproduct/' + productId,
-            method: 'GET',
-            success: function (product) {
-                if (product.product.stock > 0) {
-                    $.ajax({
-                        url: '/getcartquantity',
-                        method: 'GET',
-                        success: function (response) {
-                            const cartQuantity = response.quantity;
+                $.ajax({
+                    url: '/getproduct/' + productId,
+                    method: 'GET',
+                    success: function (product) {
+                        if (product.product.stock > 0) {
+                            $.ajax({
+                                url: '/getcartquantity',
+                                method: 'GET',
+                                success: function (response) {
+                                    const cartQuantity = response.quantity;
 
-                            if (cartQuantity + 1 <= product.product.stock) {
-                                $.ajax({
-                                    url: '/addtocart/' + productId,
-                                    method: 'POST',
-                                    success: function (response) {
-                                        alert('Product added to cart');
-                                        updateCartQuantity();
-                                        location.reload();
-                                    },
-                                    error: function (error) {
-                                        console.error('Error adding product to cart:', error);
+                                    if (cartQuantity + 1 <= product.product.stock) {
+                                        $.ajax({
+                                            url: '/addtocart/' + productId,
+                                            method: 'POST',
+                                            success: function (response) {
+                                               
+                                                Toastify({
+                                                text: "Product added to cart",
+                                                duration: 1000,
+                                                newWindow: true,
+                                                close: false,
+                                                gravity: "top", 
+                                                position: "center", 
+                                                style: {
+                                                    background: "linear-gradient(to right, #000, #000)",
+                                                    color: "#fff",
+                                                    marginTop: "35px",
+                                                },
+                                            }).showToast();
+                                                updateCartQuantity();
+                                                // location.reload();
+                                            },
+                                            error: function (error) {
+                                                console.error('Error adding product to cart:', error);
+                                            }
+                                        });
+                                    } else {
+                                        alert('Cannot add more items. Item is out of stock.');
                                     }
-                                });
-                            } else {
-                                alert('Cannot add more items. Item is out of stock.');
-                            }
-                        },
-                        error: function (error) {
-                            console.error('Error fetching cart quantity:', error);
+                                },
+                                error: function (error) {
+                                    console.error('Error fetching cart quantity:', error);
+                                }
+                            });
+                        } else {
+                            alert('Item is out of stock');
                         }
-                    });
-                } else {
-                    alert('Item is out of stock');
-                }
-            },
-            error: function (error) {
-                console.error('Error fetching product details:', error);
-            }
+                    },
+                    error: function (error) {
+                        console.error('Error fetching product details:', error);
+                    }
+                });
+            });
         });
-    });
-});
 
 
 
@@ -186,18 +201,18 @@
                     success: function (response) {
                         console.log(icon.style.color)
                         if (response.added) {
-                        Swal.fire({
-                         position: 'top',
-                         icon: 'success',
-                         title: 'Added to Wishliist',
-                         showConfirmButton: false,
-                         timer: 1500,
-                         customClass: {
-                         popup: 'small-alert',
+                            Swal.fire({
+                                position: 'top',
+                                icon: 'success',
+                                title: 'Added to Wishliist',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                customClass: {
+                                    popup: 'small-alert',
                                 }
-                      })
+                            })
                             icon.classList.add('text-danger')
-                          
+
                         } else {
                             icon.classList.remove('text-danger')
                         }

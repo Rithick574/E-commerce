@@ -33,13 +33,7 @@
           <div class="m-4">
             <h4 class="card-title mb-4">Your shopping cart</h4>
             <% if (Array.isArray(product) && product.length > 0) { %>
-              <% if (errorMessage.length > 0) { %>
-                <div class="alert alert-danger" role="alert">
-                  <% errorMessage.forEach(message => { %>
-                    <p><%= message %></p>
-                  <% }); %>
-                </div>
-              <% } %>
+             
               <% let subtotal = 0; %>
               <% product.forEach((data)=> { %>
 
@@ -111,22 +105,10 @@
       </div>
       <% if (Array.isArray(product) && product.length > 0) { %>
       <div class="col-md-4">
-        <div class="card border shadow mt-5">
-          <div class="card-body">
-            <h5 class="card-title">Have You coupon ?</h5>
-            <div class="input-group mb-3">
-              <input type="email" class="form-control border" placeholder="Coupon Code" aria-label="Email"
-                aria-describedby="button-addon2" />
-              <button class="btn btn-light border shadow-0" type="button" id="button-addon2"
-                data-mdb-ripple-color="dark">
-                Apply
-              </button>
-            </div>
-          </div>
-        </div>
+       
 
 
-        <div class="card shadow border mt-3">
+        <div class="card shadow border mt-5">
           <div class="card-body">
             <div id="subtotal" class="d-flex justify-content-between">
               <p class="mb-2">Sub Total :</p>
@@ -248,25 +230,29 @@
 
 
     function removeFromCart(productId, cartId) {
-  if (confirm("Are you sure you want to remove this item from your cart?")) {
-   
-    $.ajax({
-      url: '/removefromcart', 
-      method: 'POST',
-      data: {
-        productId: productId,
-        cartId: cartId,
-      },
-      success: function (response) {
-      
-        window.location.reload();
-      },
-      error: function (error) {
-        console.error('Error removing product from the cart:', error);
-      }
-    });
-  }
+  Swal.fire("You want to remove this item from your cart?")
+  .then((result) => {
+    if (result.isConfirmed) {
+     
+      $.ajax({
+        url: '/removefromcart',
+        method: 'POST',
+        data: {
+          productId: productId,
+          cartId: cartId,
+        },
+        success: function (response) {
+          window.location.reload();
+        },
+        error: function (error) {
+          console.error('Error removing product from the cart:', error);
+        }
+      });
+    }
+  });
 }
+
+
 
 
   </script>

@@ -12,6 +12,7 @@ const orderController=require('../controllers/orderController')
 const wishlistController=require('../controllers/wishlistController')
 const calculateCartCount = require('../middleware/cartCountMiddleware');
 const uploadProfile=require('../middleware/profilepicMulter')
+const couponController=require('../controllers/CouponController')
 
 
 
@@ -70,7 +71,7 @@ user.post("/addtocart/:productId",userAuth.verifyUser,calculateCartCount,cartCon
 user.get('/getproduct/:productId',userAuth.verifyUser,calculateCartCount,cartController.stockcheck)
 
 
-user.get('/cart',userAuth.verifyUser,calculateCartCount,cartController.viewCart)//this one
+user.get('/cart',userAuth.verifyUser,calculateCartCount,cartController.viewCart)
 
 
 user.post('/updatequantity',userAuth.verifyUser,calculateCartCount,cartController.updateQuantity)
@@ -93,6 +94,8 @@ user.post('/verify-payment',userAuth.verifyUser,calculateCartCount,orderControll
 //filter
 user.post('/filterProduct',userAuth.verifyUser,calculateCartCount,productController.postFilterProduct);
 
+//coupon
+user.post('/apply-coupon',userAuth.verifyUser,calculateCartCount,couponController.applyCoupon)
 
 //profile
 user.get('/profile',userAuth.verifyUser,calculateCartCount,userController.userProfile)

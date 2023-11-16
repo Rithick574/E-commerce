@@ -9,7 +9,29 @@
         border: 1px solid #ccc; 
         border-radius: 5px; 
     }
+
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .table, .table th, .table td {
+        border: none;
+    }
+
+    .details .recentOrders table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.details .recentOrders table th, 
+.details .recentOrders table td {
+    padding: 10px;
+    text-align: center;
+}
+
 </style>
+
 
 <div class="details">
     <div class="recentOrders">
@@ -30,8 +52,43 @@
                 </div>
                 <br>
                 <br>
+               <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-dark">Upload Banner</button>
+               </div>
             </form>
+            <br>
+             <br>
+            <div class="bannerlist">
+                <table class="table border-0">
+                    <thead>
+                       <tr>
+                        <th scope="col">Banner Title</th>
+                        <th scope="col">Banner Image</th>
+                        <th scope="col">Created Date</th>
+                        <th scope="col"> Delete </th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                        <% banners.forEach(banner => { %>
+                            <tr>
+                                <td><%= banner.title %></td>
+                                <td><img src="/banner-images/<%= banner.image %>" alt="<%= banner.title %>" style="max-width: 300px;"></td>
+                                <td>
+                                     <% let dt=new Date(banner.updatedAt) %>
+                                     <%= dt.getDate()%>/<%= dt.getMonth()+1%>/<%= dt.getFullYear()%> %>
+                                 </td>
+                                 <td>
+                                    <a href="/admin/deleteBanner/<%= banner._id %>" onclick="return confirm('Are you sure you want to delete this banner?')">
+                                      <i class="fa-solid fa-trash fa-xl" style="color: #000714;"></i>
+                                    </a>
+                                  </td>
+                              
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
 </div>

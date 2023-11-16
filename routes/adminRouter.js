@@ -85,10 +85,14 @@ admin.delete('/delete-image/:id/:index',adminAuth.verifyAdmin, productController
 //bannner managemet
 admin.get('/bannerManagement',adminAuth.verifyAdmin, bannerController.bannerManagement)
 admin.post('/uploadBanner',adminAuth.verifyAdmin, uploadBanner.single('image'), bannerController.uploadBanner)
+admin.get('/deleteBanner/:bannerId',adminAuth.verifyAdmin, bannerController.deleteBanner)
 
 //coupon management
 admin.get('/couponmanagent',adminAuth.verifyAdmin, couponController.CouponManagement)
 admin.post('/addCoupon',adminAuth.verifyAdmin, couponController.addCoupon)
+admin.delete('/deleteCoupon/:couponId',adminAuth.verifyAdmin, couponController.deleteCoupon)
+admin.get('/editCoupon/:couponId',adminAuth.verifyAdmin, couponController.editcouponget)
+admin.post('/edit-coupon/:couponId',adminAuth.verifyAdmin, couponController.editCoupon)
 
 //sales report
 admin.post('/download-sales-report',adminAuth.verifyAdmin, productController.genereatesalesReport)

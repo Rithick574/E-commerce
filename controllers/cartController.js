@@ -34,11 +34,7 @@ const viewCart = async (req, res) => {
     }
 
     const product = cart.products;
-    // console.log("cartt",cart);
-
-    // console.log(product, "==============k==============");
-    // console.log(product[0].productId, "=============l===============");
-    // console.log(product);
+    
 
     let subtotal = 0;
     let totalQuantity = 0;
@@ -53,13 +49,9 @@ const viewCart = async (req, res) => {
     const coupon = "";
     const total = subtotal + gstAmount;
 
-    if (coupon) {
-      const couponValue = 50;
-      total -= couponValue;
-    }
+   
     req.session.totalPrice = total;
 
-    const errorMessage = req.flash("error");
 
     res.render("user/cart", {
       username: email,
@@ -70,7 +62,7 @@ const viewCart = async (req, res) => {
       totalQuantity: totalQuantity,
       coupon: coupon,
       total: total,
-      errorMessage: errorMessage,
+     
     });
 
     

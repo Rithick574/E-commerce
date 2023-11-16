@@ -12,7 +12,20 @@ const crypto = require("crypto");
 const PlaceOrder = async (req, res) => {
   const email = req.session.user;
   const user = await User.findOne({ email: email });
-  res.render("user/checkout", { username: email, user: user });
+  const total= req.session.totalPrice
+  const coupon = "";
+
+  if (coupon) {
+    const couponValue = 50;
+    total -= couponValue;
+  } 
+
+  res.render("user/checkout", {
+     username: email,
+     user: user,
+     total:total,
+     coupon: coupon,
+       });
 };
 
 //add address
@@ -50,7 +63,7 @@ const  postCheckout = async (req, res) => {
     const PaymentMethod = req.body.paymentMethod;
     const Address = req.body.Address;
     const Email = req.session.user;
-    const amount = req.session.totalPrice;
+    const amount =req.session.grandTotal;
     const user = await User.findOne({ email: Email });
     const userid = user._id;
 
@@ -314,6 +327,12 @@ const verifyPayment = async (req, res) => {
   }
 };
 
+
+
+
+
+
+
 module.exports = {
   PlaceOrder,
   addAddress,
@@ -324,4 +343,5 @@ module.exports = {
   viewOrderDetails,
   orderSuccess,
   verifyPayment,
+  
 };

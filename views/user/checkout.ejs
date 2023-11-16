@@ -274,9 +274,58 @@
                 </div>
               </div>
             </div>
+
+            
             
             <!-- Right Column - Col-5 -->
             <div class="col-md-5">
+
+              <div class="card border shadow ">
+          <div class="card-body">
+            <h5 class="card-title">Have You coupon ?</h5>
+            <div class="input-group mb-3">
+           <input type="text" class="form-control border" id="couponCode" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="applyCouponBtn" />
+           <button class="btn btn-light border shadow-0" type="button" id="applyCouponBtn">
+  Apply
+</button>
+
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="card shadow border ">
+          <div class="card-body">
+           
+                <div class="d-flex justify-content-between">
+                  <p class="mb-2"  >Coupon :</p>
+                 
+                    
+                     
+                     <b><p id="couponInfo">  </p></b>
+                      
+                  
+                 
+                </div>
+  
+          
+         
+            <hr />
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Total price :</p>
+              <b><h5 class="mb-2" style="color: rgb(24, 51, 172); font-weight: 700;"><span id="totalPrice">₹<%= total %></span></h5></b>
+            </div>
+
+
+              <a href="/cart" class="btn btn-light w-100 border mt-2">
+                Back to cart
+              </a>
+            </div>
+          </div>
+
+
+
               <div class="card shadow">
                 <div class="card-body">
                   <h5 class="card-title">Payment Methods</h5>
@@ -326,7 +375,46 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
+
 <script>
+
+  $(document).ready(function() {
+    $("#applyCouponBtn").click(function() {
+      applyCoupon();
+    });
+  });
+
+  function applyCoupon() {
+    const couponCode = document.getElementById('couponCode').value;
+    const total = parseFloat(document.getElementById('totalPrice').innerText.replace('₹', ''));
+   
+    $.ajax({
+      url: '/apply-coupon', 
+      method: 'POST',
+      data: { couponCode: couponCode, total: total },
+      success: function (response) {
+        if (response.success) {
+        
+          const couponInfoElement = document.getElementById('couponInfo');
+        if (response.discount) {
+          couponInfoElement.innerHTML = `Coupon: ${response.discount}`;
+        } else {
+          couponInfoElement.innerHTML = `<b>No Coupon</b>`;
+        }
+          document.getElementById('totalPrice').innerText = `₹${response.grandTotal}`;
+        } else {
+          alert(response.error);
+        }
+      },
+      error: function (error) {
+        alert(response.error)
+        console.error('Error applying coupon:', error);
+      }
+    });
+
+  }
+
+
 
   $("#form-checkout").submit((e) => {
     e.preventDefault()

@@ -1,0 +1,216 @@
+<%-include('../partials/adminheader.ejs') %>
+
+
+
+
+
+
+<div class="details">
+    <div class="recentOrders">
+      
+        <h2>Edit Coupon</h2>
+      
+       <form id="editCouponForm" class="row g-3 p-5" method="POST" action="/admin/edit-coupon/<%= coupon._id %>">
+          <div class="col-md-12"> 
+              <label for="couponName" class="form-label">Coupon Name</label>
+              <input class="form-control" id="couponName" type="text" name="couponName" value="<%= coupon.couponName %>" required>              
+          </div>
+          <div>
+              <label for="couponCode">Coupon Code</label>
+              <input
+                  type="text"
+                  class="form-control"
+                  id="couponCode"
+                  name="couponCode"
+                  value="<%= coupon.couponCode %>"
+                  required
+              />
+          </div>
+          <div class="form-group">
+            <label>Discount Type:</label>
+            <div class="form-check form-check-inline">
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="discountType"
+                    value="percentage"
+                    id="percentageRadio"
+                />
+                <label class="form-check-label" for="percentageRadio">Percentage</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="discountType"
+                    value="fixed"
+                    id="fixedRadio"
+                />
+                <label class="form-check-label" for="fixedRadio">Fixed</label>
+            </div>
+
+
+            <div class="form-group" id="percentageFields" style="display: none">
+              <br />
+              <label for="percentage">Discount Percentage</label>
+              <input
+                type="number"
+                class="form-control"
+                id="percentage"
+                name="amount"
+                min="0"
+                max="100"
+                value="<%= coupon.amount %>"
+              />
+              <br />
+              <label for="minAmount">Minimum Amount</label>
+              <input
+                type="number"
+                class="form-control"
+                id="minAmount"
+                min="5000"
+                name="minAmount"
+               value="<%= coupon.minAmount %>"
+              />
+              <br />
+              <label for="maxAmount">Maximum Amount</label>
+              <input
+                type="number"
+                class="form-control"
+                id="maxAmount"
+                name="maxAmount"
+                value="<%= coupon.maxAmount %>"
+              />
+            </div>
+            <div class="form-group" id="fixedFields" style="display: none">
+              <br />
+              <label for="amount">Amount</label>
+              <input
+                  type="number"
+                  class="form-control"
+                  id="fixedAmount"
+                  name="amount"
+                  min="5000"
+                 value="<%= coupon.amount%>"
+              />
+              <br />
+              <label for="minAmountFixed">Minimum Amount</label>
+              <input
+                  type="number"
+                  class="form-control"
+                  id="minAmountFixed"
+                  name="minAmountFixed"
+                  min="1000"
+                  value="<%= coupon.minAmountFixed %>"
+              />
+          </div>
+
+            <div class="form-group mt-3">
+              <label for="amount">Usage Limit</label>
+              <input
+                  type="number"
+                  class="form-control"
+                  id="limit"
+                  name="limit"
+                  min="1"
+                  value="<%= coupon.limit || '' %>"
+              />
+          </div>
+            <br />
+            <div class="form-group">
+              <label for="couponType">Coupon Type</label>
+              <select class="form-control" id="couponType" name="couponType">
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+              </select>
+            </div>
+            <br />
+            <div class="form-group">
+              <label for="startDate">Start Date</label>
+              <input
+                type="date"
+                class="form-control"
+                id="startDate"
+                name="startDate"
+                value="<%= coupon.startDate %>"
+              />
+            </div>
+            <br />
+            <div class="form-group">
+              <label for="endDate">End Date</label>
+              <input
+                type="date"
+                class="form-control"
+                id="endDate"
+                name="endDate"
+                value="<%= coupon.endDate %>"
+              />
+            </div>
+            <br />
+           
+
+        </div>
+     
+          <div class="d-flex justify-content-around">
+              <div class="cardHeader d-flex">
+                <button type="button" class="btn" id="editCouponBtn">Edit Coupon</button>
+              </div>
+              <div class="cardHeader d-flex">
+                  <a href="/admin/couponmanagent" class="btn" onclick="return confirm('Are you sure you want to leave this page?')">Cancel</a>
+              </div>
+          </div>
+      </form>
+      
+       
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function () {
+    // Check the discountType value from the database
+    var discountType = '<%= coupon.discountType %>';
+
+    // Set the checked attribute based on the database value
+    if (discountType === 'percentage') {
+      $('#percentageRadio').prop('checked', true);
+      $('#percentageFields').show();
+      $('#fixedFields').hide();
+    } else if (discountType === 'fixed') {
+      $('#fixedRadio').prop('checked', true);
+      $('#percentageFields').hide();
+      $('#fixedFields').show();
+    }
+
+    var startDateValue = new Date('<%= coupon.startDate %>').toISOString().split('T')[0];
+    var endDateValue = new Date('<%= coupon.endDate %>').toISOString().split('T')[0];
+
+    $('#startDate').val(startDateValue);
+    $('#endDate').val(endDateValue);
+
+    // Event listener for radio button change
+    $('input[name="discountType"]').change(function () {
+      if ($('#percentageRadio').is(':checked')) {
+        $('#percentageFields').show();
+        $('#fixedFields').hide();
+      } else if ($('#fixedRadio').is(':checked')) {
+        $('#percentageFields').hide();
+        $('#fixedFields').show();
+      }
+    });
+
+    // Event listener for the custom button click
+    $('#editCouponBtn').click(function () {
+      // Your existing logic for radio button change
+
+      // Manually submit the form using JavaScript
+      $('#editCouponForm').submit();
+    });
+  });
+</script>
+
+
+
+
+
+<%-include('../partials/adminfooter.ejs') %>

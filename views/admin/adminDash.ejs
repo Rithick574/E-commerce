@@ -212,10 +212,10 @@ async function fetchSalesData(timeInterval) {
         if (timeInterval === "day") {
              response = await fetch('/admin/count-orders-by-day');
         } else if (timeInterval === "month") {
-            console.log("monthsss");
+          
             response = await fetch(`/admin/count-orders-by-${timeInterval}`);
         } else if (timeInterval === "year") {
-            console.log("yearssss");
+          
             response = await fetch(`/admin/count-orders-by-${timeInterval}`);
         } else {
             return false;

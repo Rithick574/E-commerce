@@ -23,8 +23,6 @@ const UserSchema= new mongoose.Schema({
     Status: {
          type: String ,
          default:"Active"},
-    Orders: [{
-        }],
     Address: [{
             Name: {type: String},
             AddressLane: { type: String },
@@ -33,8 +31,6 @@ const UserSchema= new mongoose.Schema({
             State: { type: String },
             Mobile: { type: Number },
          }],
-    Cart: [{
-        }],
 });
 
 

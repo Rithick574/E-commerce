@@ -33,7 +33,10 @@
                           <% let de=new Date(coupon.endDate) %>
                           <p class="card-text text-danger">EXPIRED ON :<%=de.getDate()%>/<%=de.getMonth()+1%>/<%=de.getFullYear()%>  %></p>
                         <%}%>
-                          <button class="btn btn-dark">Edit Coupon</button>
+                        <button class="btn btn-dark" onclick="editCoupon('<%= coupon._id %>')">Edit Coupon</button>
+                          <button class="btn " onclick="deleteCoupon('<%= coupon._id %>')">
+                            <i class="fa-solid fa-trash <%= date > coupon.endDate ? 'fa-bounce' : '' %> fa-2x" style="color: #000000;"></i>
+                          </button>                        
                       </div>
                     </div>
                   </div>
@@ -76,7 +79,7 @@
                     </div>
                     <br />
                     <div class="form-group">
-                      <label for="couponCode">Code</label>
+                      <label for="couponCode">Coupon Code</label>
                       <input
                         type="text"
                         class="form-control"
@@ -227,6 +230,12 @@
 <script>
 
 
+function editCoupon(couponId) {
+  window.location.href = `/admin/editCoupon/${couponId}`;
+}
+
+
+
 $(document).ready(function() {
     $('input[name="discountType"]').change(function() {
         if ($('#percentageRadio').is(':checked')) {
@@ -269,6 +278,30 @@ $(document).ready(function() {
         },
       });
     });
+
+
+
+    function deleteCoupon(couponId) {
+    $.ajax({
+        url: "/admin/deleteCoupon/" + couponId, 
+        method: "DELETE",
+        success: function (response) {
+            if (response.success) {
+                console.log("Coupon deleted successfully");
+               location.reload();
+            } else {
+                console.log("Error deleting coupon: " + response.error);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log("Error:", error);
+        }
+    });
+}
+
+
+
+
   </script>
 
 <%- include('../partials/adminfooter.ejs') -%>
