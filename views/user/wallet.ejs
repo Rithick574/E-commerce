@@ -1,0 +1,64 @@
+<%- include('../partials/userHeader') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 p-4" style="margin-top: 50px;">
+            <div class="card shadow">
+                <div class="d-flex justify-content-center mt-3 mb-2">
+                  <img src="/profile-images/<%= user.profilePhoto %>"  class="card-img-top" alt="..." style="height: 400px; width: 280px;">
+                </div>
+                <div class="card-body">
+                 <div class="d-flex justify-content-center">
+                  <h5 class="card-title"><%= user.name %></h5>
+                 </div>
+                <div class="d-flex justify-content-center">
+                  <b>
+                    <h3 class="card-text">Wallet : <%= user.wallet %></3>
+                   </b>  
+                </div>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-8 p-4" style="margin-top: 50px;">
+
+            <div class="card shadow">
+             <div class="card-body">
+                    <% if (referred && referred.name) { %>
+                        <h4 class="card-title">Referred By: <%= referred.name %></h4>
+                    <% } else { %>
+                        <p>No referrer information available</p>
+                    <% } %>
+                </div>
+              </div>
+
+              <div class="card shadow mt-3">
+                <div class="card-body">
+                    <% if (user.referredUsers && user.referredUsers.length > 0) { %>
+                        <h5 class="card-title">Referred Users:</h5>
+                        <ul>
+                            <% user.referredUsers.forEach(referredUser => { %>
+                                <li><%= referredUser.name %></li>
+                            <% }); %>
+                        </ul>
+                    <% } else { %>
+                        <p>No referred users</p>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- <div class="card shadow mt-3">
+              <div class="card-body">
+                    
+                         <h4 class="card-title">Wallet Transactions : </h4>
+                    
+                         <p>No referrer information available</p>
+                
+                 </div>
+               </div> -->
+            
+
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/userFooter') %>

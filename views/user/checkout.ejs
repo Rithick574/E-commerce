@@ -238,7 +238,7 @@
                         name="Address"
                         value="<%=Address._id%>"
                         id="address1"
-                        checked
+                        checked 
                       />
                     </div>
                     
@@ -428,6 +428,8 @@
         });
         return;
       }
+    
+      
     $.ajax({ 
       url:'/placeOrder',
       method: 'post',
@@ -438,7 +440,7 @@
           window.location = '/ordersuccess'
           
         } else if(response.online) {
-         
+         console.log(response)
           handlePayNowClick(response)
         }else{
           alert(response.error)
@@ -477,7 +479,8 @@
   rzp1.open();
   }
 
-  function verifyPayment (payment, order) {
+  function 
+  verifyPayment (payment, order) {
    
     $.ajax({
       url: '/verify-payment',

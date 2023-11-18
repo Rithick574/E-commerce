@@ -14,6 +14,8 @@ const orderController=require('../controllers/orderController')
 const bannerController=require('../controllers/bannerController')
 const couponController=require('../controllers/CouponController')
 const uploadBanner = require('../middleware/bannerMulter');
+const offerController=require('../controllers/offerController')
+const refferalController=require('../controllers/refferalController')
 
 
 
@@ -24,8 +26,6 @@ const uploadFields = [
   { name: 'image3', maxCount: 1 },
   { name: 'image4', maxCount: 1 },
 ];
-
-
 
 
 
@@ -96,6 +96,17 @@ admin.post('/edit-coupon/:couponId',adminAuth.verifyAdmin, couponController.edit
 
 //sales report
 admin.post('/download-sales-report',adminAuth.verifyAdmin, productController.genereatesalesReport)
+
+//refferal wallet
+admin.get('/refferal',adminAuth.verifyAdmin, offerController.refferalWallet)
+admin.post('/updateReferralAmount',adminAuth.verifyAdmin, refferalController.updateReferralAmount)
+
+//category offers
+admin.get('/offers',adminAuth.verifyAdmin, offerController.categoryOffer)
+admin.post('/addOffer',adminAuth.verifyAdmin, offerController.addCategoryOffer)
+admin.delete('/deleteOffer/:offerId',adminAuth.verifyAdmin, offerController.deleteOffer)
+admin.get('/checkCategoryExists/:categoryName',adminAuth.verifyAdmin, offerController.getCategoryName)
+admin.get('/checkOfferExists/:categoryName',adminAuth.verifyAdmin, offerController.checkOfferExists)
 
 // // Admin logout route
 admin.get('/logout', adminController.adminLogout);

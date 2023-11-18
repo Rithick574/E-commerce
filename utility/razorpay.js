@@ -1,5 +1,5 @@
 const Razorpay = require('razorpay')
-require("dotenv").config();
+require("dotenv").config(); 
 
 
 
@@ -11,7 +11,6 @@ module.exports = {
             key_secret:  process.env.KEY_SECRET
           });
 
-    
       
           const razorpayOrder = razorpay.orders.create({
               amount: order.amount * 100, 

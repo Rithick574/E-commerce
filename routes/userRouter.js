@@ -13,6 +13,7 @@ const wishlistController=require('../controllers/wishlistController')
 const calculateCartCount = require('../middleware/cartCountMiddleware');
 const uploadProfile=require('../middleware/profilepicMulter')
 const couponController=require('../controllers/CouponController')
+const referralController=require('../controllers/refferalController')
 
 
 
@@ -96,6 +97,9 @@ user.post('/filterProduct',userAuth.verifyUser,calculateCartCount,productControl
 
 //coupon
 user.post('/apply-coupon',userAuth.verifyUser,calculateCartCount,couponController.applyCoupon)
+
+//wallet
+user.get('/wallet',userAuth.verifyUser,calculateCartCount,referralController.getWallet)
 
 //profile
 user.get('/profile',userAuth.verifyUser,calculateCartCount,userController.userProfile)

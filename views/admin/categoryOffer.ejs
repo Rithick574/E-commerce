@@ -1,0 +1,218 @@
+<%-include('../partials/adminheader.ejs') %>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Coupon</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="addCouponForm">
+          <div class="mb-3">
+            <label for="categoryName" class="form-label">Category Name</label>
+            <select class="form-select" id="categoryName" required>
+                <option value="" disabled selected>Select a category</option>
+                <% categories.forEach((category) => { %>
+                    <option value="<%= category.name %>"><%= category.name %></option>
+                <% }); %>
+            </select>
+        </div>
+          <div class="mb-3">
+            <label for="offerPercentage" class="form-label"
+              >Offer Percentage</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              min="0"
+              max="100"
+              id="offerPercentage"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="expiryDate" class="form-label">Expiry Date</label>
+            <input type="date" class="form-control" id="expiryDate" required />
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-dark" onclick="addOffer()">
+              Add Offer
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="details">
+  <div class="recentOrders">
+    <div class="cardHeader">
+      <h1>Category Offer</h1>
+      <button
+        type="button"
+        class="btn"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Add Offer
+      </button>
+    </div>
+
+    <br />
+    
+    <div class="col-md-12 container">
+      <div class="row">
+        <% offer.forEach((offer) => { %>
+        <div class="col-md-4 p-3">
+          <div class="card shadow">
+            <br />
+            <img
+              src="/assets/offerimage.svg"
+              class="card-img-top p-2"
+              alt="offerimage"
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%= offer.categoryName %></h5>
+              <br />
+              <p class="card-text">Discount: <%= offer.offerPercentage %>%</p>
+              <p class="card-text">
+                Expiry Date: <% const dt = new Date(offer.expiryDate); %> <%=
+                dt.getDate() %>/<%= dt.getMonth() + 1 %>/<%= dt.getFullYear() %>
+              </p>
+              <button
+                class="btn btn-dark"
+                onclick="editOffer('<%= offer._id %>')"
+              >
+                Edit Offer
+              </button>
+              <button class="btn" onclick="deleteOffer('<%= offer._id %>')">
+                <i
+                  class="fa-solid fa-trash <%= date > offer.expiryDate ? 'fa-bounce' : '' %> fa-2x"
+                  style="color: #000000"
+                ></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%-include('../partials/adminfooter.ejs') %>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+ async function addOffer() {
+    const categoryName = document.getElementById("categoryName").value;
+    const offerPercentage = document.getElementById("offerPercentage").value;
+    const expiryDate = document.getElementById("expiryDate").value;
+
+    if (offerPercentage < 1 || offerPercentage > 99) {
+        alert("Offer percentage must be between 1 and 99.");
+        return;
+    }
+
+    const currentDate = new Date();
+    const selectedDate = new Date(expiryDate);
+
+    if (selectedDate < currentDate) {
+        alert("Expiry date should be greater than the current date.");
+        return;
+    }
+
+    const isCategoryExists = await checkCategoryExists(categoryName);
+
+    if (!isCategoryExists) {
+        alert("Category does not exist. Please enter a valid category name.");
+        return;
+    }
+
+    const isOfferExists = await checkOfferExists(categoryName);
+
+    if (isOfferExists) {
+        alert("An offer for this category already exists. Please edit the existing offer.");
+        return;
+    }
+
+    const data = {
+        categoryName,
+        offerPercentage,
+        expiryDate,
+    };
+
+    try {
+        const response = await fetch("/admin/addOffer", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const responseData = await response.json();
+        console.log("Success:", responseData);
+        location.reload();
+    } catch (error) {
+        console.error("Error:", error);
+    }
+
+    $("#exampleModal").modal("hide");
+}
+
+
+
+  async function checkCategoryExists(categoryName) {
+    const response = await fetch(`/admin/checkCategoryExists/${categoryName}`);
+    const data = await response.json();
+    return data.exists;
+  }
+
+
+ async function checkOfferExists(categoryName) {
+    const response = await fetch(`/admin/checkOfferExists/${categoryName}`);
+    const data = await response.json();
+    return data.exists;
+  }
+
+
+  function deleteOffer(offerId) {
+    alert('Are you sure?')
+    fetch(`/admin/deleteOffer/${offerId}`, {
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        location.reload();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+</script>

@@ -63,14 +63,21 @@ const  postCheckout = async (req, res) => {
     const PaymentMethod = req.body.paymentMethod;
     const Address = req.body.Address;
     const Email = req.session.user;
-    const amount =req.session.grandTotal;
+  
+    let amount;
+
+    if (req.session.grandTotal === undefined) {
+      amount = req.session.totalPrice;
+    } else {
+      amount = req.session.grandTotal;
+    }
+    
     const user = await User.findOne({ email: Email });
     const userid = user._id;
 
     const cart = await Cart.findOne({ userId: userid }).populate(
       "products.productId"
     );
-    // console.log(cart+"!!!!!!!!!!!");
 
     if (!cart) {
       console.error("No cart found for the user.");
@@ -82,6 +89,7 @@ const  postCheckout = async (req, res) => {
       const quantityInCart = item.quantity;
 
       const product = await Product.findById(productId);
+     
 
       if (product) {
         const availableStock = product.stock;
@@ -134,16 +142,14 @@ const  postCheckout = async (req, res) => {
       const quantity = item.quantity;
 
       const product = await Product.findById(productId);
-
       if (product) {
         const updatedQuantity = product.stock - quantity;
 
-        if (updatedQuantity <= 0) {
+        if (updatedQuantity < 0) {
           product.stock = 0;
           product.Status = "Out of Stock";
         } else {
           product.stock = updatedQuantity;
-
           await product.save();
         }
       }
@@ -181,15 +187,14 @@ const orderHistory = async (req, res) => {
     const username = req.session.user;
     const user = await User.findOne({ email: username });
     const userid = user._id;
-
     const orders = await Order.find({ UserId: userid })
       .sort({ OrderDate: -1 })
       .populate("Items.productId");
-
-    console.log("Orders:", orders);
+     
     if (orders.length === 0) {
       return res.render("user/orderHistory", { username, orders: [] });
     } else {
+
       res.render("user/orderHistory", {
         username,
         orders: orders,
@@ -290,13 +295,10 @@ const orderSuccess = (req, res) => {
 };
 
 const verifyPayment = async (req, res) => {
+ 
   try {
+   
     let hmac = crypto.createHmac("sha256", process.env.KEY_SECRET);
-    // console.log(
-    //   req.body.payment.razorpay_order_id +
-    //     "|" +
-    //     req.body.payment.razorpay_payment_id
-    // );
 
     hmac.update(
       req.body.payment.razorpay_order_id +
@@ -305,21 +307,20 @@ const verifyPayment = async (req, res) => {
     );
 
     hmac = hmac.digest("hex");
+
     if (hmac === req.body.payment.razorpay_signature) {
       const orderId = new mongoose.Types.ObjectId(
         req.body.order.createdOrder.receipt
       );
 
-      // console.log("reciept", req.body.order.createdOrder.receipt);
-
       const updateOrderDocument = await Order.findByIdAndUpdate(orderId, {
         PaymentStatus: "Paid",
         PaymentMethod: "Online",
       });
-      // console.log("hmac success");
+     
       res.json({ success: true });
-    } else {
-      // console.log("hmac failed");
+    } else { 
+      
       res.json({ failure: true });
     }
   } catch (error) {

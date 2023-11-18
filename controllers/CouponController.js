@@ -67,13 +67,14 @@ const applyCoupon = async (req, res) => {
     const code = req.body.couponCode;
     const total = req.body.total;
     let discount = 0;
-
+    req.session.total=total
     // Find the user by email
     const user = await User.findOne({ email });
     const userId = user._id;
 
     // Find the coupon by code
     const couponMatch = await Coupon.findOne({ couponCode: code });
+    
 
     if (couponMatch) {
       // Check if the coupon is active
@@ -82,13 +83,13 @@ const applyCoupon = async (req, res) => {
         const startDate = couponMatch.startDate;
         const endDate = couponMatch.endDate;
 
-        // Check if the current date is within the coupon validity period
+       
         if (startDate <= currentDate && currentDate <= endDate) {
-          // Check coupon type
+         
           if (couponMatch.couponType === "public" || (couponMatch.couponType === "private" && couponMatch.userIds.includes(userId))) {
-            // Check if the coupon usage limit is reached
+           
             if (couponMatch.limit === 0 || couponMatch.limit > 0) {
-              // Check if the user has already used the coupon
+            
               const couponUsed = await Coupon.findOne({
                 couponCode: couponMatch.couponCode,
                 "usedBy.userId": userId,
@@ -97,7 +98,7 @@ const applyCoupon = async (req, res) => {
               if (couponUsed) {
                 return res.json({ error: "You have used the coupon once" });
               } else {
-                // Apply the discount based on coupon type
+            
                 if (couponMatch.discountType === "fixed") {
                   if (total >= couponMatch.minAmountFixed) {
                     discount = couponMatch.amount;
@@ -116,18 +117,17 @@ const applyCoupon = async (req, res) => {
                   }
                 }
 
-                // Update user's grand total and save the coupon usage
+               
                 req.session.grandTotal = total - discount;
 
-                // Save coupon usage
+              
                 couponMatch.usedBy.push({
                   userId: userId,
                   usedAt: new Date(),
                 });
 
                 await couponMatch.save();
-
-                // Respond with success and updated information
+                
                 return res.status(200).json({ success: true, discount, grandTotal: req.session.grandTotal });
               }
             } else {

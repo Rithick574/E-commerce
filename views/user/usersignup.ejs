@@ -64,7 +64,9 @@
                     <label>Confirm Password</label>
                 </div>
                 <p class="msg" id="message"  ></p>
-                
+                <% if (referralId) { %>
+                    <input type="hidden" name="referralId" value="<%= referralId %>">
+                  <% } %>
                 <div class="field">
                     <input type="submit" value="Sent OTP" id="signupButton" disabled>
                 </div>

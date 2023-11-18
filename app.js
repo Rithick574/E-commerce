@@ -10,7 +10,7 @@ const nocache = require('nocache');
 const multer=require("multer")
 const passport=require("passport")
 const flash = require('express-flash');
-// const cartCountMiddleware = require('./middleware/cartCountMiddleware');
+const { checkCategoryOffers }=require('./utility/cron')
 
 
 

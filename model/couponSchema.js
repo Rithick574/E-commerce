@@ -12,7 +12,8 @@ const couponSchema = new mongoose.Schema({
         {
           userId: Schema.Types.ObjectId,
           couponCode: Schema.Types.ObjectId,
-          status: {type: String, default: 'Attempted'}
+          status: {type: String, default: 'Attempted'},
+          usedAt:{type: Date},
         }
       ],
       discountType: {

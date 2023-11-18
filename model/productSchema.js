@@ -33,6 +33,10 @@ const ProductsSchema = new Schema({
   categoryId: { type: Schema.Types.ObjectId },
   isDeleted: { type: Boolean, default: false },
   Status: { type: String },
+  IsInCategoryOffer :{
+    type:Boolean
+  },
+  beforeOffer:{ type: Number },
 });
 
 

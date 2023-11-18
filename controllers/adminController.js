@@ -82,7 +82,6 @@ const adminLogged = async (req, res) => {
     const blocked = await User.updateOne({ _id: id }, { Status: "Active" });
    
   }
- 
      res.redirect('/admin/status');
   
     } catch (error) {
@@ -136,12 +135,11 @@ const getCount=async(req,res)=>{
           orderCountsByDay[dayMonthYear] = 1;
           totalAmountByDay[dayMonthYear] = order.TotalPrice
          
-         
         } else {
           orderCountsByDay[dayMonthYear]++;
           totalAmountByDay[dayMonthYear] += order.TotalPrice
         }
-
+        
         const ordersByDay = Object.keys(orderCountsByDay).map(
           (dayMonthYear) => ({
             _id: dayMonthYear,
@@ -254,7 +252,6 @@ const getCount=async(req,res)=>{
 
 const getOrdersAndSellers=async(req,res)=>{
 try {
-  
 
   const latestOrders = await Order.find().sort({ _id: -1 }).limit(6);
 

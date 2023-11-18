@@ -63,33 +63,6 @@
 
   <!-- Include necessary JavaScript libraries -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function () {
-  // Add a click event handler to the status elements with the "status" class
-  $('.status').click(function () {
-    const userId = $(this).data('userid'); // Get the user ID from the data attribute
-    const isActive = $(this).data('isactive'); // Get the current status from the data attribute
-
-    // Toggle the user's status
-    const newStatus = isActive === 'Active' ? 'Inactive' : 'Active';
-
-    // Send an AJAX request to update the user's status
-    $.ajax({
-      type: 'POST', // You can choose the appropriate HTTP method
-      url: '/admin/updateStatus/' + userId, // Update the URL to match your route
-      data: { status: newStatus }, // Send the new status
-      success: function () {
-        // Update the displayed status
-        $(this).text(newStatus);
-        $(this).data('isactive', newStatus);
-      },
-    });
-  });
-});
-</script>
-
-
-    
 
 
     <%-include('../partials/adminfooter.ejs') %>

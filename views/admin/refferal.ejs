@@ -1,0 +1,40 @@
+<%-include('../partials/adminheader.ejs') %>
+
+<div class="details">
+  <div class="recentOrders">
+   
+      <h2>Referral Amount Management</h2>
+    
+    <br>
+    <br>
+    <form class="row g-3" method="POST" action="/admin/updateReferralAmount">
+      <div class="col-md-12 text-center">
+        <label for="refferalAmount" class="form-label ">Edit Referral Amount</label>
+        <input class="form-control" id="refferalAmount" value="<%= refferal.amount%>" type="number" min="0" max="1000" name="refferalAmount" required>
+      </div>
+
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+
+      <div class="d-flex justify-content-around">
+        <div class="cardHeader d-flex">
+          <button type="submit" class="btn">Update Referral Amount</button>
+        </div>
+
+        <div class="cardHeader d-flex">
+          <a href="/admin/dashboard" class="btn">Cancel</a>
+        </div>
+      </div>
+    </form>
+    <br>
+    <br>
+    <br>
+  </div>
+</div>
+
+<%-include('../partials/adminfooter.ejs') %>
