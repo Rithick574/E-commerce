@@ -42,10 +42,11 @@ padding-top: 15px;
 .blue-text {
   color: green;
 }
-
-    </style>
+ </style>
 </head>
 <body>
+
+
   <div class="container">
     <div class="row">
       <% if (orders.length === 0) { %>
@@ -148,16 +149,20 @@ padding-top: 15px;
                                                 <!-- <p style="margin-right: -8px;" style="background-color: #f37a27;">Delivered</p> -->
                                                 <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Delivered</p>
                                               </li>
-                                              
-                                            
-                                              
                                              
                                               <% } else if(order.Status === "Rejected" ) { %> 
                                                 <li class="list-inline-item items-list text-end " style="margin-right: 8px;">
                                                   <span class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Rejected By Seller</span> 
                                                 </li>
-                                               
-                                            <% } %>
+                                                <% } else if(order.Status === "Return Pending" ) { %> 
+                                                  <li class="list-inline-item items-list text-end " style="margin-right: 8px;">
+                                                    <span class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Return Pending</span> 
+                                                  </li>
+                                                  <% } else if(order.Status === "Return Accepted" ) { %> 
+                                                    <li class="list-inline-item items-list text-end " style="margin-right: 8px;">
+                                                      <span class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Returned</span> 
+                                                    </li>
+                                                  <% } %>
                                    
                                    
                                 </ul>
@@ -168,8 +173,19 @@ padding-top: 15px;
                    
                 </div>
                 <div class="col-md-12 d-flex">
-                    <div class="col-md-8">
-                        <p class="mt-4 ms-3">Want any help? <a href="#" style="color: #f37a27;">Please contact us</a></p>
+                    <div class="col-md-8 d-flex">
+                        <p class="mt-4 ms-3">Want any help? <a href="/aboutus" style="color: #f37a27;">Please contact us</a></p>
+                        <% if (order.Status === "Delivered") { %>
+                          <div>
+                            <button type="button" class="btn btn-danger ms-3 mt-4" data-bs-toggle="modal" data-bs-target="#returnOrderModal">
+                              Return Order
+                            </button>
+                          </div>
+                          <% } else if(order.Status === "Rejected" ) { %> 
+                            <div class="text-danger">
+                              <b><span>Because of some Technical issues we can't confirm this order</span></b>
+                            </div>
+                            <% } %>
                     </div>
                     <div class="col-md-4 mt-3 d-flex justify-content-end">
                              
@@ -177,8 +193,8 @@ padding-top: 15px;
                         <button type="button" class="btn btn-dark m-2" onclick="generateAndDownloadInvoice('<%= order._id %>')">
                           Download Invoice
                       </button>
-                      
-                    <% } else if (order.Status !== "Cancelled" && order.Status !== "Rejected") { %>
+                    
+                    <% } else if (order.Status !== "Cancelled" && order.Status !== "Rejected" && order.Status !== "Return Pending" && order.Status !== "Return Accepted") { %>
                         <button type="button" class="btn btn-dark m-2">
                             <a href="/cancelorder/<%= order._id %>" onclick="return confirm('Are you sure you want to cancel this order?');" style="text-decoration: none; color: rgb(255, 255, 255);">Cancel Order</a>
                         </button>
@@ -189,6 +205,28 @@ padding-top: 15px;
                 </div>
             </div>
         </div>
+
+
+        <div class="modal fade" id="returnOrderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="returnOrderModalLabel" aria-hidden="true">
+          <div class="modal-dialog ">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="returnOrderModalLabel">Return Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <label for="returnReason">Reason for Return:</label>
+                <textarea id="returnReason" class="form-control" rows="3"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="submitReturn('<%= order._id %>')">Submit Return</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
         <!-- End of order card -->
         <% }); %>
         <% } %>
@@ -197,6 +235,35 @@ padding-top: 15px;
 <br>
 <br>
 <script>
+
+
+function submitReturn(orderIdParam) {
+    const returnReason = document.getElementById('returnReason').value;
+    const orderId = orderIdParam; 
+
+    fetch('/submitreturn', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        orderId: orderId,
+        returnReason: returnReason,
+      }),
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        
+        location.reload();
+      })
+      .catch((error) => {
+        console.error('Error submitting return reason:', error);
+      });
+
+    $('#returnOrderModal').modal('hide');
+  }
+
+
   async function generateAndDownloadInvoice(orderId) {
     let timerInterval
 Swal.fire({

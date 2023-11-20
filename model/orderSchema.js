@@ -13,7 +13,11 @@ const ShippedAddressSchema = new Schema({
   Mobile: { type: Number, required: true },
 });
 
-
+const ReturnRequestSchema = new Schema({
+  reason: { type: String, required: true },
+  status: { type: String, default: "Pending" },
+  createdAt: { type: Date, default: Date.now },
+});
 
 const OrdersSchema = new Schema({
   UserId: { type: Schema.Types.ObjectId, ref: "users" },
@@ -29,6 +33,7 @@ const OrdersSchema = new Schema({
   PaymentStatus: {type: String, default: "Pending"},
   CouponId: { type: Schema.Types.ObjectId },
   Address: { type: ShippedAddressSchema },
+  ReturnRequest: { type: ReturnRequestSchema },
 });
 
 const Orders = mongoose.model('Orders', OrdersSchema);

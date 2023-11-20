@@ -121,7 +121,7 @@ const  postCheckout = async (req, res) => {
       timeZone: "Asia/Kolkata",
     });
 
-    const newOrders = new Order({
+    const newOrders = new Order({ 
       UserId: userid,
       Items: cart.products,
       OrderDate: currentDate,
@@ -190,7 +190,6 @@ const orderHistory = async (req, res) => {
     const orders = await Order.find({ UserId: userid })
       .sort({ OrderDate: -1 })
       .populate("Items.productId");
-     
     if (orders.length === 0) {
       return res.render("user/orderHistory", { username, orders: [] });
     } else {
@@ -329,9 +328,47 @@ const verifyPayment = async (req, res) => {
 };
 
 
+//accept return request
+const acceptReturn=async(req,res)=>{
+  try {
+    const orderId = req.params.orderId; 
+
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { $set: { Status: 'Return Accepted' } },
+      { new: true }
+    );
+    const userId = updatedOrder.UserId;
+    const refundAmount = updatedOrder.TotalPrice;
+
+    await User.findByIdAndUpdate(userId, { $inc: { wallet: refundAmount } });
+
+    res.json({ success: true, order: updatedOrder });
+
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+}
 
 
+//cancel return
+const cancelReturn=async(req,res)=>{
+  try {
+    const orderId = req.params.orderId;
 
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { $set: { Status: 'Return Canceled' } },
+      { new: true }
+    );
+    res.json({ success: true, order: updatedOrder });
+
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+}
 
 
 module.exports = {
@@ -344,5 +381,6 @@ module.exports = {
   viewOrderDetails,
   orderSuccess,
   verifyPayment,
-  
+  acceptReturn,
+  cancelReturn,
 };

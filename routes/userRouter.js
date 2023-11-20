@@ -118,6 +118,7 @@ user.get('/downloadinvoice/:orderId',userAuth.verifyUser,calculateCartCount,user
 user.get('/aboutus',userAuth.verifyUser,calculateCartCount,userController.aboutUs)
 user.get('/coupons',userAuth.verifyUser,calculateCartCount,userController.viewCoupon)
 user.post('/uploadProfilePicture', userAuth.verifyUser, calculateCartCount, uploadProfile.single('profilePicture'), userController.uploadProfilePicture);
+user.post('/submitreturn',userAuth.verifyUser,calculateCartCount,userController.submitReturn)
 
 //logout
 user.get("/logout",userController.logOut)

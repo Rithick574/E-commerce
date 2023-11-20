@@ -390,6 +390,12 @@ const cancelOrder = async (req, res) => {
         }
       }
 
+      if (order.PaymentMethod === "Online") {
+        const userId = order.UserId;
+        const refundAmount = order.TotalPrice;
+        await register.findByIdAndUpdate(userId, { $inc: { wallet: refundAmount } });
+      }
+
       order.Status = "Cancelled";
       await order.save();
       return res.redirect("/trackOrder");
@@ -655,6 +661,7 @@ const uploadProfilePicture = async (req, res) => {
         .json({ success: false, error: "No file uploaded" });
     }
 
+
     const updateUser = await register.findOneAndUpdate(
       { _id: userId },
       { profilePhoto: req.file.filename },
@@ -679,6 +686,37 @@ const uploadProfilePicture = async (req, res) => {
       .json({ success: false, error: "Internal server error" });
   }
 };
+
+
+//submit return
+const submitReturn=async(req,res)=>{
+  try {
+    const { orderId, returnReason } = req.body;
+    const Email = req.session.user;
+    const User= await register.findOne({email:Email})
+    const userId=User._id;
+
+    const order = await Order.findOne({ _id: orderId, UserId: userId });
+
+    order.ReturnRequest = {
+      reason: returnReason,
+      status: "Pending", 
+      createdAt: new Date(),
+    };
+
+    
+    await order.save();
+
+    const Return = await Order.findByIdAndUpdate(orderId, { Status: "Return Pending" });
+
+    res.json({ success: true, message: "Return request submitted successfully" });
+
+  } catch (error) {
+    console.error('error while submiting the return request:',error)
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+}
+
 
 //logout
 const logOut = (req, res) => {
@@ -717,5 +755,6 @@ module.exports = {
   aboutUs,
   viewCoupon,
   uploadProfilePicture,
+  submitReturn,
   logOut,
 };

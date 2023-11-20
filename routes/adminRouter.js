@@ -70,8 +70,10 @@ admin.post('/edit-category/:categoryId', adminAuth.verifyAdmin, categoryControll
 
 //orderlist
 admin.get('/orders',adminAuth.verifyAdmin,orderController.OrderList)
-admin.put('/updateOrderStatus/:orderId',adminAuth.verifyAdmin,orderController.updateOrderStatus)
+admin.put('/orders/updateOrderStatus/:orderId',adminAuth.verifyAdmin,orderController.updateOrderStatus)
 admin.get('/orders/details/:orderId',adminAuth.verifyAdmin,orderController.viewOrderDetails)
+admin.put('/orders/acceptReturn/:orderId',adminAuth.verifyAdmin,orderController.acceptReturn)
+admin.put('/orders/cancelReturn/:orderId',adminAuth.verifyAdmin,orderController.cancelReturn)
 
 //multiple image upload using multer
 admin.post("/upload",adminAuth.verifyAdmin, upload.fields(uploadFields),productController.addProductPost);
