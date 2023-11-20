@@ -42,6 +42,9 @@ padding-top: 15px;
 .blue-text {
   color: green;
 }
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5) !important; 
+  }
  </style>
 </head>
 <body>
@@ -177,10 +180,33 @@ padding-top: 15px;
                         <p class="mt-4 ms-3">Want any help? <a href="/aboutus" style="color: #f37a27;">Please contact us</a></p>
                         <% if (order.Status === "Delivered") { %>
                           <div>
-                            <button type="button" class="btn btn-danger ms-3 mt-4" data-bs-toggle="modal" data-bs-target="#returnOrderModal">
+                            <button type="button" class="btn btn-danger ms-3 mt-4" data-bs-toggle="modal" data-bs-target="#returnOrderModal<%= order._id %>">
                               Return Order
                             </button>
                           </div>
+
+
+                            <div class="modal fade" id="returnOrderModal<%= order._id %>"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="returnOrderModalLabel" aria-hidden="true">
+                              <div class="modal-dialog ">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="returnOrderModalLabel">Return Order</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <label for="returnReason">Reason for Return:</label>
+                                    <textarea id="returnReason<%= order._id %>" class="form-control" rows="3"></textarea>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="submitReturn('<%= order._id %>')">Submit Return</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+
+                         
                           <% } else if(order.Status === "Rejected" ) { %> 
                             <div class="text-danger">
                               <b><span>Because of some Technical issues we can't confirm this order</span></b>
@@ -207,25 +233,6 @@ padding-top: 15px;
         </div>
 
 
-        <div class="modal fade" id="returnOrderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="returnOrderModalLabel" aria-hidden="true">
-          <div class="modal-dialog ">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="returnOrderModalLabel">Return Order</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <label for="returnReason">Reason for Return:</label>
-                <textarea id="returnReason" class="form-control" rows="3"></textarea>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="submitReturn('<%= order._id %>')">Submit Return</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         
         <!-- End of order card -->
         <% }); %>
@@ -238,9 +245,9 @@ padding-top: 15px;
 
 
 function submitReturn(orderIdParam) {
-    const returnReason = document.getElementById('returnReason').value;
+    const returnReason = document.getElementById(`returnReason${orderIdParam}`).value;
     const orderId = orderIdParam; 
-
+console.log(returnReason);
     fetch('/submitreturn', {
       method: 'POST',
       headers: {

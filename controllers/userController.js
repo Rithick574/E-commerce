@@ -11,6 +11,10 @@ const { generateInvoice } = require("../utility/invoiceCreator");
 const Coupon = require("../model/couponSchema");
 const Banner = require("../model/bannerSchema");
 const referral = require("../model/referralSchema");
+const categoryOffer=require('../model/offerSchema')
+const fs = require('fs');
+const path = require('path');
+const sharp = require('sharp');
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -30,12 +34,15 @@ const homePage = async (req, res) => {
     const userWishlist = await Wishlist.findOne({ user: userId });
     const wishlist = userWishlist ? userWishlist.products : [];
     const banners = await Banner.find().limit(3);
+    const offer = await categoryOffer.find()
+    const catoffer= offer ? offer.offerPercentage : [];
 
     res.render("user/home", {
       product: data,
       banners,
       username,
       wishlist,
+      catoffer,
       cartCount: res.locals.cartCount,
     });
   } catch (error) {
@@ -661,15 +668,26 @@ const uploadProfilePicture = async (req, res) => {
         .json({ success: false, error: "No file uploaded" });
     }
 
+    const uploadedImage= req.file;
+
+    const imageBuffer = fs.readFileSync(uploadedImage.path);
+
+    const croppedImageBuffer = await sharp(imageBuffer)
+    .resize({ width: 180, height: 180, fit: sharp.fit.cover })
+    .toBuffer();
+
+    const savePath = path.join(__dirname, '../public/profile-images/cropped_images');
+    const fileName = uploadedImage.originalname;
+  
+    fs.writeFileSync(path.join(savePath, fileName), croppedImageBuffer);
 
     const updateUser = await register.findOneAndUpdate(
       { _id: userId },
-      { profilePhoto: req.file.filename },
+      { profilePhoto: fileName },
       { new: true }
     );
 
     if (updateUser) {
-      console.log("Updated");
       return res
         .status(200)
         .json({
