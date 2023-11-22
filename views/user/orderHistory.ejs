@@ -85,7 +85,7 @@ padding-top: 15px;
                     </ul>
                   
                  
-                    <p class="card-text">Order ID :  <%= order._id %> </p>
+                    <p class="card-text">Order ID : <b>ODR[<%= order._id %>]</b> </p>
                   
                     <% let orderDate = new Date(order.OrderDate) %>
                     <p class="card-text">
@@ -148,8 +148,7 @@ padding-top: 15px;
 
                                               <% } else if (order.Status === "Delivered") { %>
                                                
-                                              <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
-                                                <!-- <p style="margin-right: -8px;" style="background-color: #f37a27;">Delivered</p> -->
+                                              <li class="list-inline-item items-list text-end" style="margin-right: 8px;"> 
                                                 <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Delivered</p>
                                               </li>
                                              
@@ -289,7 +288,6 @@ Swal.fire({
     clearInterval(timerInterval)
   }
 }).then((result) => {
-  /* Read more about handling dismissals below */
   if (result.dismiss === Swal.DismissReason.timer) {
     console.log('I was closed by the timer')
   }
@@ -304,7 +302,6 @@ Swal.fire({
               body: JSON.stringify({ orderId }) 
           });
           if (response.ok) {
-
             
               window.location.href = `/downloadinvoice/${orderId}`;
           }

@@ -37,17 +37,20 @@ const addCategoryOffer = async (req, res) => {
         }
 
         const categoryId = fetchCategoryId._id;
-        console.log(categoryId);
+       
 
         const productsBeforeOffer = await products.find({ categoryId });
-        console.log(productsBeforeOffer);
 
         for (const product of productsBeforeOffer) {
             const discountPrice = product.descountedPrice;
 
             await products.updateOne(
                 { _id: product._id },
-                { $set: { beforeOffer: discountPrice } }
+                { $set: { 
+                    beforeOffer: discountPrice,
+                    IsInCategoryOffer: true,
+                    categoryOffer: { offerPercentage: offerPercentage }
+                 } }
             );
         }
 
@@ -81,7 +84,7 @@ const deleteOffer=async(req,res)=>{
             return res.status(404).json({ error: 'Offer not found' });
         }
 
-        const { categoryName, offerPercentage } = deletedOffer;
+        const { categoryName } = deletedOffer;
 
         const fetchCategoryId = await Category.findOne({ name: categoryName });
         if (!fetchCategoryId) {
@@ -96,9 +99,14 @@ const deleteOffer=async(req,res)=>{
             const oldPrice = product.beforeOffer || 0; 
             await products.updateOne(
                 { _id: product._id },
-                { $set: { descountedPrice: oldPrice } }
+                { $set: { 
+                    descountedPrice: oldPrice,
+                    IsInCategoryOffer: false,
+                    categoryOffer: { offerPercentage: undefined }
+                 } }
             );
         }
+
         await Offer.findByIdAndDelete(offerId);
         res.json({ success: true, message: 'Offer deleted successfully' });
     } catch (error) {
@@ -206,7 +214,11 @@ const updateOffer = async (req, res) => {
 
             await products.updateOne(
                 { _id: product._id },
-                { $set: { descountedPrice: newDiscountedPrice } }
+                { $set: {
+                     descountedPrice: newDiscountedPrice,
+                     IsInCategoryOffer: true,
+                     categoryOffer: offerPercentage
+                     } }
             );
         }
 

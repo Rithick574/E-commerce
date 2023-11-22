@@ -1,5 +1,16 @@
 <%- include('../partials/userHeader') %>
 
+<style>
+    .credit {
+  color: green;
+}
+
+.debit {
+  color: red;
+}
+
+</style>
+
 <div class="container">
     <div class="row">
         <div class="col-md-4 p-4" style="margin-top: 50px;">
@@ -46,15 +57,44 @@
                 </div>
             </div>
 
-            <!-- <div class="card shadow mt-3">
-              <div class="card-body">
-                    
-                         <h4 class="card-title">Wallet Transactions : </h4>
-                    
-                         <p>No referrer information available</p>
-                
-                 </div>
-               </div> -->
+            <div class="card shadow mt-3">
+                <div class="card-body">
+                    <h4 class="card-title">Wallet Transactions:</h4>
+                    <br>
+                    <% if (transactions && transactions.length > 0) { %>
+                        <table class="table border-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Transaction Type</th>
+                                    <th scope="col">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% transactions.forEach(transaction => { %>
+                                    <tr>
+                                        <td class="<%= transaction.transactionType === 'credit' ? 'credit' : 'debit' %>">
+                                           <b> ₹ <%= transaction.amount %></b>
+                                          </td>
+                                        <td><%= transaction.description %></td>
+                                        <td class="<%= transaction.transactionType === 'credit' ? 'credit' : 'debit' %>">
+                                            <%= transaction.transactionType %>
+                                          </td>
+                                        <td>
+                                            <% let dt = new Date(transaction.timestamp) %>
+                                            <%= dt.getDate() %>/<%= dt.getMonth() + 1 %>/<%= dt.getFullYear() %> <%= dt.getHours()%>:<%= dt.getMinutes().toString().padStart(2, '0') %>
+                                        </td>                                        
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <p>No transactions available</p>
+                    <% } %>
+                </div>
+            </div>
+            
             
 
         </div>

@@ -29,7 +29,11 @@ const checkCategoryOffers = async () => {
 
        const products = await product.updateMany(
           { categoryId: categoryId },
-          { $inc: { descountedPrice: discountAmount }, $set: { IsInCategoryOffer: false } }
+          { $inc: { descountedPrice: discountAmount },
+           $set: {
+             IsInCategoryOffer: false,
+             categoryOffer: undefined
+             } }
         );
         
         await offer.deleteOne({ _id: offer._id });

@@ -1,5 +1,6 @@
 const Referral = require("../model/referralSchema");
 const User = require("../model/userSchema");
+const WalletTransaction= require('../model/walletSchema')
 
 const updateReferralAmount = async (req, res) => {
   const { refferalAmount } = req.body;
@@ -27,19 +28,20 @@ const getWallet = async (req, res) => {
     const Email = req.session.user;
     const user = await User.findOne({ email: Email }).populate('referredUsers');
     const userReferred = user.referredBy;
+    const transactions = await WalletTransaction.find({ user: user._id });
 
     if (!userReferred) {
-      return res.render("user/wallet", { username: Email, user,referred:'' });
+      return res.render("user/wallet", { username: Email,transactions, user,referred:'' });
     }
 
     const referred = await User.findById(userReferred);
 
     if (!referred) {
       console.error("Referred user not found");
-      return res.render("user/wallet", { username: Email, user, referre:'' });
+      return res.render("user/wallet", { username: Email,transactions, user, referred:'' });
     }
 
-    res.render("user/wallet", { username: Email, user, referred });
+    res.render("user/wallet", { username: Email, user,transactions, referred });
   } catch (error) {
     console.error("Error while rendering the wallet page:", error);
   }

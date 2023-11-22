@@ -3,11 +3,10 @@ const User = require("../model/userSchema");
 const Cart = require("../model/cartSchema");
 const Order = require("../model/orderSchema");
 const Product = require("../model/productSchema");
-const moment = require("moment");
-const easyinvoice = require("easyinvoice");
 const razorpay = require("../utility/razorpay");
 const mongoose = require("mongoose");
 const crypto = require("crypto");
+const WalletTransaction = require('../model/walletSchema')
 
 const PlaceOrder = async (req, res) => {
   const email = req.session.user;
@@ -342,6 +341,15 @@ const acceptReturn=async(req,res)=>{
     const refundAmount = updatedOrder.TotalPrice;
 
     await User.findByIdAndUpdate(userId, { $inc: { wallet: refundAmount } });
+
+    const walletTransaction = new WalletTransaction({
+      user: userId,
+      amount: refundAmount,
+      description: 'Product returned',
+      transactionType: 'credit',
+    });
+    
+    await walletTransaction.save();
 
     res.json({ success: true, order: updatedOrder });
 

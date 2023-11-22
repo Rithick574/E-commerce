@@ -46,13 +46,18 @@
                           alt="<%= product[0].name %>" class="border rounded me-3" style="width: 80px; height: 96px" />
 
 
-                        <div class="">
+                        <div >
                           <a href="#" class="nav-link" style="text-decoration: none; color: #000000; font-weight: 500;">
                             <%= data.productId.name %>
                             <br>
                             
-                           <div class="text-primary"><b> Rs. <%= data.productId.descountedPrice %></b></div>
+                           <div class="text-primary"><b> Rs. <%= data.productId.descountedPrice %></b>
+                            <%if( data.productId.IsInCategoryOffer ){%>
+                              <span class="badge rounded-pill bg-warning text-dark" style="margin-left: 5px;"> <%= data.productId.categoryOffer.offerPercentage %>% OFF</span>
+                          <%}%>
+                          </div>
                           </a>
+                         
                         </div>
                       </div>
 

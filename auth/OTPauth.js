@@ -1,10 +1,4 @@
-require('dotenv').config();
-const express = require('express');
-const Twilio = require('twilio');
-const auth = express.Router();
-const jwt = require("jsonwebtoken");
-const bcrypt = require('bcrypt');
-
+require('events').EventEmitter.defaultMaxListeners = 15;
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -29,7 +23,7 @@ const sentOTP = async (phone, res) => {
       return { success: true ,phone};
   }catch (error) {
     if (error) {
-      // Check if the error object is defined
+   
       console.error("OTP sending failed:", error);
       return { success: false, error: error.message };
     } 

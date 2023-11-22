@@ -11,10 +11,11 @@ const { generateInvoice } = require("../utility/invoiceCreator");
 const Coupon = require("../model/couponSchema");
 const Banner = require("../model/bannerSchema");
 const referral = require("../model/referralSchema");
-const categoryOffer=require('../model/offerSchema')
-const fs = require('fs');
-const path = require('path');
-const sharp = require('sharp');
+const categoryOffer = require("../model/offerSchema");
+const WalletTransaction = require("../model/walletSchema");
+const fs = require("fs");
+const path = require("path");
+const sharp = require("sharp");
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -34,15 +35,13 @@ const homePage = async (req, res) => {
     const userWishlist = await Wishlist.findOne({ user: userId });
     const wishlist = userWishlist ? userWishlist.products : [];
     const banners = await Banner.find().limit(3);
-    const offer = await categoryOffer.find()
-    const catoffer= offer ? offer.offerPercentage : [];
+   
 
     res.render("user/home", {
       product: data,
       banners,
       username,
       wishlist,
-      catoffer,
       cartCount: res.locals.cartCount,
     });
   } catch (error) {
@@ -198,7 +197,6 @@ const verifyOTP = async (req, res) => {
       const formattedDate = `${year}-${month}-${day}`;
 
       const { name, phone, email, password, referralId } = req.session.data;
-      console.log(referralId, "!@#$");
 
       if (referralId) {
         const referralAmount = await referral.findOne();
@@ -208,6 +206,14 @@ const verifyOTP = async (req, res) => {
           { _id: referralId },
           { $inc: { wallet: walletAmount } }
         );
+
+        const walletTransaction = new WalletTransaction({
+          user: referralId,
+          amount: walletAmount,
+          description: "Referral Bonus",
+          transactionType: "credit",
+        });
+        await walletTransaction.save();
       }
 
       const userdata = {
@@ -224,17 +230,19 @@ const verifyOTP = async (req, res) => {
       req.session.user = email;
       const userId = insert[0]._id;
 
-      if(referralId){
+      if (referralId) {
         const referralInfo = await register.findById(referralId);
         const referredByUserId = referralInfo._id;
 
-        await register.findOneAndUpdate({ _id: userId }, { $set: { referredBy: referredByUserId } });
+        await register.findOneAndUpdate(
+          { _id: userId },
+          { $set: { referredBy: referredByUserId } }
+        );
 
         await register.findOneAndUpdate(
           { _id: referredByUserId },
           { $addToSet: { referredUsers: userId } }
         );
-  
       }
 
       const referralLink = `http://localhost:8080/signup?ref=${userId}`;
@@ -400,7 +408,20 @@ const cancelOrder = async (req, res) => {
       if (order.PaymentMethod === "Online") {
         const userId = order.UserId;
         const refundAmount = order.TotalPrice;
-        await register.findByIdAndUpdate(userId, { $inc: { wallet: refundAmount } });
+
+        await register.findByIdAndUpdate(userId, {
+          $inc: { wallet: refundAmount },
+        });
+
+        const walletTransaction = new WalletTransaction({
+          user: userId,
+          amount: refundAmount,
+          description: "Refund for canceled order",
+          transactionType: "credit",
+        });
+
+        await walletTransaction.save();
+        
       }
 
       order.Status = "Cancelled";
@@ -594,8 +615,6 @@ const generateInvoices = async (req, res) => {
 
     const ordersId = orderDetails[0]._id;
 
-    console.log(ordersId);
-
     if (orderDetails) {
       const invoicePath = await generateInvoice(orderDetails);
 
@@ -668,17 +687,20 @@ const uploadProfilePicture = async (req, res) => {
         .json({ success: false, error: "No file uploaded" });
     }
 
-    const uploadedImage= req.file;
+    const uploadedImage = req.file;
 
     const imageBuffer = fs.readFileSync(uploadedImage.path);
 
     const croppedImageBuffer = await sharp(imageBuffer)
-    .resize({ width: 180, height: 180, fit: sharp.fit.cover })
-    .toBuffer();
+      .resize({ width: 180, height: 180, fit: sharp.fit.cover })
+      .toBuffer();
 
-    const savePath = path.join(__dirname, '../public/profile-images/cropped_images');
+    const savePath = path.join(
+      __dirname,
+      "../public/profile-images/cropped_images"
+    );
     const fileName = uploadedImage.originalname;
-  
+
     fs.writeFileSync(path.join(savePath, fileName), croppedImageBuffer);
 
     const updateUser = await register.findOneAndUpdate(
@@ -688,12 +710,10 @@ const uploadProfilePicture = async (req, res) => {
     );
 
     if (updateUser) {
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "Profile picture uploaded successfully",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "Profile picture uploaded successfully",
+      });
     } else {
       return res.status(404).json({ success: false, error: "User not found" });
     }
@@ -705,36 +725,37 @@ const uploadProfilePicture = async (req, res) => {
   }
 };
 
-
 //submit return
-const submitReturn=async(req,res)=>{
+const submitReturn = async (req, res) => {
   try {
     const { orderId, returnReason } = req.body;
     const Email = req.session.user;
-    const User= await register.findOne({email:Email})
-    const userId=User._id;
+    const User = await register.findOne({ email: Email });
+    const userId = User._id;
 
     const order = await Order.findOne({ _id: orderId, UserId: userId });
 
     order.ReturnRequest = {
       reason: returnReason,
-      status: "Pending", 
+      status: "Pending",
       createdAt: new Date(),
     };
 
-    
     await order.save();
 
-    const Return = await Order.findByIdAndUpdate(orderId, { Status: "Return Pending" });
+    const Return = await Order.findByIdAndUpdate(orderId, {
+      Status: "Return Pending",
+    });
 
-    res.json({ success: true, message: "Return request submitted successfully" });
-
+    res.json({
+      success: true,
+      message: "Return request submitted successfully",
+    });
   } catch (error) {
-    console.error('error while submiting the return request:',error)
+    console.error("error while submiting the return request:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
-}
-
+};
 
 //logout
 const logOut = (req, res) => {

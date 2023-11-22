@@ -34,8 +34,11 @@ const ProductsSchema = new Schema({
   isDeleted: { type: Boolean, default: false },
   Status: { type: String },
   IsInCategoryOffer :{
-    type:Boolean
+    type:Boolean, default: false
   },
+  categoryOffer: {
+    offerPercentage: { type: Number }
+  },  
   beforeOffer:{ type: Number },
 });
 
