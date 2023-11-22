@@ -107,6 +107,8 @@ admin.post('/updateReferralAmount',adminAuth.verifyAdmin, refferalController.upd
 admin.get('/offers',adminAuth.verifyAdmin, offerController.categoryOffer)
 admin.post('/addOffer',adminAuth.verifyAdmin, offerController.addCategoryOffer)
 admin.delete('/deleteOffer/:offerId',adminAuth.verifyAdmin, offerController.deleteOffer)
+admin.get('/editoffer/:categoryId',adminAuth.verifyAdmin, offerController.EditOffer)
+admin.post('/edit-offer/:offerId',adminAuth.verifyAdmin, offerController.updateOffer)
 admin.get('/checkCategoryExists/:categoryName',adminAuth.verifyAdmin, offerController.getCategoryName)
 admin.get('/checkOfferExists/:categoryName',adminAuth.verifyAdmin, offerController.checkOfferExists)
 

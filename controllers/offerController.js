@@ -4,6 +4,8 @@ const Category=require('../model/categorySchema')
 const products=require('../model/productSchema')
 const Refferal=require('../model/referralSchema')
 
+
+//get category offer
 const categoryOffer=async(req,res)=>{
     try {
         const offer=await Offer.find()
@@ -28,25 +30,35 @@ const addCategoryOffer = async (req, res) => {
         });
         await newOffer.save();
 
-        const fetchCategoryId=await Category.findOne({name:categoryName})
-        const cateGoryId=fetchCategoryId._id
+        const fetchCategoryId = await Category.findOne({ name: categoryName });
 
+        if (!fetchCategoryId) {
+            return res.status(404).json({ error: 'Category not found' });
+        }
 
-        const productsBeforeOffer = await products.find({ categoryId: cateGoryId});
-        const discountPrice=productsBeforeOffer.descountedPrice;
-        const insertBeforeOffer = await products.updateMany(
-            { categoryId: cateGoryId },
-            { $set: { beforeOffer: discountPrice } }
-          );
+        const categoryId = fetchCategoryId._id;
+        console.log(categoryId);
 
-       
+        const productsBeforeOffer = await products.find({ categoryId });
+        console.log(productsBeforeOffer);
+
+        for (const product of productsBeforeOffer) {
+            const discountPrice = product.descountedPrice;
+
+            await products.updateOne(
+                { _id: product._id },
+                { $set: { beforeOffer: discountPrice } }
+            );
+        }
+
         const offerMultiplier = 1 - offerPercentage / 100;
 
+      
         const productData = await products.updateMany(
-          { categoryId: cateGoryId },
-          {
-            $mul: { descountedPrice: offerMultiplier },
-          }
+            { categoryId },
+            {
+                $mul: { descountedPrice: offerMultiplier },
+            }
         );
 
         res.status(201).json({ success: true, message: 'Category offer added successfully' });
@@ -58,10 +70,35 @@ const addCategoryOffer = async (req, res) => {
 };
 
 
+
 //delete offer
 const deleteOffer=async(req,res)=>{
     try {
         const offerId = req.params.offerId;
+
+        const deletedOffer = await Offer.findById(offerId);
+        if (!deletedOffer) {
+            return res.status(404).json({ error: 'Offer not found' });
+        }
+
+        const { categoryName, offerPercentage } = deletedOffer;
+
+        const fetchCategoryId = await Category.findOne({ name: categoryName });
+        if (!fetchCategoryId) {
+            return res.status(404).json({ error: 'Category not found' });
+        }
+
+        const categoryId = fetchCategoryId._id;
+
+        const productsBeforeOffer = await products.find({ categoryId });
+
+         for (const product of productsBeforeOffer) {
+            const oldPrice = product.beforeOffer || 0; 
+            await products.updateOne(
+                { _id: product._id },
+                { $set: { descountedPrice: oldPrice } }
+            );
+        }
         await Offer.findByIdAndDelete(offerId);
         res.json({ success: true, message: 'Offer deleted successfully' });
     } catch (error) {
@@ -120,11 +157,75 @@ const checkOfferExists = async (req, res) => {
     }
  } 
 
+ //edit category Offer
+ const EditOffer=async(req,res)=>{
+    try {
+        const categoryId= req.params.categoryId;
+        const offer= await Offer.findOne({_id: categoryId})
+        res.render('admin/editOffer',{offer})
+    } catch (error) {
+        console.error('error while editing category offer:',error)
+    }
+ }
+
+
+
+ // Update offer
+const updateOffer = async (req, res) => {
+    try {
+        const { offerPercentage, expiryDate } = req.body;
+        let categoryId = req.params.offerId;
+
+        const existingOffer = await Offer.findById(categoryId);
+
+        if (!existingOffer) {
+            return res.status(404).json({ error: 'Offer not found' });
+        }
+
+     
+        existingOffer.offerPercentage = offerPercentage;
+        existingOffer.expiryDate = expiryDate;
+        await existingOffer.save();
+
+     
+        const fetchCategoryId = await Category.findOne({ name: existingOffer.categoryName });
+        if (!fetchCategoryId) {
+            return res.status(404).json({ error: 'Category not found' });
+        }
+
+        categoryId = fetchCategoryId._id;
+
+      
+        const productsBeforeOffer = await products.find({ categoryId });
+        
+        for (const product of productsBeforeOffer) {
+            const discountPrice = product.beforeOffer || 0; 
+
+            const offerMultiplier = 1 - offerPercentage / 100;
+            const newDiscountedPrice = Math.floor(offerMultiplier * discountPrice);
+
+            await products.updateOne(
+                { _id: product._id },
+                { $set: { descountedPrice: newDiscountedPrice } }
+            );
+        }
+
+        res.redirect('/admin/offers');
+
+    } catch (error) {
+        console.error('Error while updating the category offer:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
 module.exports={
     categoryOffer,
     addCategoryOffer,
     deleteOffer,
     getCategoryName,
     checkOfferExists,
-    refferalWallet
+    refferalWallet,
+    EditOffer,
+    updateOffer
 }

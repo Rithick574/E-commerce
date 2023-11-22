@@ -100,12 +100,12 @@
                 Expiry Date: <% const dt = new Date(offer.expiryDate); %> <%=
                 dt.getDate() %>/<%= dt.getMonth() + 1 %>/<%= dt.getFullYear() %>
               </p>
-              <button
+              <a
                 class="btn btn-dark"
-                onclick="editOffer('<%= offer._id %>')"
+               href="/admin/editoffer/<%= offer._id %>"
               >
                 Edit Offer
-              </button>
+            </a>
               <button class="btn" onclick="deleteOffer('<%= offer._id %>')">
                 <i
                   class="fa-solid fa-trash <%= date > offer.expiryDate ? 'fa-bounce' : '' %> fa-2x"

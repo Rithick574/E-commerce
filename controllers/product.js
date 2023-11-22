@@ -435,7 +435,7 @@ const archiveProduct = async (req, res) => {
 //generate sales report in pdf
 const genereatesalesReport = async (req, res) => {
   try {
-    console.log(req.body);
+   
     const startDate = req.body.startDate;
     const format = req.body.downloadFormat;
     const endDate = new Date(req.body.endDate);
@@ -466,6 +466,7 @@ const genereatesalesReport = async (req, res) => {
       totalSales.toFixed(2),
       format
     );
+    
   } catch (error) {
     console.log("Error while generating sales report pdf:", error);
     res.status(500).send("Internal Server Error");

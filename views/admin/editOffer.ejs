@@ -1,0 +1,70 @@
+<%- include('../partials/adminheader.ejs') %>
+
+<div class="details">
+  <div class="recentOrders">
+    
+    <h2>Edit Category Offer</h2>
+  
+    <form id="editOfferForm" class="row g-3 p-5" method="POST" action="/admin/edit-offer/<%= offer._id %>" onsubmit="return validateForm()">
+      <div class="col-md-12"> 
+        <label for="categoryName" class="form-label">Category Name</label>
+        <input class="form-control" id="categoryName" disabled type="text" value="<%= offer.categoryName %>" required>              
+      </div>
+
+      <div class="col-md-12"> 
+        <label for="offerPercentage" class="form-label">Offer Percentage</label>
+        <input class="form-control" id="offerPercentage" type="number" name="offerPercentage" min="0" max="75" value="<%= offer.offerPercentage %>" required>              
+        <div id="percentageError" class="error"></div>
+      </div>
+     
+      <div class="col-md-12"> 
+        <label for="expiryDate" class="form-label">Expiry Date</label>
+        <input class="form-control" id="expiryDate" type="date" name="expiryDate" value="<%= offer.expiryDate %>" required>              
+        <div id="expiryDateError" class="error"></div>
+      </div>
+   
+      <div class="d-flex justify-content-around">
+        <div class="cardHeader d-flex">
+          <button type="submit" class="btn" id="editCouponBtn">Edit Offer</button>
+        </div>
+        <div class="cardHeader d-flex">
+          <a href="/admin/offers" class="btn" onclick="return confirm('Are you sure you want to leave this page?')">Cancel</a>
+        </div>
+      </div>
+    </form>
+  
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    var expiryDateValue = new Date('<%= offer.expiryDate %>').toISOString().split('T')[0];
+    $('#expiryDate').val(expiryDateValue);
+  });
+
+  function validateForm() {
+    var offerPercentage = parseInt($('#offerPercentage').val());
+    var expiryDate = new Date($('#expiryDate').val());
+
+    // Validate offer percentage
+    if (offerPercentage < 0 || offerPercentage > 100 || isNaN(offerPercentage)) {
+      $('#percentageError').text('Offer percentage must be between 0 and 100.');
+      return false;
+    } else {
+      $('#percentageError').text('');
+    }
+
+    // Validate expiry date
+    var currentDate = new Date();
+    if (expiryDate <= currentDate) {
+      $('#expiryDateError').text('Expiry date must be greater than the current date.');
+      return false;
+    } else {
+      $('#expiryDateError').text('');
+    }
+
+    return true;
+  }
+</script>
+
+<%- include('../partials/adminfooter.ejs') %>
