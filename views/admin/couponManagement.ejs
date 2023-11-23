@@ -231,82 +231,89 @@
 
 
 
-
 <script>
-
-
-function editCoupon(couponId) {
-  window.location.href = `/admin/editCoupon/${couponId}`;
-}
-
-
-
-$(document).ready(function() {
-    $('input[name="discountType"]').change(function() {
-        if ($('#percentageRadio').is(':checked')) {
-            $('#percentageFields').show();
-            $('#fixedFields').hide();
-        } else if ($('#fixedRadio').is(':checked')) {
-            $('#percentageFields').hide();
-            $('#fixedFields').show();
-        }
-    });
-});
-
-
-
-
-    $("#couponForm").submit((e) => {
-      e.preventDefault();
-      $.ajax({
-        url: "/admin/addCoupon",
-        method: "POST",
-        data: $("#couponForm").serialize(),
-        
-        success: (response) => {
-          if (response.success) {
-            console.log(response);
-            console.log("coupon added successfully");
-            window.location.reload();
-            $("#addCouponModal").modal("hide");
-            alert("coupon Added successfully");
-          } else {
-            console.log(response.error);
-            $("#flashMessage").text(response.error).show();
+  $(document).ready(function () {
+      $('input[name="discountType"]').change(function () {
+          if ($('#percentageRadio').is(':checked')) {
+              $('#percentageFields').show();
+              $('#fixedFields').hide();
+          } else if ($('#fixedRadio').is(':checked')) {
+              $('#percentageFields').hide();
+              $('#fixedFields').show();
           }
-        },
-        error: (xhr, status, error) => {
-          console.log("Error:", error);
-          $("#flashMessage")
-            .text("An error occurred. Please try again.")
-            .show();
-        },
       });
-    });
 
+      $("#couponForm").submit(function (e) {
+          e.preventDefault();
+          // Validate start date
+          var startDate = new Date($("#startDate").val());
+          var currentDate = new Date();
+          if (startDate < currentDate) {
+              $("#flashMessage").text("Start date must be greater than or equal to the current date.").show();
+              return;
+          }
 
+          // Validate end date
+          var endDate = new Date($("#endDate").val());
+          if (endDate <= startDate) {
+              $("#flashMessage").text("End date must be greater than start date.").show();
+              return;
+          }
 
-    function deleteCoupon(couponId) {
-    $.ajax({
-        url: "/admin/deleteCoupon/" + couponId, 
-        method: "DELETE",
-        success: function (response) {
-            if (response.success) {
-                console.log("Coupon deleted successfully");
-               location.reload();
-            } else {
-                console.log("Error deleting coupon: " + response.error);
-            }
-        },
-        error: function (xhr, status, error) {
-            console.log("Error:", error);
-        }
-    });
-}
+          // Validate no spaces in the coupon code
+          var couponCode = $("#couponCode").val();
+          if (/\s/.test(couponCode)) {
+              $("#flashMessage").text("Coupon code cannot contain spaces.").show();
+              return;
+          }
 
+          // If all validations pass, proceed with form submission
+          $.ajax({
+              url: "/admin/addCoupon",
+              method: "POST",
+              data: $("#couponForm").serialize(),
+              success: function (response) {
+                  if (response.success) {
+                      console.log(response);
+                      console.log("coupon added successfully");
+                      window.location.reload();
+                      $("#addCouponModal").modal("hide");
+                      alert("coupon Added successfully");
+                  } else {
+                      console.log(response.error);
+                      $("#flashMessage").text(response.error).show();
+                  }
+              },
+              error: function (xhr, status, error) {
+                  console.log("Error:", error);
+                  $("#flashMessage").text("An error occurred. Please try again.").show();
+              },
+          });
+      });
+  });
 
+  function editCoupon(couponId) {
+      window.location.href = `/admin/editCoupon/${couponId}`;
+  }
 
+  function deleteCoupon(couponId) {
+      $.ajax({
+          url: "/admin/deleteCoupon/" + couponId,
+          method: "DELETE",
+          success: function (response) {
+              if (response.success) {
+                  console.log("Coupon deleted successfully");
+                  location.reload();
+              } else {
+                  console.log("Error deleting coupon: " + response.error);
+              }
+          },
+          error: function (xhr, status, error) {
+              console.log("Error:", error);
+          }
+      });
+  }
+</script>
 
-  </script>
 
 <%- include('../partials/adminfooter.ejs') -%>

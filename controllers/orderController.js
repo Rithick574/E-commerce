@@ -62,17 +62,26 @@ const  postCheckout = async (req, res) => {
     const PaymentMethod = req.body.paymentMethod;
     const Address = req.body.Address;
     const Email = req.session.user;
-  
+
+ 
     let amount;
 
     if (req.session.grandTotal === undefined) {
       amount = req.session.totalPrice;
+      delete req.session.totalPrice;
     } else {
       amount = req.session.grandTotal;
+      delete req.session.grandTotal;
     }
     
     const user = await User.findOne({ email: Email });
     const userid = user._id;
+
+    if(PaymentMethod== 'wallet'){
+      if(user.wallet < amount){
+        return res.json({error:"Wallet Amount is less than the Total Price"})
+      }
+    }
 
     const cart = await Cart.findOne({ userId: userid }).populate(
       "products.productId"
@@ -82,14 +91,14 @@ const  postCheckout = async (req, res) => {
       console.error("No cart found for the user.");
       return res.render("error/404");
     }
-
+    
     for (const item of cart.products) {
       const productId = item.productId._id;
       const quantityInCart = item.quantity;
 
       const product = await Product.findById(productId);
      
-
+      
       if (product) {
         const availableStock = product.stock;
 
@@ -120,6 +129,9 @@ const  postCheckout = async (req, res) => {
       timeZone: "Asia/Kolkata",
     });
 
+
+    
+
     const newOrders = new Order({ 
       UserId: userid,
       Items: cart.products,
@@ -127,7 +139,7 @@ const  postCheckout = async (req, res) => {
       ExpectedDeliveryDate: new Date(
         Date.now() + 4 * 24 * 60 * 60 * 1000
       ).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
-      TotalPrice: req.session.totalPrice,
+      TotalPrice: amount,
       Address: add,
       PaymentMethod: PaymentMethod,
     });
@@ -158,7 +170,23 @@ const  postCheckout = async (req, res) => {
 
     if (PaymentMethod === "cod") {
       res.json({ codSuccess: true });
-    } else {
+    }else if(PaymentMethod === "wallet"){
+      await User.findByIdAndUpdate(userid, {
+        $inc: { wallet: -amount },
+      });
+
+      const walletTransaction = new WalletTransaction({
+        user: userid,
+        amount: amount,
+        description: "Used For Purchase",
+        transactionType: "debit",
+      });
+
+      await walletTransaction.save();
+
+      res.json({ wallet: true });
+    }
+     else {
       const order = {
         amount: amount,
         currency: "INR",
@@ -189,6 +217,9 @@ const orderHistory = async (req, res) => {
     const orders = await Order.find({ UserId: userid })
       .sort({ OrderDate: -1 })
       .populate("Items.productId");
+
+      // const products=await Product.findOne
+
     if (orders.length === 0) {
       return res.render("user/orderHistory", { username, orders: [] });
     } else {

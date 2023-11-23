@@ -405,7 +405,7 @@ const cancelOrder = async (req, res) => {
         }
       }
 
-      if (order.PaymentMethod === "Online") {
+      if (order.PaymentMethod === "Online" || order.PaymentMethod === "wallet") {
         const userId = order.UserId;
         const refundAmount = order.TotalPrice;
 
@@ -614,6 +614,8 @@ const generateInvoices = async (req, res) => {
       .populate("Items.productId");
 
     const ordersId = orderDetails[0]._id;
+    console.log(orderDetails,'@@@@2');
+    console.log('!!!',ordersId);
 
     if (orderDetails) {
       const invoicePath = await generateInvoice(orderDetails);

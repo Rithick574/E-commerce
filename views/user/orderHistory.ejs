@@ -74,7 +74,19 @@ padding-top: 15px;
                       <% order.Items.forEach((item) => { %>
                         <li>
                             <% if (item.productId && item.productId.name) { %>
-                                <b><%= item.productId.name %> </b><br> Quantity: <%= item.quantity %>
+                                <b>
+                                  <%= item.productId.name %> 
+                                </b>
+                                <% if (item.productId.beforeOffer) { %>
+                                  <% if (item.productId.beforeOffer !== item.productId.descountedPrice) { %>
+                                      <% const Calculete = (item.productId.beforeOffer - item.productId.descountedPrice); %>
+                                      <% const Mat = Math.floor((Calculete / item.productId.beforeOffer) * 100); %>
+                                      <h6 style="margin-left: 8px;"> You got <span class="badge rounded-pill bg-warning text-dark">  <%= Mat %> OFF </span> for this Product</h6>
+                                  <% } %>
+                              <% } %>
+                              <br>                              
+                                 Quantity: <%= item.quantity %>
+
                             <% } else { %>
                                 Product information not available
                             <% } %>

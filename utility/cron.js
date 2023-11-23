@@ -32,7 +32,7 @@ const checkCategoryOffers = async () => {
           { $inc: { descountedPrice: discountAmount },
            $set: {
              IsInCategoryOffer: false,
-             categoryOffer: undefined
+             categoryOffer: undefined 
              } }
         );
         

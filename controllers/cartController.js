@@ -44,10 +44,10 @@ const viewCart = async (req, res) => {
       totalQuantity += item.quantity;
     });
 
-    const gstRate = 0.12;
-    const gstAmount = subtotal * gstRate;
+    // const gstRate = 0.12;
+    // const gstAmount = subtotal * gstRate;
     const coupon = "";
-    const total = subtotal + gstAmount;
+    const total = subtotal ;
 
    
     req.session.totalPrice = total;
@@ -58,7 +58,6 @@ const viewCart = async (req, res) => {
       product: cart.products,
       cart,
       subtotal: subtotal,
-      gstAmount: gstAmount.toFixed(2),
       totalQuantity: totalQuantity,
       coupon: coupon,
       total: total,
@@ -167,16 +166,16 @@ const updateQuantity = async (req, res) => {
     let subtotal = 0;
     let totalQuantity = 0;
     cart.products.forEach((item) => {
-      // console.log(item,"isinde for each");
+     
       subtotal += item.quantity * item.productId.descountedPrice;
       totalQuantity += item.quantity;
     });
-    // console.log(subtotal);
 
-    const gstRate = 0.12;
-    const gstAmount = subtotal * gstRate;
+
+    // const gstRate = 0.12;
+    // const gstAmount = subtotal * gstRate;
     const coupon = "";
-    let total = subtotal + gstAmount;
+    let total = subtotal 
 
     if (coupon) {
       const couponValue = 50;
@@ -188,7 +187,6 @@ const updateQuantity = async (req, res) => {
     res.json({
       success: true,
       subtotal: subtotal,
-      gstAmount: gstAmount,
       totalQuantity: totalQuantity,
       coupon: coupon,
       total: total,

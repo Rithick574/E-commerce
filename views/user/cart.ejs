@@ -134,10 +134,10 @@
                 </div>
                 
 
-            <div class="d-flex justify-content-between">
+            <!-- <div class="d-flex justify-content-between">
               <p class="mb-2">GST(12%) :</p>
-             <b><p><span id="gstAmount">Rs.<%= gstAmount %></span></p></b>
-            </div>
+             <b><p><span id="gstAmount">Rs.</span></p></b>
+            </div> -->
 
             <div class="d-flex justify-content-between">
               <p class="mb-2">Delivery Charges :</p>
@@ -216,7 +216,7 @@
     } else {
       console.log("Response from the server:", response);
       $('#subtotalAmount').text(response.subtotal.toFixed(2));
-      $('#gstAmount').text('Rs. ' + response.gstAmount.toFixed(2));
+      // $('#gstAmount').text('Rs. ' + response.gstAmount.toFixed(2));
       $('#totalQuantityValue').text(response.totalQuantity);
       $('#totalPrice').text('Rs. ' + response.total.toFixed(2));
     }

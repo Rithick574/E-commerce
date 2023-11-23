@@ -355,6 +355,20 @@
                       Online Payment
                     </label>
                   </div>
+
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="paymentMethod"
+                      id="wallet"
+                      value="wallet"
+                    />
+                    <label class="form-check-label" for="online">
+                      Wallet Payment
+                    </label>
+                  </div>
+
                   <div class="justify-content-center">
                     <button class="btn btn-success mt-4" id="confirmOrderButton">
                       Confirm Order
@@ -440,8 +454,9 @@
           window.location = '/ordersuccess'
           
         } else if(response.online) {
-         console.log(response)
           handlePayNowClick(response)
+        }else if(response.wallet){
+          window.location = '/ordersuccess'
         }else{
           alert(response.error)
           if(confirm){
@@ -451,6 +466,8 @@
       }
     })
   })
+
+
   function handlePayNowClick (order) {
   
     var options = {

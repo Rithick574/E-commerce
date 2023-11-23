@@ -17,7 +17,7 @@
        
             <div class="col-md-6">
               <label for="inputEmail4" class="form-label">product name</label>
-              <input  class="form-control" name="productname" id="inputEmail4">
+              <input  class="form-control" name="productname" id="inputEmail4" required>
             </div>
             <div class="col-md-6">
               <label for="brand" class="form-label">Brand</label>
@@ -133,46 +133,59 @@
 </div>
 
 
-
 <script>
-  function updateImagePreview(inputId, previewId) {
-        const imagePreview = document.getElementById(previewId);
-        const input = document.getElementById(inputId);
+  document.addEventListener('DOMContentLoaded', function () {
+    function updateImagePreview(inputId, previewId) {
+      const imagePreview = document.getElementById(previewId);
+      const input = document.getElementById(inputId);
 
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
 
-            reader.onload = function (e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.classList.add('preview-image');
-                img.style.width = '368px'; // Set fixed width
-                img.style.height = '416px'; // Set fixed height
-                imagePreview.innerHTML = '';
-                imagePreview.appendChild(img);
-            };
+        reader.onload = function (e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.classList.add('preview-image');
+          img.style.width = '368px'; // Set fixed width
+          img.style.height = '416px'; // Set fixed height
+          imagePreview.innerHTML = '';
+          imagePreview.appendChild(img);
+        };
 
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            imagePreview.innerHTML = '';
-        }
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        imagePreview.innerHTML = '';
+      }
     }
 
     // Add event listeners for file inputs
     document.getElementById('productImage1').addEventListener('change', function () {
-        updateImagePreview('productImage1', 'imagePreview1');
+      updateImagePreview('productImage1', 'imagePreview1');
     });
     document.getElementById('productImage2').addEventListener('change', function () {
-        updateImagePreview('productImage2', 'imagePreview2');
+      updateImagePreview('productImage2', 'imagePreview2');
     });
     document.getElementById('productImage3').addEventListener('change', function () {
-        updateImagePreview('productImage3', 'imagePreview3');
+      updateImagePreview('productImage3', 'imagePreview3');
     });
     document.getElementById('productImage4').addEventListener('change', function () {
-        updateImagePreview('productImage4', 'imagePreview4');
+      updateImagePreview('productImage4', 'imagePreview4');
     });
-</script>
 
+    // Add event listener for form submission
+    document.getElementById('addProductForm').addEventListener('submit', function (event) {
+      // Validate for spaces in input fields
+      const inputs = document.querySelectorAll('#addProductForm input, #addProductForm textarea, #addProductForm select');
+      for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i].type !== 'file' && inputs[i].value.trim() === '') {
+          alert('Spaces are not allowed in any input field.');
+          event.preventDefault(); // Prevent form submission
+          return;
+        }
+      }
+    });
+  });
+</script>
 
 
 

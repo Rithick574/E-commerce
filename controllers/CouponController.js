@@ -68,16 +68,16 @@ const applyCoupon = async (req, res) => {
     const total = req.body.total;
     let discount = 0;
     req.session.total=total
-    // Find the user by email
+  
     const user = await User.findOne({ email });
     const userId = user._id;
 
-    // Find the coupon by code
+   
     const couponMatch = await Coupon.findOne({ couponCode: code });
     
 
     if (couponMatch) {
-      // Check if the coupon is active
+    
       if (couponMatch.status === true) {
         const currentDate = new Date();
         const startDate = couponMatch.startDate;

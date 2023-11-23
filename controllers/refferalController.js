@@ -28,7 +28,7 @@ const getWallet = async (req, res) => {
     const Email = req.session.user;
     const user = await User.findOne({ email: Email }).populate('referredUsers');
     const userReferred = user.referredBy;
-    const transactions = await WalletTransaction.find({ user: user._id });
+    const transactions = await WalletTransaction.find({ user: user._id }).sort({ _id:-1 }).limit(4);
 
     if (!userReferred) {
       return res.render("user/wallet", { username: Email,transactions, user,referred:'' });
