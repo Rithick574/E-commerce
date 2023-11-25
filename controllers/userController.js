@@ -666,7 +666,7 @@ const viewCoupon = async (req, res) => {
     if (!Coupons) {
       res.render("error/404");
     }
-    console.log(Coupons);
+
     const date = new Date();
 
     res.render("user/showCoupon", { coupon: Coupons, username, date });

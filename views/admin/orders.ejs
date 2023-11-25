@@ -129,6 +129,9 @@
         </div>
         <div class="modal-body">
           <p>Are you sure you want to accept the return request?</p>
+          <% if (order[i].ReturnRequest) { %>
+            <p style="color: rgb(10, 10, 70);">Return Reason: <%= order[i].ReturnRequest.reason %></p>
+          <% } %>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
