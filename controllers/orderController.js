@@ -63,7 +63,6 @@ const  postCheckout = async (req, res) => {
     const Address = req.body.Address;
     const Email = req.session.user;
 
- 
     let amount;
 
     if (req.session.grandTotal === undefined) {

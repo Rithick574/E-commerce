@@ -22,6 +22,7 @@ const adminlogin=(req,res)=>{
 //post admin login
 const adminLogged = async (req, res) => {
   try {
+
     const { email, password } = req.body;
   
     const adminData = await Admin.findOne({ email: email });

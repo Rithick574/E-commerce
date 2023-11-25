@@ -7,10 +7,13 @@ const Brands = require("../model/brandSchema");
 
 
 //add brandslist
-const BrandsList=async (req,res)=>{
-      const brands = await Brands.find();
-      res.render('admin/Brands',{brands})
- 
+const BrandsList=async(req,res)=>{
+  try {
+    const brands = await Brands.find();
+    res.render('admin/Brands',{brands})
+  } catch (error) {
+    console.error('error while rendering brand list:',error)
+  }
   }
   
   // add brands
