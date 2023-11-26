@@ -128,7 +128,7 @@ const passport = async (req, res) => {
 //user signup
 const signup = (req, res) => {
   const referralId = req.query.ref;
-  res.render("user/userSignup", { referralId });
+  res.render("user/usersignup", { referralId });
 };
 
 //sent OTP

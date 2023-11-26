@@ -1,7 +1,6 @@
 require("dotenv").config({path: 'config.env' })
 const express=require('express')
 const cors=require("cors");
-const morgan=require('morgan')
 const path=require('path')
 const session = require('express-session')
 const { v4: uuidv4 } = require('uuid');
@@ -25,6 +24,7 @@ app.use(nocache());
 
 //view engine setting
 app.set('view engine','ejs')
+app.set('views', path.join(__dirname, 'views'));
 
 //to parse request body
 app.use(express.json());
@@ -36,21 +36,10 @@ app.use(express.static('public'))
 app.use('/addproducts',express.static(path.join(__dirname,'products')));
 
 
-
-//morgan
-app.use(morgan('tiny'))
-
-//cookie
-
-// app.use(cookieParser());
-
-
-
 //session
 app.use(
     session({
       secret: uuidv4(),
-      // cookie:{maxAge:480000}, 
       resave: false,
       saveUninitialized: true,
     })
@@ -74,8 +63,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-//helper
-// app.use(cartCountMiddleware);
 
 //routes
 app.use('/',userRouter)
@@ -83,7 +70,7 @@ app.use("/admin",adminRouter.admin);
 
 app.use((err, req, res, next) => {
   console.error(err.stack); 
-  // res.status(404).render('error/404');
+  res.status(500).send('Something went wrong!');
 });
 
 
