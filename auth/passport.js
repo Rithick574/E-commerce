@@ -24,18 +24,18 @@ passport.use("google",
           async function (request, accessToken, refreshToken, profile, done) {
             try {
                 const email=profile.emails[0].value
-                const exist= await Users.findOne({email:email});
-               
-                if(exist){
-                
-                    return done(null,false,"duplicate email");
+                const existingUser = await Users.findOne({ email: email });
+
+                if (existingUser) {
+                    return done(null, existingUser);
                 }
               
 
                 done(null,profile)  
                 
             } catch (error) {
-                console.log(err);
+                console.log(error);
+                return done(error);
             }
           }
 

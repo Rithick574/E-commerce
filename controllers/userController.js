@@ -76,7 +76,6 @@ const logged = async (req, res) => {
       let isMatch = await bcrypt.compare(password, connect.password);
       if (isMatch) {
         if (connect.Status == "Active") {
-          console.log("login successful");
           req.session.user = req.body.email;
           req.session.loggedin = true;
           return res.redirect("/");
@@ -107,19 +106,37 @@ const login = (req, res) => {
 
 const passport = async (req, res) => {
   try {
-    let userInformation = {
-      name: req.user.displayName,
-      email: req.user.emails[0].value,
-      Status: "Active",
-      timeStamp: Date.now(),
-    };
+    const email = req.user.email;
+    const userExist = await register.findOne({ email: email });
 
-    req.session.user = userInformation.email;
-    req.session.loggedin = true;
+    if(userExist){
+     req.session.user = email;
+      req.session.loggedin = true;
+      res.redirect("/");
+    }else{
 
-    const insert = await register.insertMany([userInformation]);
+      let userInformation = {
+        name: req.user.displayName,
+        email: req.user.emails[0].value,
+        Status: "Active",
+        timeStamp: Date.now(),
+      };
 
-    res.redirect("/");
+      const insert = await register.insertMany([userInformation]);
+
+      const userId=insert[0]._id
+      const referralLink = `http://localhost:8080/signup?ref=${userId}`;
+      await register.findOneAndUpdate(
+        { _id: userId },
+        { $set: { referralLink: referralLink } }
+      );
+
+      req.session.user = userInformation.email;
+      req.session.loggedin = true;
+
+      res.redirect("/");
+    }
+   
   } catch (error) {
     throw error;
   }

@@ -24,7 +24,6 @@ app.use(nocache());
 
 //view engine setting
 app.set('view engine','ejs')
-app.set('views', path.join(__dirname, 'views'));
 
 //to parse request body
 app.use(express.json());

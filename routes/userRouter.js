@@ -30,7 +30,7 @@ user.post('/login',userAuth.userExist,userController.logged)
 
 //passport
 user.get("/auth/google",passport.authenticate('google',{scope:["profile","email"]}));
-user.get("/auth/google/done",calculateCartCount,passport.authenticate('google',{ failureRedirect: '/login'}),userController.passport)
+user.get("/auth/google/done",passport.authenticate('google',{ failureRedirect: '/login'}),userController.passport)
 
 
 
@@ -63,8 +63,6 @@ user.get('/wishlist',userAuth.verifyUser,calculateCartCount,wishlistController.w
 user.post('/wishlist',userAuth.verifyUser,calculateCartCount,wishlistController.addtoWishList)
 user.post('/wishlistdelete/',userAuth.verifyUser,calculateCartCount,wishlistController.deletefromWishlist)
 
-//guest shop
-// user.get('/guest/shop',productController.ShopProductGuest)
 
 
 //cart
