@@ -18,7 +18,7 @@ passport.use("google",
           {
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: "http://localhost:8080/auth/google/done",
+                callbackURL: "https://phonebazaar.shop/auth/google/done",
                 scope: ["profile","email"],
           },
           async function (request, accessToken, refreshToken, profile, done) {

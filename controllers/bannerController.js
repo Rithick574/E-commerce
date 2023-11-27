@@ -4,7 +4,7 @@ const Banner = require("../model/bannerSchema");
 
 const bannerManagement=async(req,res)=>{
 const banners=await Banner.find()
-res.render('admin/bannerManagement',{banners})
+res.render('admin/bannermanagement',{banners})
 
 }
 

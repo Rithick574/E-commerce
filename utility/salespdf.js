@@ -1,5 +1,5 @@
 const ejs = require('ejs');
-const pdf = require('html-pdf');
+const puppeteer = require('puppeteer');
 const fs = require('fs');
 const exceljs = require('exceljs');
 const dateFormat = require('date-fns/format');
@@ -16,20 +16,19 @@ module.exports = {
         const html = ejs.render(template, { orders, startDate, endDate, totalAmount });
         console.log(typeof(totalAmount));
         if (format === 'pdf') {
+          const browser = await puppeteer.launch();
+          const page = await browser.newPage();
+          
+          await page.setContent(html);
+          
           const pdfOptions = {
-            format: 'Letter',
-            orientation: 'portrait',
+              format: 'Letter',
+              path: `public/SRpdf/sales-report-${formattedStartDate}-${formattedEndDate}.pdf`,
           };
-  
-          const filePath = `public/SRpdf/sales-report-${formattedStartDate}-${formattedEndDate}.pdf`;
-          pdf.create(html, pdfOptions).toFile(filePath, (err, response) => {
-            if (err) {
-              console.error('Error generating PDF:', err);
-              res.status(500).send('Internal Server Error');
-            } else {
-              res.status(200).download(response.filename);
-            }
-          });
+          
+          await page.pdf(pdfOptions);
+          await browser.close();
+          res.status(200).download(pdfOptions.path);
         } else if (format === 'excel') {
           const workbook = new exceljs.Workbook();
           const worksheet = workbook.addWorksheet('Sales Report');
