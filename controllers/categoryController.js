@@ -87,7 +87,6 @@ try {
 
 
    //update category name
-
    const updateCategory=async(req,res)=>{
     try {
       const categoryId= req.params.categoryId;

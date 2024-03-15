@@ -2,6 +2,7 @@ require("dotenv").config({path: 'config.env' })
 const express=require('express')
 const cors=require("cors");
 const path=require('path')
+const morgan=require('morgan')
 const session = require('express-session')
 const { v4: uuidv4 } = require('uuid');
 const connectDB=require('./config/DBconnection')
@@ -21,6 +22,8 @@ const adminRouter=require("./routes/adminRouter");
 const app=express()
 
 app.use(nocache());
+
+app.use(morgan('tiny'));
 
 //view engine setting
 app.set('view engine','ejs')
@@ -67,11 +70,12 @@ app.use(passport.session());
 app.use('/',userRouter)
 app.use("/admin",adminRouter.admin);
 
+
+
 app.use((err, req, res, next) => {
   console.error(err.stack); 
-  res.status(500).send('Something went wrong!');
+  res.status(404).send('Something went wrong!');
 });
-
 
 
 

@@ -22,6 +22,13 @@ const categoryOffer=async(req,res)=>{
 const addCategoryOffer = async (req, res) => {
     try {
         const { categoryName, offerPercentage, expiryDate } = req.body;
+
+        const fetchCategoryId = await Category.findOne({ name: categoryName });
+
+        if (!fetchCategoryId) {
+            return res.status(404).json({ error: 'Category not found' });
+        }
+        
         const newOffer = new Offer({
             categoryName,
             offerPercentage,
@@ -30,11 +37,6 @@ const addCategoryOffer = async (req, res) => {
         });
         await newOffer.save();
 
-        const fetchCategoryId = await Category.findOne({ name: categoryName });
-
-        if (!fetchCategoryId) {
-            return res.status(404).json({ error: 'Category not found' });
-        }
 
         const categoryId = fetchCategoryId._id;
        

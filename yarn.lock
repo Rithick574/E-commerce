@@ -112,6 +112,11 @@
     unbzip2-stream "1.4.3"
     yargs "17.7.2"
 
+"@rithick574/uppercase_converter@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@rithick574/uppercase_converter/-/uppercase_converter-1.0.0.tgz#176cc0f9ac3bc73ac443d14b63deb07e102eb78f"
+  integrity sha512-gBjUxhnSMWO0vZ6y8lEoj/oKTj88q+SxZtSoj7BVRlf2DG80lrFK1i7hjPFC6ga7E4kziCd66s0WA2t9tBi4Bw==
+
 "@tootallnate/quickjs-emscripten@^0.23.0":
   version "0.23.0"
   resolved "https://registry.yarnpkg.com/@tootallnate/quickjs-emscripten/-/quickjs-emscripten-0.23.0.tgz#db4ecfd499a9765ab24002c3b696d02e6d32a12c"

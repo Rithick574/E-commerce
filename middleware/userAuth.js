@@ -10,6 +10,7 @@ const verifyUser = async(req, res, next) => {
     }
     next();
   } else {
+    console.log("hereeee@@@@@@@@");
     res.redirect("/guestuser");
     // res.redirect('/logout')
   }  

@@ -156,7 +156,7 @@ const searchProducts = async (req, res) => {
     const productDataCount = await Product.find({
       name: { $regex: "^" + search, $options: "i" },
     }).count();
-
+    
     const totalProducts = Math.ceil(productDataCount / pageSize);
 
     const viewallProducts = await Product.find({
@@ -313,6 +313,7 @@ const editProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const productId = req.params.productId;
+
     let {
       productname,
       price,
@@ -329,6 +330,7 @@ const updateProduct = async (req, res) => {
 
     productname = productname.trim();
     description = description.trim();
+
     Spec1 = Spec1.trim();
     Spec2 = Spec2.trim();
     Spec3 = Spec3.trim();
@@ -340,7 +342,9 @@ const updateProduct = async (req, res) => {
     const existingImages = existingProduct.images[0];
 
     if (!existingProduct) {
+
       return res.status(404).send("Product not found");
+      
     }
 
     const updatedImages = {

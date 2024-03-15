@@ -22,7 +22,7 @@ const checkCategoryOffers = async () => {
         productsToUpdate.forEach(product => {
           previousDiscounts[product._id] = product.descountedPrice;
         });
-
+ 
         const discountAmounts = offer.offerPercentage;
 
         const discountAmount=( productsToUpdate.beforeOffer ) * (discountAmounts/100)
@@ -49,7 +49,7 @@ const checkCategoryOffers = async () => {
 
 
 
-// cron.schedule("*/200 * * * * *", async () => {
+// cron.schedule("*/10 * * * * *", async () => {
 //     try {
 //       await checkCategoryOffers();
 //     } catch (error) {

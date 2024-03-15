@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e-commerce-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: e-commerce
+  template:
+    metadata:
+      labels:
+        app: e-commerce
+    spec:
+      containers:
+      - name: e-commerce
+        image: rithickramanthali/e-commerce:0.0.1  
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: e-commerce-configmap

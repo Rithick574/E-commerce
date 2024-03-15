@@ -168,10 +168,10 @@
 
 <script>
   $(document).ready(function () {
-    // Check the discountType value from the database
+   
     var discountType = '<%= coupon.discountType %>';
 
-    // Set the checked attribute based on the database value
+   
     if (discountType === 'percentage') {
       $('#percentageRadio').prop('checked', true);
       $('#percentageFields').show();
@@ -199,11 +199,8 @@
       }
     });
 
-    // Event listener for the custom button click
+  
     $('#editCouponBtn').click(function () {
-      // Your existing logic for radio button change
-
-      // Manually submit the form using JavaScript
       $('#editCouponForm').submit();
     });
   });

@@ -17,7 +17,6 @@ const calculateCartCount = async (req, res, next) => {
       }
 
       res.locals.cartCount = cartCount;
-      // console.log("Cart Count:", res.locals.cartCount);
 
     } else {
       res.locals.cartCount = 0; 

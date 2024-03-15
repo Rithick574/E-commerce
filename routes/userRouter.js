@@ -79,10 +79,8 @@ user.post('/removefromcart',userAuth.verifyUser,calculateCartCount,cartControlle
 // Get Cart Quantity
 user.get('/getcartquantity', userAuth.verifyUser, calculateCartCount, cartController.getQuantity);
 
-
-
 //place order
-user.get('/placeorder',userAuth.verifyUser,calculateCartCount,orderController.PlaceOrder)
+user.get('/placeorder',userAuth.verifyUser,calculateCartCount,orderController.PlaceOrder) 
 user.post('/addAddress-Checkout',userAuth.verifyUser,calculateCartCount,orderController.addAddress)
 user.post('/placeOrder',userAuth.verifyUser,calculateCartCount,orderController.postCheckout)
 user.get('/ordersuccess',userAuth.verifyUser,calculateCartCount,orderController.orderSuccess)

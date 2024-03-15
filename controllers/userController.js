@@ -125,7 +125,7 @@ const passport = async (req, res) => {
       const insert = await register.insertMany([userInformation]);
 
       const userId=insert[0]._id
-      const referralLink = `http://localhost:8080/signup?ref=${userId}`;
+      const referralLink = `https://phonebazaar.shop/signup?ref=${userId}`;
       await register.findOneAndUpdate(
         { _id: userId },
         { $set: { referralLink: referralLink } }
@@ -631,8 +631,7 @@ const generateInvoices = async (req, res) => {
       .populate("Items.productId");
 
     const ordersId = orderDetails[0]._id;
-    console.log(orderDetails,'@@@@2');
-    console.log('!!!',ordersId);
+ 
 
     if (orderDetails) {
       const invoicePath = await generateInvoice(orderDetails);
@@ -713,7 +712,7 @@ const uploadProfilePicture = async (req, res) => {
     const croppedImageBuffer = await sharp(imageBuffer)
       .resize({ width: 180, height: 180, fit: sharp.fit.cover })
       .toBuffer();
-
+      
     const savePath = path.join(
       __dirname,
       "../public/profile-images/cropped_images"

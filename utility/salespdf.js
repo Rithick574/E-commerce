@@ -16,13 +16,16 @@ module.exports = {
         const html = ejs.render(template, { orders, startDate, endDate, totalAmount });
         console.log(typeof(totalAmount));
         if (format === 'pdf') {
-          const browser = await puppeteer.launch();
+          const browser = await puppeteer.launch({
+            headless: true,
+          });
+          
           const page = await browser.newPage();
           
           await page.setContent(html);
           
           const pdfOptions = {
-              format: 'Letter',
+              format: 'A3',
               path: `public/SRpdf/sales-report-${formattedStartDate}-${formattedEndDate}.pdf`,
           };
           
@@ -59,7 +62,7 @@ module.exports = {
 
              
               totalSalesAmount += order.TotalPrice !== undefined ? order.TotalPrice : 0;
-              // console.log("@@@",totalSalesAmount);
+       
             });
           });
   

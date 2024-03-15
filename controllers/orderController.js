@@ -57,7 +57,7 @@ const addAddress = async (req, res) => {
 };
 
 //order placing
-const  postCheckout = async (req, res) => {
+const postCheckout = async (req, res) => {
   try {
     const PaymentMethod = req.body.paymentMethod;
     const Address = req.body.Address;

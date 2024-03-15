@@ -236,11 +236,11 @@ const getQuantity = async (req, res) => {
     const cart = await Cart.findOne({ userId: userId });
 
     if (!cart) {
-      // If the cart doesn't exist, return a response with quantity 0
       return res.json({ success: true, quantity: 0 });
     }
 
     const totalQuantity = cart.calculateTotalQuantity();
+    console.log(totalQuantity,'@@@@');
 
     res.json({ success: true, quantity: totalQuantity });
   } catch (error) {
