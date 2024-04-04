@@ -1,6 +1,6 @@
 FROM node:20.5.0
 WORKDIR /app
-COPY . /app
-RUN yarn install
+COPY . .
+RUN yarn install --production
 EXPOSE 8080
 ENTRYPOINT ["yarn","dev"]
